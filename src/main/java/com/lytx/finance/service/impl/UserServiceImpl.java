@@ -60,29 +60,8 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 	}*/
 
 	//@Transactional
-	public User save(User user) { //throws ExistsException, DataMissingException{
-		
-		if(null == user.getId()){
-			/* new user, need to encode password */
-			encodeUserPassword(user);
-		}
-		
-		/*
-		 * before save userinfo in userinforservice +++++++++++++++++++++++++++++++
-		3724  mysql  TRACE  [main] openjpa.jdbc.SQL - <t 327916146, conn 1227641731> [1 ms] spent
-		after save userinfo in userinforservice +++++++++++++++++++++++++++++++
-		Exception-=============------------class org.springframework.dao.InvalidDataAccessApiUsageException
-		exception happens after the save function call, seems the commit action controlled by transactional
-		happens after ths save method, so try to catch exception inside the save functio is not reasonable.
-		If we need to do this, we have to make sure the save function in dao layer happens during the function
-		call. To make this happen, call flush function inside dao save function.
-		 */
-			
+	public User save(User user) {	
 		return  super.save(user);
-		
-		/* } catch (ExistsException e){
-			 throw new UserExistsException(userInfo.getUsername() + "or" + userInfo.getEmail() + "exists", e);
-		 }*/
 	}
 
 	public boolean changeUserPassword(String username, String oldPassword,

@@ -18,7 +18,8 @@
 				/logout = logout
 				/static/** = anon
 				/register/** = anon
-				/admin/** = roles[admin]
+				/simon-console/** = roles[admin]
+				/metrics/** = roles[admin]
 				/** = user
 			</value>
 		</property>
@@ -59,7 +60,7 @@
         <property name="realm" ref="userRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="cacheManager" ref="cacheManager"/>
-        <!-- <property name="rememberMeManager" ref="rememberMeManager"/> -->
+        <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
 
     <!-- 会话ID生成器 -->
@@ -78,13 +79,13 @@
         <property name="maxAge" value="2592000"/><!-- 30天 -->
     </bean>
 
-    <!-- rememberMe管理器 
+    <!-- rememberMe管理器  -->
     <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
         <property name="cipherKey"
                   value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>
         <property name="cookie" ref="rememberMeCookie"/>
     </bean>
--->
+
     <!-- 会话DAO -->
     <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
         <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>

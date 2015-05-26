@@ -49,6 +49,7 @@
                 <jdbc.artifactId>hsqldb</jdbc.artifactId>
                 <jdbc.version>${hsqldb.version}</jdbc.version>
                 <jdbc.driverClassName>org.hsqldb.jdbcDriver</jdbc.driverClassName>
+                <jdbc.dataSourceClassName>org.hsqldb.jdbc.JDBCDataSource</jdbc.dataSourceClassName>
                 <jdbc.url><![CDATA[jdbc:hsqldb:file:${db.name};shutdown=true]]></jdbc.url>
                 <jdbc.username>sa</jdbc.username>
                 <jdbc.password/>
@@ -80,6 +81,37 @@
      <version>${log4j2.version}</version>
   </dependency>
   
+  <!-- system monitor -->
+  <!-- Core JAR is absolutely necessary to use Simons (Stopwatch, etc.) -->
+                <dependency>
+                        <groupId>org.javasimon</groupId>
+                        <artifactId>javasimon-core</artifactId>
+                        <version>${javasimon.version}</version>
+                </dependency>
+                <!-- The same for JDBC 4.1 (Java 7) -->
+                <dependency>
+                        <groupId>org.javasimon</groupId>
+                        <artifactId>javasimon-jdbc41</artifactId>
+                        <version>${javasimon.version}</version>
+                </dependency>
+                <!-- JavaEE support, servlet filter, EJB/CDI interceptor -->
+                <dependency>
+                        <groupId>org.javasimon</groupId>
+                        <artifactId>javasimon-javaee</artifactId>
+                        <version>${javasimon.version}</version>
+                </dependency>
+                <!-- Spring support, AOP interceptor, MVC handler interceptor -->
+                <dependency>
+                        <groupId>org.javasimon</groupId>
+                        <artifactId>javasimon-spring</artifactId>
+                        <version>${javasimon.version}</version>
+                </dependency>
+                <!-- Embedded Java Simon web console -->
+                <dependency>
+                        <groupId>org.javasimon</groupId>
+                        <artifactId>javasimon-console-embed</artifactId>
+                        <version>${javasimon.version}</version>
+                </dependency>
 <!--   <dependency>
     <groupId>javax.validation</groupId>
     <artifactId>validation-api</artifactId>
@@ -362,6 +394,13 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        
+        <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     </build>
   
 </project>

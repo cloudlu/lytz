@@ -21,7 +21,7 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">${project.hibernateDialect}</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                 <!-- Booleans can be easily used in expressions by 
                      declaring HQL query substitutions in Hibernate configuration -->
                 <prop key="hibernate.query.substitutions">true 'Y', false 'N'</prop>
@@ -44,24 +44,20 @@
         class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
-
-    <!-- Activates scanning of @Autowired 
-    <context:annotation-config />
-
-    Activates scanning of @Repository -->
+    
     <context:component-scan
         base-package="com.lytx.finance.dao.impl" />
 	
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 	    <property name="maximumPoolSize" value="10" />
 	    <property name="minimumPoolSize" value="10" />
-	    <property name="dataSourceClassName" value="${project.jdbc.dataSourceClassName}" />
+	    <property name="dataSourceClassName" value="${jdbc.dataSourceClassName}" />
 	     <property name="connectionTestQuery" value="SELECT 1" />
 	    <property name="dataSourceProperties">
 		    <props>
-			    <prop key="url">${project.jdbc.url}</prop>
-			    <prop key="user">${project.jdbc.username}</prop>
-			    <prop key="password">${project.jdbc.password}</prop>
+			    <prop key="url">${jdbc.url}</prop>
+			    <prop key="user">${jdbc.username}</prop>
+			    <prop key="password">${jdbc.password}</prop>
 			    <!-- mysql special config from https://github.com/brettwooldridge/HikariCP/wiki/MySQL-Configuration -->
                 <prop key="cachePrepStmts">true</prop>
                 <prop key="prepStmtCacheSize">250</prop>
