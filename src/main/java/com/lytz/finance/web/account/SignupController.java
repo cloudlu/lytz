@@ -12,27 +12,26 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lytz.finance.service.UserService;
 import com.lytz.finance.service.exception.UserExistsException;
-import com.lytz.finance.service.exception.UserNotExistsException;
 import com.lytz.finance.vo.User;
 
 @Controller
-@RequestMapping(value = "/register")
+@RequestMapping(value = "/signup")
 public class SignupController {
 
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	/*@RequestMapping(method = RequestMethod.GET)
 	public String registerForm() {
 		return "";
-	}
+	}*/
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String register(@Valid User user, RedirectAttributes redirectAttributes) {
 		try {
 			userService.registerUser(user);
 			redirectAttributes.addFlashAttribute("username", user.getUsername());
-			return "redirect:/login";
+			return "redirect:/";
 		} catch (UserExistsException e) {
 			return "redirect:/";
 		}

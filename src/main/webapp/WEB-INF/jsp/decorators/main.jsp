@@ -17,7 +17,7 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
 <!-- jQuery -->
-<script src="js/jquery.js"></script>
+<script src="js/jquery-1.11.3.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
@@ -47,12 +47,56 @@
                     <li><a href="#">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="${ctx}/signup"><span
-                            class="glyphicon glyphicon-user"></span>
-                            Sign Up</a></li>
-                    <!--<li><a href="#"><span
-                            class="glyphicon glyphicon-log-in"></span>
-                            Login</a></li> -->
+                   <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span
+                            class="glyphicon glyphicon-user"></span>Sign Up <strong class="caret"></strong></a>
+                        <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+                             <form method="post"
+                                action="${ctx}/signup" role="form"  accept-charset="UTF-8">
+                                <input style="margin-bottom: 15px;" type="text" placeholder="Username" id="username" name="username" required>
+                                <input style="margin-bottom: 15px;" type="password" placeholder="Password" id="password" name="password" required>
+                                <input type="password" id="confirmPassword" style="margin-bottom: 15px;"
+                                        name="confirmPassword" placeholder="Confirm Password" required>
+                                <img src="${ctx}/kaptcha.jpg" class="img-thumbnail"
+                                        alt="refresh if u can't see the picture" /> <input
+                                        type="text" name="captcha" style="margin-bottom: 15px;"
+                                        placeholder="Captcha" name="captcha" required>
+                               
+                                <button class="btn btn-primary btn-block"
+                                    type="submit">Sign in</button>
+                                <label style="text-align:center;margin-top:5px">or</label>
+                                <input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with QQ">
+                                <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter" value="Sign In with WeChat">    
+                            </form>
+                        </div>
+                      </li>
+                            <shiro:guest>
+                  
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span
+                            class="glyphicon glyphicon-log-in"></span>Sign In <strong class="caret"></strong></a>
+                        <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+                             <form method="post"
+                                action="${ctx}/login" role="form"  accept-charset="UTF-8">
+                                <input style="margin-bottom: 15px;" type="text" placeholder="Username" id="username" name="username" required>
+                                <input style="margin-bottom: 15px;" type="password" placeholder="Password" id="password" name="password" required>
+                                <img src="${ctx}/kaptcha.jpg" class="img-thumbnail"
+                                        alt="refresh if u can't see the picture" /> <input
+                                        type="text" name="captcha" style="margin-bottom: 15px;"
+                                        placeholder="Captcha" name="captcha" required>
+                                <label class="string optional" for="user_remember_me">  Remember me
+                                    </label>
+                                    <input type="checkbox" id="user_remember_me" style="float: left; margin-right: 10px;"
+                                        name="rememberMe" value="true">
+                                <button class="btn btn-primary btn-block"
+                                    type="submit">Sign in</button>
+                                <label style="text-align:center;margin-top:5px">or</label>
+                                <input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with QQ">
+                                <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter" value="Sign In with WeChat">    
+                            </form>
+                        </div>
+                      </li>
+                      </shiro:guest>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
