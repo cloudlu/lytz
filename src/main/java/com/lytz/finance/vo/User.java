@@ -46,13 +46,13 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Basic(optional = false)
-	@Column(nullable = false, length = 50)
-	@NotNull
-	@NotBlank
+	@Column(nullable = true, length = 50)
+	//@NotNull
+	//@NotBlank
     @Length(min = 4, max = 50)
 	private String realname;
 	@Basic(optional = false)
-	@Column(nullable = false, name = "name", length = 50, unique = true)
+	@Column(nullable = false, length = 50, unique = true)
 	@NotNull
 	@NotBlank
 	//@Pattern(regexp = "[A-Za-z0-9]{4,50}", message = "{username.illegal}")
@@ -66,14 +66,16 @@ public class User implements Serializable {
 	private String password;
 	@Basic(optional = false)
 	@Column(nullable = false)
+	@NotNull
+    @NotBlank
 	private String passwordHint;
 	@Basic(optional = false)
-	@Column(nullable = false, length = 50, unique = true)
+	@Column(nullable = true, length = 50, unique = true)
 	@Email
 	@Length(min = 1, max = 50)
 	private String email;
 	@Basic(optional = false)
-	@Column(nullable = false, length = 20)
+	@Column(nullable = true, length = 20)
 	private String phoneNumber;
 	@Basic(optional = false)
 	@Column(nullable = false)
@@ -92,7 +94,7 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private boolean credentialsExpired;
 	@Basic(optional = false)
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private Date expiredTime;
 	//@Basic(optional = false)
 	//@Column(nullable = false)

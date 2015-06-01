@@ -2,6 +2,7 @@ package com.lytz.finance.service.impl;
 
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -87,8 +88,16 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 		if(null != getUserByName(user.getUsername())){
 			throw new UserExistsException(user.getUsername());
 		}
-		user.setPassword(passwordService.encryptPassword(user.getPassword()));
-		save(user);
+		if(null != user.getPassword() && user.getPassword().equals(user.getConfirmPassword())){
+    		user.setPassword(passwordService.encryptPassword(user.getPassword()));
+    		user.setAccountExpired(false);
+    		user.setAccountLocked(false);
+    		user.setCredentialsExpired(false);
+    		user.setRegisterTime(new Date());
+    		save(user);
+		} else {
+		    //TODO
+		}
 	}
 
 	public Set<String> findRoles(String username) {

@@ -8,7 +8,6 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:**/spring-*.xml
-            /WEB-INF/applicationContext*.xml
         </param-value>
     </context-param>
 
@@ -34,6 +33,11 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 
     <filter>
         <filter-name>hibernateFilter</filter-name>
@@ -130,10 +134,6 @@
         </init-param>
     </filter>
 
-    <filter-mapping>
-        <filter-name>encodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <filter-mapping>
         <filter-name>simon-console-filter</filter-name>
