@@ -24,14 +24,14 @@
 			<value>
 			     / = anon
                  /kaptcha.jpg = anon
-                 /signup/** = anon
+                 /signup = anon
 				/css/** = anon
                 /js/** = anon
                 /fonts/** = anon
                 /login = authc
 				/logout = logout
-				/simon-console/** = authc, roles[admin]
-				/metrics/** = authc, roles[admin]
+				/simon-console/** = authc, roles[ROLE_ADMIN]
+				/metrics/** = authc, roles[ROLE_ADMIN]
 				/** = user
 			</value>
 		</property>

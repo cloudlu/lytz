@@ -48,10 +48,10 @@
         <jdbc.url><![CDATA[jdbc:hsqldb:file:${db.name};shutdown=true]]></jdbc.url>
         <jdbc.username>sa</jdbc.username>
         <jdbc.password />
-        <jdbc.validationQuery><![CDATA[SELECT 1 + 1]]></jdbc.validationQuery>
+        <jdbc.validationQuery><![CDATA[select 1 from INFORMATION_SCHEMA.SYSTEM_USERS]]></jdbc.validationQuery>
         
         <!-- service -->
-        <ehcache.version>2.6.10</ehcache.version>
+        <ehcache.version>2.6.11</ehcache.version>
         <spring.version>4.1.4.RELEASE</spring.version>
         <javasimon.version>4.0.1</javasimon.version>
         <metrics.version>3.1.0</metrics.version>

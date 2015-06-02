@@ -48,7 +48,7 @@
         <property name="initialSize" value="1"/>
         <property name="minIdle" value="1"/>
         <property name="maxTotal" value="10"/>
-        <property name="validationQuery" value="SELECT 1" />
+        <property name="validationQuery" value="${jdbc.validationQuery}" />
         <property name="maxWaitMillis" value="180000"/>
     </bean>
     

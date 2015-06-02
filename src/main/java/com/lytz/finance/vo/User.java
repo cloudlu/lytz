@@ -33,7 +33,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @NamedQueries({
     @NamedQuery(
             name = "findUserByName",
-            query = "select r from User r where r.username = :name "
+            query = "select r from User r where r.username = :username "
     )
 })
 public class User implements Serializable {
@@ -45,7 +45,7 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Basic(optional = false)
+	@Basic(optional = true)
 	@Column(nullable = true, length = 50)
 	//@NotNull
 	//@NotBlank
@@ -69,12 +69,12 @@ public class User implements Serializable {
 	@NotNull
     @NotBlank
 	private String passwordHint;
-	@Basic(optional = false)
+	@Basic(optional = true)
 	@Column(nullable = true, length = 50, unique = true)
 	@Email
 	@Length(min = 1, max = 50)
 	private String email;
-	@Basic(optional = false)
+	@Basic(optional = true)
 	@Column(nullable = true, length = 20)
 	private String phoneNumber;
 	@Basic(optional = false)
@@ -93,7 +93,7 @@ public class User implements Serializable {
 	@Basic(optional = false)
 	@Column(nullable = false)
 	private boolean credentialsExpired;
-	@Basic(optional = false)
+	@Basic(optional = true)
 	@Column(nullable = true)
 	private Date expiredTime;
 	//@Basic(optional = false)

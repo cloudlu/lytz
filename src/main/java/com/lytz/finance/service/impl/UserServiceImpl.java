@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.lytz.finance.dao.UserDAO;
+import com.lytz.finance.service.RoleService;
 import com.lytz.finance.service.UserService;
 import com.lytz.finance.service.exception.UserExistsException;
 import com.lytz.finance.service.exception.UserNotExistsException;
+import com.lytz.finance.vo.Constants;
 import com.lytz.finance.vo.Role;
 import com.lytz.finance.vo.User;
 
@@ -25,6 +27,14 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 		UserService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	
+	private RoleService roleService;
+	
+	@Autowired
+    @Qualifier("roleService")
+	public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
 	
 	private UserDAO userDAO;
 
@@ -94,6 +104,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
     		user.setAccountLocked(false);
     		user.setCredentialsExpired(false);
     		user.setRegisterTime(new Date());
+    		user.addRole(roleService.getRoleByName(Constants.ROLE_USER));
     		save(user);
 		} else {
 		    //TODO
@@ -105,7 +116,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 		
 		if(null == user){
 			logger.error(username + "not exists");
-			return Collections.EMPTY_SET;
+			return Collections.emptySet();
 		}
 		
 		Set<String> roles = new HashSet<String>();
@@ -120,14 +131,15 @@ User user = getUserByName(username);
 		
 		if(null == user){
 			logger.error(username + "not exists");
-			return Collections.EMPTY_SET;
+			return Collections.emptySet();
 		}
 		
 		Set<String> permissions = new HashSet<String>();
-		for(Role role : user.getRoles()){
+		/*for(Role role : user.getRoles()){
 			//permissions.add(role.getPermissions());
-		}
+		}*/
 		
 		return permissions;
 	}
+
 }

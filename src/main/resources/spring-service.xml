@@ -20,10 +20,10 @@
         <aop:advisor id="monitoringInterceptor" advice-ref="perfInterceptor"
             pointcut="execution(* *..service.*.*(..)) " order="1" />
         <aop:advisor id="managerTx" advice-ref="txAdvice"
-            pointcut="execution(* *..service.*ServiceImpl.*(..))" order="2" />
+            pointcut="execution(* *..service.impl.*ServiceImpl.*(..))" order="2" />
     </aop:config>
 
-    <bean id="monitoringInterceptor" class="org.javasimon.spring.MonitoringInterceptor" />
+    <bean id="perfInterceptor" class="org.javasimon.spring.MonitoringInterceptor" />
 
     <!-- Enable @AspectJ support -->
     <aop:aspectj-autoproxy />
