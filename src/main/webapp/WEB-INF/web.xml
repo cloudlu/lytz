@@ -5,6 +5,11 @@
     <display-name>LYTZ Finance System</display-name>
 
     <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>messages</param-value>
+</context-param>  
+
+    <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:**/spring-*.xml

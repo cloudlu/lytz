@@ -12,16 +12,6 @@
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
     
-    <mvc:annotation-driven>
-        <mvc:message-converters register-defaults="true">
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <constructor-arg value="UTF-8" />
-            </bean>
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="prettyPrint" value="true"/>
-            </bean>         
-        </mvc:message-converters>
-    </mvc:annotation-driven>
     
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"/>
@@ -35,9 +25,6 @@
 	<mvc:resources mapping="/css/**" location="/WEB-INF/css/" />  
 	<mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
     <mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/" />
-	
-    <!-- 定义无需Controller的url<->view直接映射 -->
-    <mvc:view-controller path="/" view-name="index"/>
     
     <!-- 将Controller抛出的异常转到特定View, 保持SiteMesh的装饰效果 -->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
@@ -58,16 +45,51 @@
     </bean>  
        
     <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->  
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+    <!-- <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
         <property name="basenames">  
             <list>  
-                <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->  
+                在web环境中一定要定位到classpath 否则默认到当前web应用下找   
                 <value>classpath:messages</value>  
                 <value>classpath:org/hibernate/validator/ValidationMessages</value>  
             </list>  
         </property>  
         <property name="useCodeAsDefaultMessage" value="false"/>  
         <property name="defaultEncoding" value="UTF-8"/>  
-        <property name="cacheSeconds" value="60"/>  
+        <property name="cacheSeconds" value="-1"/>  
+    </bean> -->
+    
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages"/>
+        <property name="useCodeAsDefaultMessage" value="false"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean> 
+    
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="prettyPrint" value="true"/>
+            </bean>         
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    
+    <!-- 定义无需Controller的url<->view直接映射 -->
+    <mvc:view-controller path="/" view-name="index"/>
+    
+    <!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="zh_CN" />
+    </bean> -->
+    
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="cookieName" value="lang"/>
+        <property name="cookieMaxAge" value="94608000"/>
+        <property name="defaultLocale" value="zh_CN" />  
     </bean>
+    <mvc:interceptors>
+        <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang" />
+        </bean>
+    </mvc:interceptors>
 </beans>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="es_hibernate" updateCheck="false">
+
+    <diskStore path="java.io.tmpdir"/>
+
+<!--Default Cache configuration. These will applied to caches programmatically created through
+        the CacheManager.
+        maxElementsInMemory            - Sets the maximum number of objects that will be created in memory
+                            
+                            到达内存中最大量时的过期/移出算法  过期算法: 如果缓存已经失效，人道毁灭之。失效算法由3个参数组成：
+        eternal                        - Sets whether elements are eternal. If eternal,  timeouts are ignored and the
+                                         element is never expired. 如果为true，则永不过期，忽略后两个参数的设置。
+                                         ehcache_failsafe.xml 为false。                                
+        timeToIdleSeconds              - Sets the time to idle for an element before it expires.
+                                         i.e. The maximum amount of time between accesses before an element expires
+                                         Is only used if the element is not eternal.
+                                         Optional attribute. A value of 0 means that an Element can idle for infinity.
+                                         The default value is 0. 空闲无访问时间，默认为0，永不过时。ehcache_failsafe.xml 设为120秒。
+        timeToLiveSeconds              - Sets the time to live for an element before it expires.
+                                         i.e. The maximum time between creation time and when an element expires.
+                                         Is only used if the element is not eternal. 存活时间，默认为0，永不过时。ehcache_failsafe.xml 设为120秒 
+                                         Optional attribute. A value of 0 means that and Element can live for infinity.
+                                         The default value is 0.
+                                         
+        memoryStoreEvictionPolicy        默认为LRU(最近最少访问),另有先进先出(FIFO)，最少访问次数(LFU)
+        
+        persistence strategy            localTempSwap http://ehcache.org/documentation/configuration/fast-restart  
+        overflowToDisk                 - Sets whether elements can overflow to disk when the in-memory cache
+                                         has reached the maxInMemory limit. true，则将清除出来的缓存持久化到磁盘，否则人道毁灭之。
+        diskPersistent                 - Whether the disk store persists between restarts of the Virtual Machine.
+                                         The default value is false.当应用重启时，可将缓存先持久化到硬盘，重启后再行载入，节省大量的重新从数据库载入。
+                                                                                                                                                但只适合那些缓存不怎么变化，或者有特殊机制保证重启后应用能接收到重启这段时间里缓存变化信息的情况。 
+        diskExpiryThreadIntervalSeconds- The number of seconds between runs of the disk expiry thread. The default value
+                                         is 120 seconds. 使用过期算法清除磁盘中失效对象的间隔
+        -->
+   
+    <defaultCache
+        statistics="true"
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="3600"
+        timeToLiveSeconds="100000"
+        memoryStoreEvictionPolicy="LRU"
+        maxElementsOnDisk="10000000"
+        diskExpiryThreadIntervalSeconds="600"
+     >
+        <persistence strategy="localTempSwap" />
+        <!-- equals overflowToDisk="true"
+        diskPersistent="false" -->
+     </defaultCache>
+        
+    <!-- See http://ehcache.sourceforge.net/documentation/#mozTocId258426 for how to configure caching for your objects -->
+    
+    <!-- for hibernate query -->
+    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+        statistics="true"
+        maxEntriesLocalHeap="5"
+        eternal="false"
+        timeToLiveSeconds="120">
+       <persistence strategy="localTempSwap" />
+    </cache>
+    
+    <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+        statistics="true"
+        maxEntriesLocalHeap="5000"
+        eternal="true">
+       <persistence strategy="localTempSwap" />
+       
+    </cache>
+
+</ehcache>

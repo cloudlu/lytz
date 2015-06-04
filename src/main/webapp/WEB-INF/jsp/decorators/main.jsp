@@ -1,6 +1,8 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
     prefix="decorator"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
@@ -57,13 +59,14 @@
                                 <input style="margin-bottom: 15px;" type="password" placeholder="Password" id="password" name="password" required>
                                 <input type="password" id="confirmPassword" style="margin-bottom: 15px;"
                                         name="confirmPassword" placeholder="Confirm Password" required>
+                                <input style="margin-bottom: 15px;" type="text" placeholder="Password Hint" id="passwordHint" name="passwordHint" required>
                                 <img src="${ctx}/kaptcha.jpg" class="img-thumbnail"
                                         alt="refresh if u can't see the picture" /> <input
                                         type="text" name="captcha" style="margin-bottom: 15px;"
                                         placeholder="Captcha" name="captcha" required>
                                
                                 <button class="btn btn-primary btn-block"
-                                    type="submit">Sign in</button>
+                                    type="submit">Sign up</button>
                                 <label style="text-align:center;margin-top:5px">or</label>
                                 <input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with QQ">
                                 <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter" value="Sign In with WeChat">    
