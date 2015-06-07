@@ -5,9 +5,9 @@
 
     <decorator name="null">
         <pattern>/kaptcha.jpg</pattern>
-        <pattern>/login</pattern>
+        <!-- <pattern>/login</pattern>
         <pattern>/logout</pattern>
-        <pattern>/signup</pattern>
+        <pattern>/signup</pattern> -->
     </decorator>
 
     <decorator name="main" page="main.jsp">

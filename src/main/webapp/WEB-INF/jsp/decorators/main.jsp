@@ -3,6 +3,7 @@
     prefix="decorator"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML>
@@ -16,17 +17,43 @@
 <title><decorator:title default="Welcome to lytz system" /></title>
 
 <!-- Bootstrap Core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="${ctx}/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- jQuery -->
-<script src="js/jquery-1.11.3.min.js"></script>
+<script src="${ctx}/js/jquery-1.11.3.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
+<script src="${ctx}/js/bootstrap.min.js"></script>
 
+<script>
+$(document).ready(function(){
+    $("#signup_link").click(function(){
+        $("#signup_img").attr("src", '${ctx}/kaptcha.jpg?signup=' + Math.random());
+        $("#signupModal").modal();
+    });
+    <shiro:guest>
+    $("#signin_link").click(function(){
+    	$("#signin_img").attr("src", '${ctx}/kaptcha.jpg?signin=' + Math.random());
+        $("#signinModal").modal();
+    });
+    </shiro:guest>
+});
+</script>
+<style>
+.lytz_spacer {
+    margin-top: 50px;
+}
+</style>
 <decorator:head />
 </head>
 <body>
+<%@ include file="/WEB-INF/jsp/includes/signup.jsp"%>
+
+                   <shiro:guest>
+                   <%@ include file="/WEB-INF/jsp/includes/signin.jsp"%>
+                      
+                      </shiro:guest>
+
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top"
         role="navigation">
@@ -49,57 +76,13 @@
                     <li><a href="#">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                   <li class="dropdown">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span
-                            class="glyphicon glyphicon-user"></span>Sign Up <strong class="caret"></strong></a>
-                        <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-                             <form method="post"
-                                action="${ctx}/signup" role="form"  accept-charset="UTF-8">
-                                <input style="margin-bottom: 15px;" type="text" placeholder="Username" id="username" name="username" required>
-                                <input style="margin-bottom: 15px;" type="password" placeholder="Password" id="password" name="password" required>
-                                <input type="password" id="confirmPassword" style="margin-bottom: 15px;"
-                                        name="confirmPassword" placeholder="Confirm Password" required>
-                                <input style="margin-bottom: 15px;" type="text" placeholder="Password Hint" id="passwordHint" name="passwordHint" required>
-                                <img src="${ctx}/kaptcha.jpg" class="img-thumbnail"
-                                        alt="refresh if u can't see the picture" /> <input
-                                        type="text" name="captcha" style="margin-bottom: 15px;"
-                                        placeholder="Captcha" name="captcha" required>
-                               
-                                <button class="btn btn-primary btn-block"
-                                    type="submit">Sign up</button>
-                                <label style="text-align:center;margin-top:5px">or</label>
-                                <input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with QQ">
-                                <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter" value="Sign In with WeChat">    
-                            </form>
-                        </div>
-                      </li>
-                            <shiro:guest>
-                  
-                      <li class="dropdown">
-                        <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span
-                            class="glyphicon glyphicon-log-in"></span>Sign In <strong class="caret"></strong></a>
-                        <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-                             <form method="post"
-                                action="${ctx}/login" role="form"  accept-charset="UTF-8">
-                                <input style="margin-bottom: 15px;" type="text" placeholder="Username" id="username" name="username" required>
-                                <input style="margin-bottom: 15px;" type="password" placeholder="Password" id="password" name="password" required>
-                                <img src="${ctx}/kaptcha.jpg" class="img-thumbnail"
-                                        alt="refresh if u can't see the picture" /> <input
-                                        type="text" name="captcha" style="margin-bottom: 15px;"
-                                        placeholder="Captcha" name="captcha" required>
-                                <label class="string optional" for="user_remember_me">  Remember me
-                                    </label>
-                                    <input type="checkbox" id="user_remember_me" style="float: left; margin-right: 10px;"
-                                        name="rememberMe" value="true">
-                                <button class="btn btn-primary btn-block"
-                                    type="submit">Sign in</button>
-                                <label style="text-align:center;margin-top:5px">or</label>
-                                <input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with QQ">
-                                <input class="btn btn-primary btn-block" type="button" id="sign-in-twitter" value="Sign In with WeChat">    
-                            </form>
-                        </div>
-                      </li>
-                      </shiro:guest>
+                   <li><a id="signup_link" href="#"><fmt:message key="signup.title"/></a></li>
+                   <shiro:guest>
+                   <li><a id="signin_link" href="#"><fmt:message key="login.title"/></a></li>
+                   </shiro:guest>
+                   <shiro:user>
+                   <li><a href="${ctx}/logout"><fmt:message key="user.logout"/></a></li>
+                   </shiro:user>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -108,7 +91,7 @@
     </nav>
     
     <!-- Page Content -->
-    <div class="container">
+    
         <decorator:body />
     
         <hr>
@@ -120,6 +103,6 @@
                 </div>
             </div>
         </footer>
-    </div>
+
 </body>
 </html>

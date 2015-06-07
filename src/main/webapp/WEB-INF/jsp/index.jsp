@@ -11,14 +11,9 @@
 <head>
 <title>welcome</title>
 </head>
-<style>
-.lytz_spacer {
-    margin-top: 100px;
-}
-</style>
 <body>
     
-
+<div class="container">
     <!-- Jumbotron Header -->
     <header class="jumbotron lytz_spacer">
         <h1>A Warm Welcome!</h1>
@@ -106,7 +101,7 @@
         </div>
 
     </div>
-
+</div>
 </body>
 
 </html>
