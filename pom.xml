@@ -57,6 +57,7 @@
         <javasimon.version>4.0.1</javasimon.version>
         <metrics.version>3.1.0</metrics.version>
         <jackson.version>2.5.3</jackson.version>
+        <jsoup.version>1.8.2</jsoup.version>
         
         <!-- web -->
         <shiro.version>1.2.3</shiro.version>
@@ -240,6 +241,12 @@
         </dependency>
         <!-- for hibernate end -->
         <!-- for service -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+        
         <!-- http://blog.csdn.net/zjh19870703/article/details/7618412 -->
         <!-- Core utilities used by other modules. Define this if you use 
             Spring Utility APIs (org.springframework.core, org.springframework.util) -->
