@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.lytz.finance.common.UserQuery;
 import com.lytz.finance.dao.UserDAO;
-import com.lytz.finance.service.exception.UserNotExistsException;
 import com.lytz.finance.vo.User;
 
 /**
@@ -32,44 +32,20 @@ private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 		return list.get(0);
 	}
 
-	/*@Override
-	public long getTotalCount() {
+	public long getTotalCount(UserQuery query) {
 		StringBuffer hql = new StringBuffer(
 				"select userInfo from UserInfo userInfo where ");
-		boolean flag = false;
-		if (condition.getSearchBranch() != null
-				&& condition.getSearchBranch().length() != 0
-				&& (!condition.getSearchBranch().equalsIgnoreCase("ALL"))) {
-			flag = true;
-			hql.append("userInfo.branch like '%" + condition.getSearchBranch()
-					+ "%' ");
-		}
-		if (condition.getUsername() != null
-				&& condition.getUsername().length() != 0) {
-			if (flag)
-				hql.append(" and ");
-			flag = true;
-			hql.append("userInfo.username = '" + condition.getUsername() + "' ");
-		}
-		if (null != condition.getRealname()
-				&& 0 != condition.getRealname().length()) {
-			if (flag)
-				hql.append(" and ");
-			flag = true;
-			hql.append("userInfo.realname = '" + condition.getRealname() + "' ");
-		}
-		if (!flag) {
+		
 			hql = new StringBuffer(" select userInfo from UserInfo userInfo ");
 		}
 		return super.getTotalCount(hql.toString(), "userInfo");
-	}
+	} 
 
-	*//**
-	 * @param condition should not be null
+	/**
+	 * @param Query should not be null
 	 * @return Result list (UserInfo), list is empty if no result found
-	 *//*
-	@Override
-	public List<User> getUserInfoByCondition(Condition condition) {
+	 */
+	public List<User> findUserByQuery(UserQuery query) {
 		boolean flag = false;
 		StringBuffer hql = new StringBuffer(
 				"select userInfo from UserInfo userInfo where ");

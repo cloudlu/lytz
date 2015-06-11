@@ -3,6 +3,8 @@ package com.lytz.finance.service;
 import java.io.Serializable;
 import java.util.List;
 
+import com.lytz.finance.common.Query;
+
 /**
  * Base service that talks to BaseDao to CRUD POJOs.
  *
@@ -61,14 +63,6 @@ public interface BaseService<T, ID extends Serializable> {
      * 
      */
     void remove(ID id); // throws NotExistsException;
-
-    /**
-     * Generic method to search for an object.
-     * @param searchTerm the search term
-     * @param clazz type of class to search for.
-     * @return a list of matched objects
-     */
-    List<T> search(String searchTerm);
     
     long getTotalCount();
   

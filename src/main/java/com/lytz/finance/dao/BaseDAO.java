@@ -3,6 +3,8 @@ package com.lytz.finance.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import com.lytz.finance.common.Query;
+
 /**
  * The Interface to execute CRUD command for T entity.
  * 
@@ -26,9 +28,6 @@ public interface BaseDAO <T, ID extends Serializable>{
 	 * @return a List of T
 	 */
 	List<T> findAll();
-
-	
-	List<T> search(String searchTerm);
 	
 	/**
 	 * R: Count all Ts
@@ -70,12 +69,4 @@ public interface BaseDAO <T, ID extends Serializable>{
      * @return a list of the records found
      */
 //    List<T> findByNamedQuery(String queryName, Map<String, Object> queryParams);
-	
-//	List<T> getOnePage(int startRow, int pageSize);
-	
-//	int getTotalCount(String hql);
-	
-//	List getOnePage(String hql, int startRow, int pageSize);
-	
-//	List<T> findByHql(String hql);
 }

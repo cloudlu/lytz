@@ -1,7 +1,9 @@
 package com.lytz.finance.service;
 
+import java.util.List;
 import java.util.Set;
 
+import com.lytz.finance.common.UserQuery;
 import com.lytz.finance.service.exception.UserExistsException;
 import com.lytz.finance.service.exception.UserNotExistsException;
 import com.lytz.finance.vo.User;
@@ -18,5 +20,15 @@ public interface UserService extends BaseService<User, Integer>{
 	public Set<String> findRoles(String username);
 
 	public Set<String> findPermissions(String username);
+	
+	/**
+     * GEneric method to query with special condition
+     * 
+     * @param query
+     * @return
+     */
+    List<User> findByQuery(UserQuery query);
+    
+    List<User> getTotalCount(UserQuery query);
 	
 }

@@ -4,6 +4,7 @@ package com.lytz.finance.service.impl;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.shiro.authc.credential.PasswordService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.lytz.finance.common.UserQuery;
 import com.lytz.finance.dao.UserDAO;
 import com.lytz.finance.service.RoleService;
 import com.lytz.finance.service.UserService;
@@ -26,7 +28,7 @@ import com.lytz.finance.vo.User;
 public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 		UserService {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	private RoleService roleService;
 	
@@ -81,7 +83,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 		User user = getUserByName(username);
 		
 		if(null == user){
-			logger.error(username + "not exists");
+			LOG.error(username + "not exists");
 			throw new UserNotExistsException();
 		}
 		
@@ -89,7 +91,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 			user.setPassword(passwordService.encryptPassword(newPassword));
 			return false;
 		} else {
-			logger.warn("invalid password for user: " + username);
+			LOG.warn("invalid password for user: " + username);
 			return false;
 		}	
 	}
@@ -115,7 +117,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 		User user = getUserByName(username);
 		
 		if(null == user){
-			logger.error(username + "not exists");
+			LOG.error(username + "not exists");
 			return Collections.emptySet();
 		}
 		
@@ -127,10 +129,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 	}
 
 	public Set<String> findPermissions(String username) {
-User user = getUserByName(username);
+	    User user = getUserByName(username);
 		
 		if(null == user){
-			logger.error(username + "not exists");
+			LOG.error(username + "not exists");
 			return Collections.emptySet();
 		}
 		
@@ -141,5 +143,13 @@ User user = getUserByName(username);
 		
 		return permissions;
 	}
+
+    public List<User> findByQuery(UserQuery query) {
+        return userDAO.findUserByQuery(query);
+    }
+    
+    public List<User> getTotalCount(UserQuery query) {
+        return userDAO.getTotalCount(query);
+    }
 
 }

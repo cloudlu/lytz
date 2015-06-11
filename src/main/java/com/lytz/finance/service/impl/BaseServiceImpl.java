@@ -27,7 +27,7 @@ import com.lytz.finance.service.exception.ExistsException;
  */
 public abstract class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T, ID> {
 
-    private static final Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseServiceImpl.class);
 
     /**
      * GenericDao instance, set by constructor of child classes
@@ -123,21 +123,6 @@ public abstract class BaseServiceImpl<T, ID extends Serializable> implements Bas
 	public void remove(ID id) {
         	dao.remove(id);
     }
-
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * Search implementation using Hibernate Search.
-     */
-    
-	public List<T> search(String q) {
-        if (null == q || "".equals(q.trim())) {
-            return findAll();
-        }
-        
-        return dao.search(q);
-    }
-
 	
 	public long getTotalCount() {
 		return dao.getTotalCount();

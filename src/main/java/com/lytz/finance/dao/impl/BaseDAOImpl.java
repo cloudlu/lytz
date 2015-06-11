@@ -69,13 +69,6 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 	public List<T> findAll() {
 	    return getSession().createCriteria(this.persistentClass).list();
 	}
-
-	public List<T> search(String searchTerm) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	/**
 	 * Get a list of T with start row and limit numbers.
 	 * 
@@ -153,7 +146,9 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 			buff.append(hql.substring(fromIndex));
 		}
 		
-		logger.debug(buff.toString());
+		if(logger.isDebugEnabled()){
+		    logger.debug(buff.toString());
+		}
 		
 		Query q = getSession().createQuery(buff.toString());
 		
