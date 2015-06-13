@@ -122,7 +122,7 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 	 *            object name used in hql
 	 * @return the number, 0 if no entity found
 	 */
-	protected long getTotalCount(String hql, String classname) {
+	/*protected long getTotalCount(String hql, String classname) {
 		assert hql.contains(classname) : "object name should be contains in hql";
 		Long count = new Long(0);
 		// remove orderby in hql;
@@ -156,7 +156,7 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 			count = (Long) q.list().get(0);
 		}
 		return count.longValue();
-	}
+	}*/
 
 	@SuppressWarnings("unchecked")
 	public boolean exists(ID id) {

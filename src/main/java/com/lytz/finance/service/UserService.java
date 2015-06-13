@@ -29,6 +29,6 @@ public interface UserService extends BaseService<User, Integer>{
      */
     List<User> findByQuery(UserQuery query);
     
-    List<User> getTotalCount(UserQuery query);
+    int getTotalCount(UserQuery query);
 	
 }

@@ -14,14 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.lytz.finance.common.Constants;
 import com.lytz.finance.common.UserQuery;
 import com.lytz.finance.dao.UserDAO;
 import com.lytz.finance.service.RoleService;
 import com.lytz.finance.service.UserService;
 import com.lytz.finance.service.exception.UserExistsException;
 import com.lytz.finance.service.exception.UserNotExistsException;
-import com.lytz.finance.vo.Constants;
 import com.lytz.finance.vo.Role;
+import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.User;
 
 @Service("userService")
@@ -106,7 +107,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
     		user.setAccountLocked(false);
     		user.setCredentialsExpired(false);
     		user.setRegisterTime(new Date());
-    		user.addRole(roleService.getRoleByName(Constants.ROLE_USER));
+    		user.addRole(roleService.getRoleByName(RoleNameEnum.ROLE_USER.name()));
     		save(user);
 		} else {
 		    //TODO
@@ -148,7 +149,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
         return userDAO.findUserByQuery(query);
     }
     
-    public List<User> getTotalCount(UserQuery query) {
+    public int getTotalCount(UserQuery query) {
         return userDAO.getTotalCount(query);
     }
 

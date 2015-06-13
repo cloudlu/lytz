@@ -12,7 +12,7 @@
       <DefaultRolloverStrategy max="10" />
     </RollingFile>    
     <Async name="Async" includeLocation="true">
-        <AppenderRef ref="RollingFile" />
+        <AppenderRef ref="Console" />
     </Async>
   </appenders>    
   <loggers>

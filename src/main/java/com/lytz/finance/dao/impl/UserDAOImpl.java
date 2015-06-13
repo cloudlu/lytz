@@ -5,12 +5,17 @@ package com.lytz.finance.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.EnumUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.lytz.finance.common.UserQuery;
 import com.lytz.finance.dao.UserDAO;
+import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.User;
 
 /**
@@ -21,7 +26,7 @@ import com.lytz.finance.vo.User;
 public class UserDAOImpl extends BaseDAOImpl<User, Integer> implements
 UserDAO {
 
-private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
+private static final Logger LOG = LoggerFactory.getLogger(UserDAOImpl.class);
 	
 	public User getUserByName(String name) {
 		@SuppressWarnings("unchecked")
@@ -32,53 +37,34 @@ private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 		return list.get(0);
 	}
 
-	public long getTotalCount(UserQuery query) {
-		StringBuffer hql = new StringBuffer(
-				"select userInfo from UserInfo userInfo where ");
-		
-			hql = new StringBuffer(" select userInfo from UserInfo userInfo ");
-		}
-		return super.getTotalCount(hql.toString(), "userInfo");
-	} 
+	public int getTotalCount(UserQuery query) {
+	    Criteria c = createCriteria(query);
+        return ((Long)c.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+
+    private Criteria createCriteria(UserQuery query) {
+        Criteria c = getSession().createCriteria(User.class);
+	    if(EnumUtils.isValidEnum(RoleNameEnum.class, query.getRolename())){
+	        c.createAlias("roles", "role");
+	        c.add(Restrictions.eq( "role.name", query.getRolename()));
+	    }
+	    if (query.getStartRow() != 0){
+            c.setFirstResult(query.getStartRow());
+	    }
+        if (query.getQuerySize() > 0){
+            c.setMaxResults(query.getQuerySize());
+        }
+        return c;
+    } 
 
 	/**
 	 * @param Query should not be null
 	 * @return Result list (UserInfo), list is empty if no result found
 	 */
-	public List<User> findUserByQuery(UserQuery query) {
-		boolean flag = false;
-		StringBuffer hql = new StringBuffer(
-				"select userInfo from UserInfo userInfo where ");
-		if (condition.getSearchBranch() != null
-				&& condition.getSearchBranch().length() != 0
-				&& (!condition.getSearchBranch().equalsIgnoreCase("ALL"))) {
-			flag = true;
-			hql.append("userInfo.branch like '%" + condition.getSearchBranch()
-					+ "%' ");
-		}
-		if (condition.getUsername() != null
-				&& condition.getUsername().length() != 0) {
-			if (flag)
-				hql.append(" and ");
-			flag = true;
-			hql.append("userInfo.username = '" + condition.getUsername() + "' ");
-		}
-		if (condition.getRealname() != null
-				&& condition.getRealname().length() != 0) {
-			if (flag)
-				hql.append(" and ");
-			flag = true;
-			hql.append("userInfo.realname = '" + condition.getRealname() + "' ");
-		}
-		if (!flag) {
-			hql = new StringBuffer(
-					" select userInfo from UserInfo userInfo order by userInfo.branch desc");
-		} else {
-			hql.append(" order by userInfo.branch desc");
-		}
-		logger.debug("UserInfoDAO user condition to hql----> " + hql);
-		return super.getOnePage(hql.toString(), condition.getStartRow(),
-				condition.getMaxRow());
-	}*/
+	@SuppressWarnings("unchecked")
+    public List<User> findUserByQuery(UserQuery query) {
+	    Criteria c = createCriteria(query);
+	    return c.list();
+	}
 
 }

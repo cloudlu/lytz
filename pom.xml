@@ -27,6 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <log4j2.version>2.3</log4j2.version>
+        <slf4j.version>1.7.12</slf4j.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <junit.version>4.12</junit.version>
         <guava.version>18.0</guava.version>
@@ -96,9 +97,14 @@
             <version>${log4j2.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-1.2-api</artifactId>
-            <version>${log4j2.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.logging</groupId>
@@ -484,6 +490,13 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+         <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
 
         <resources>
             <resource>

@@ -18,11 +18,19 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -79,8 +87,15 @@ public class User implements Serializable {
 	private String phoneNumber;
 	@Basic(optional = false)
 	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@CreationTimestamp
 	private Date registerTime;
-	
+	@Basic(optional = false)
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+	@UpdateTimestamp
+    private Date lastUpdateTime;
+    
 	@Basic(optional = false)
 	@Column(nullable = false, name="accountEnabled")
 	private boolean enabled;
@@ -99,8 +114,8 @@ public class User implements Serializable {
 	//@Basic(optional = false)
 	//@Column(nullable = false)
 	//private String credentialsSalt;
-
-	@Transient
+	
+    @Transient
 	private String confirmPassword;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST/* , CascadeType.MERGE */ })
@@ -309,7 +324,15 @@ public class User implements Serializable {
 		return enabled;
 	}	
 	
-	/**
+   public Date getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(Date lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+    }
+    
+    /**
 	 * {@inheritDoc}
 	 */
 	public boolean equals(Object o) {
@@ -361,13 +384,4 @@ public class User implements Serializable {
 		}
 		return sb.toString();
 	}
-
-	/*public String getCredentialsSalt() {
-		return credentialsSalt;
-	}
-	
-	public void setCredentialsSalt(String credentialsSalt) {
-		this.credentialsSalt = credentialsSalt;
-	}*/
-
 }

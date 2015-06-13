@@ -19,7 +19,7 @@ public interface UserDAO extends BaseDAO<User, Integer> {
      * @param query
      * @return
      */
-    public List<User> getTotalCount(UserQuery query);
+    public int getTotalCount(UserQuery query);
 	
 	/**
 	 * 
