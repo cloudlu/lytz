@@ -44,7 +44,7 @@
     </tx:advice>
     
     <task:scheduled-tasks scheduler="newsScheduler">
-        <task:scheduled ref="newsService" method="updateNews" cron="*/5 * 08-22 * * *"/>
+        <task:scheduled ref="newsService" method="updateNews" cron="*/30 * 08-22 * * *"/>
     </task:scheduled-tasks>
 
     <task:scheduler id="newsScheduler" pool-size="1"/>

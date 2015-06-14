@@ -27,7 +27,7 @@ import com.lytz.finance.dao.BaseDAO;
  */
 public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID> {
 	
-	private final static Logger logger = LoggerFactory.getLogger(BaseDAOImpl.class);
+	private final static Logger LOG = LoggerFactory.getLogger(BaseDAOImpl.class);
 		  
 	private Class<T> persistentClass;
 		  
@@ -38,6 +38,9 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 	public BaseDAOImpl() {
 		this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
 				.getGenericSuperclass()).getActualTypeArguments()[0];
+		if(LOG.isDebugEnabled()){
+		    LOG.debug("create dao with persistentClass: " + persistentClass.getName());
+		}
 	}
 	
 	public SessionFactory getSessionFactory() {

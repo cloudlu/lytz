@@ -3,7 +3,6 @@
  */
 package com.lytz.finance.service;
 
-import com.lytz.finance.service.exception.RoleNotExistsException;
 import com.lytz.finance.vo.Role;
 
 /**

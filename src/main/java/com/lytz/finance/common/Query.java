@@ -3,24 +3,27 @@
  */
 package com.lytz.finance.common;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+
 /**
  * @author cloud
  *
  */
 public class Query {
-    private int startRow;
-    
+    private Integer startRow;
+
     private String sortBy;
-    
+
     private String sortType;
-    
-    private int querySize;
-    
-    public int getStartRow() {
+
+    private Integer querySize;
+
+    public Integer getStartRow() {
         return startRow;
     }
 
-    public void setStartRow(int startRow) {
+    public void setStartRow(Integer startRow) {
         this.startRow = startRow;
     }
 
@@ -43,14 +46,23 @@ public class Query {
     /**
      * @return the querySize
      */
-    public int getQuerySize() {
+    public Integer getQuerySize() {
         return querySize;
     }
 
     /**
-     * @param querySize the querySize to set
+     * @param querySize
+     *            the querySize to set
      */
-    public void setQuerySize(int querySize) {
+    public void setQuerySize(Integer querySize) {
         this.querySize = querySize;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this.getClass())
+                .add("startRow", startRow).add("querySize", querySize)
+                .add("sortBy", sortBy).add("sortType", sortType)
+                .toString();
     }
 }

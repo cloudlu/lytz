@@ -26,7 +26,7 @@ import com.lytz.finance.vo.User;
 public class UserDAOImpl extends BaseDAOImpl<User, Integer> implements
 UserDAO {
 
-private static final Logger LOG = LoggerFactory.getLogger(UserDAOImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserDAOImpl.class);
 	
 	public User getUserByName(String name) {
 		@SuppressWarnings("unchecked")
@@ -43,15 +43,18 @@ private static final Logger LOG = LoggerFactory.getLogger(UserDAOImpl.class);
 	}
 
     private Criteria createCriteria(UserQuery query) {
+        if(LOG.isDebugEnabled()){
+            LOG.debug("create criteria with query: " + query);
+        }
         Criteria c = getSession().createCriteria(User.class);
 	    if(EnumUtils.isValidEnum(RoleNameEnum.class, query.getRolename())){
 	        c.createAlias("roles", "role");
 	        c.add(Restrictions.eq( "role.name", query.getRolename()));
 	    }
-	    if (query.getStartRow() != 0){
+	    if (query.getStartRow() != null){
             c.setFirstResult(query.getStartRow());
 	    }
-        if (query.getQuerySize() > 0){
+        if (query.getQuerySize() != null){
             c.setMaxResults(query.getQuerySize());
         }
         return c;

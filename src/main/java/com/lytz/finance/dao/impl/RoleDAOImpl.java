@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.lytz.finance.dao.RoleDAO;
-import com.lytz.finance.service.exception.RoleNotExistsException;
 import com.lytz.finance.vo.Role;
 
 /**

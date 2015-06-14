@@ -18,8 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,8 +27,6 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -89,12 +86,12 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
-	private Date registerTime;
+	private Date registeredTime;
 	@Basic(optional = false)
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
 	@UpdateTimestamp
-    private Date lastUpdateTime;
+    private Date lastUpdatedTime;
     
 	@Basic(optional = false)
 	@Column(nullable = false, name="accountEnabled")
@@ -126,6 +123,10 @@ public class User implements Serializable {
     )
 	private Set<Role> roles = new HashSet<Role>();
 
+	//when user is delete(should not call delete), remain topics
+	@OneToMany(cascade=CascadeType.MERGE,fetch=FetchType.LAZY, mappedBy="user")
+	private Set<Topic> topics = new HashSet<Topic>();
+	
 	@Version
 	private Integer version;
 	
@@ -143,7 +144,7 @@ public class User implements Serializable {
 	
 	public User(Integer id, String realname, String username,
 			String password, String passwordHint, String email,
-			String phoneNumber, Date registerTime, boolean enabled,
+			String phoneNumber, boolean enabled,
 			boolean accountExpired, boolean accountLocked,
 			boolean credentialsExpired, Date expiredTime) {
 		super();
@@ -154,7 +155,6 @@ public class User implements Serializable {
 		this.passwordHint = passwordHint;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.registerTime = registerTime;
 		this.enabled = enabled;
 		this.accountExpired = accountExpired;
 		this.accountLocked = accountLocked;
@@ -280,12 +280,12 @@ public class User implements Serializable {
 		return getRoles().remove(role);
 	}
 
-	public Date getRegisterTime() {
-		return registerTime;
+	public Date getRegisteredTime() {
+		return registeredTime;
 	}
 
-	public void setRegisterTime(Date registerTime) {
-		this.registerTime = registerTime;
+	public void setRegisteredTime(Date registeredTime) {
+		this.registeredTime = registeredTime;
 	}
 
 	public Date getExpiredTime() {
@@ -324,12 +324,12 @@ public class User implements Serializable {
 		return enabled;
 	}	
 	
-   public Date getLastUpdateTime() {
-        return lastUpdateTime;
+   public Date getLastUpdatedTime() {
+        return lastUpdatedTime;
     }
 
-    public void setLastUpdateTime(Date lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
+    public void setLastUpdatedTime(Date lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
     }
     
     /**
@@ -384,4 +384,14 @@ public class User implements Serializable {
 		}
 		return sb.toString();
 	}
+
+	
+    public Set<Topic> getTopics() {
+        return topics;
+    }
+
+    //actually not required
+    public void setTopics(Set<Topic> topics) {
+        this.topics = topics;
+    }
 }

@@ -27,7 +27,7 @@ import com.lytz.finance.service.exception.ExistsException;
  */
 public abstract class BaseServiceImpl<T, ID extends Serializable> implements BaseService<T, ID> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BaseServiceImpl.class);
+    //private static final Logger LOG = LoggerFactory.getLogger(BaseServiceImpl.class);
 
     /**
      * GenericDao instance, set by constructor of child classes

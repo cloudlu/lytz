@@ -2,7 +2,6 @@ package com.lytz.finance.service.impl;
 
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.lytz.finance.common.Constants;
 import com.lytz.finance.common.UserQuery;
 import com.lytz.finance.dao.UserDAO;
 import com.lytz.finance.service.RoleService;
@@ -106,7 +104,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
     		user.setAccountExpired(false);
     		user.setAccountLocked(false);
     		user.setCredentialsExpired(false);
-    		user.setRegisterTime(new Date());
     		user.addRole(roleService.getRoleByName(RoleNameEnum.ROLE_USER.name()));
     		save(user);
 		} else {

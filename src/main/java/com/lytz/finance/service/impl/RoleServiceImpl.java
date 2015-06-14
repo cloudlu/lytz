@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.lytz.finance.dao.RoleDAO;
 import com.lytz.finance.service.RoleService;
-import com.lytz.finance.service.exception.RoleNotExistsException;
 import com.lytz.finance.vo.Role;
 
 /**

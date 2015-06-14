@@ -3,8 +3,6 @@ package com.lytz.finance.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import com.lytz.finance.common.Query;
-
 /**
  * The Interface to execute CRUD command for T entity.
  * 

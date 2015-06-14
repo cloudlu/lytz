@@ -6,15 +6,17 @@ package com.lytz.finance.common;
 import com.google.common.base.MoreObjects;
 
 /**
- * @author cloud
+ * @author cloudlu
  *
  */
-public class UserQuery extends Query {
+public class TopicQuery extends Query {
 
     private String username;
-
-    private String rolename;
     
+    private String title;
+    
+    private String status;
+
     public String getUsername() {
         return username;
     }
@@ -23,18 +25,20 @@ public class UserQuery extends Query {
         this.username = username;
     }
 
-    /**
-     * @return the rolename
-     */
-    public String getRolename() {
-        return rolename;
+    public String getTitle() {
+        return title;
     }
 
-    /**
-     * @param rolename the rolename to set
-     */
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
     @Override
@@ -42,7 +46,9 @@ public class UserQuery extends Query {
         return MoreObjects.toStringHelper(this.getClass())
                 .add("startRow", getStartRow()).add("querySize", getQuerySize())
                 .add("sortBy", getSortBy()).add("sortType", getSortType())
-                .add("username", username).add("rolename", rolename)
+                .add("username", username).add("title", title)
+                .add("status", status)
                 .toString();
     }
+    
 }

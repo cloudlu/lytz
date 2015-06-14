@@ -3,8 +3,6 @@ package com.lytz.finance.service;
 import java.io.Serializable;
 import java.util.List;
 
-import com.lytz.finance.common.Query;
-
 /**
  * Base service that talks to BaseDao to CRUD POJOs.
  *
