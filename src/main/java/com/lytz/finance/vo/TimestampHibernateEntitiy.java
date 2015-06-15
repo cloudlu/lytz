@@ -37,7 +37,7 @@ public class TimestampHibernateEntitiy implements Serializable{
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Date createdTme;
+    private Date createdTime;
     @Basic(optional = false)
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -64,10 +64,10 @@ public class TimestampHibernateEntitiy implements Serializable{
     }
     
     public Date getCreatedTme() {
-        return createdTme;
+        return createdTime;
     }
-    public void setCreatedTme(Date createdTme) {
-        this.createdTme = createdTme;
+    public void setCreatedTme(Date createdTime) {
+        this.createdTime = createdTime;
     }
     public Date getLastUpdatedTime() {
         return lastUpdatedTime;
