@@ -3,8 +3,6 @@
  */
 package com.lytz.finance.vo;
 
-import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -43,10 +36,11 @@ import com.google.common.base.MoreObjects;
             query = "select t from Topic t where t.title = :title "
     )
 })
-public class Topic {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Topic extends TimestampHibernateEntitiy{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5160846870694101761L;
     @Basic(optional = false)
     @Column(nullable = false, length = 50)
     @NotNull
@@ -81,33 +75,7 @@ public class Topic {
     @Enumerated(EnumType.STRING)
     private Status status;
     
-    @Basic(optional = false)
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    private Date createdTme;
-    @Basic(optional = false)
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @UpdateTimestamp
-    private Date lastUpdatedTime;
-    
-    @Version
-    private Integer version;
-    
-    public Integer getVersion() {
-        return version;
-    }
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-    public Integer getId() {
-        return id;
-    }
-    public void setId(Integer id) {
-        this.id = id;
-    }
     public String getTitle() {
         return title;
     }
@@ -131,18 +99,6 @@ public class Topic {
     }
     public void setContactPhoneNumber(String contactPhoneNumber) {
         this.contactPhoneNumber = contactPhoneNumber;
-    }
-    public Date getCreatedTme() {
-        return createdTme;
-    }
-    public void setCreatedTme(Date createdTme) {
-        this.createdTme = createdTme;
-    }
-    public Date getLastUpdatedTime() {
-        return lastUpdatedTime;
-    }
-    public void setLastUpdatedTime(Date lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
     }
 
     public User getUser() {
@@ -180,7 +136,7 @@ public class Topic {
 
         final Topic topic = (Topic) o;
 
-        return topic.id == this.id;
+        return topic.getId() == this.getId();
 
     }
 
@@ -188,7 +144,7 @@ public class Topic {
      * {@inheritDoc}
      */
     public int hashCode() {
-        return (id != null ? id.hashCode() : 0);
+        return (getId() != null ? getId().hashCode() : 0);
     }
     
     @Override

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lytz.finance.common.Constants;
@@ -29,6 +30,7 @@ import com.lytz.finance.vo.User;
  */
 @Controller
 @RequestMapping("/admin/user")
+@SessionAttributes("totalUserNum")
 public class UserController {
     
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
@@ -41,21 +43,21 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String search(@RequestParam(value="pager", required=false) Pager pager, @RequestParam(value="roleName", required=false) String rolename, Model model) throws Exception {
+    public String search(@ModelAttribute(value="totalUserNum") int totalUserNum, @RequestParam(value="pageNum", required=false) int pageNum, @RequestParam(value="roleName", required=false) String rolename, Model model) throws Exception {
         if(LOG.isTraceEnabled()){
             LOG.trace("entering 'search' method...");
         }
         UserQuery query = new UserQuery();
         query.setRolename(rolename);
-        if(pager == null){
-            if(LOG.isTraceEnabled()){
-                LOG.trace("first 'search' method, create pager...");
-            }
-            pager = new Pager(userManager.getTotalCount(query));
+        if(totalUserNum == 0){
+            totalUserNum = userManager.getTotalCount(query);
+            model.addAttribute("totalUserNum", totalUserNum);
         }
+        Pager pager = new Pager(totalUserNum);
         query.setStartRow(pager.getStartRow());
         query.setQuerySize(pager.getPageSize());
         model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
+        model.addAttribute("pager", pager);
         return "admin/user/adminUserList";
     }
     

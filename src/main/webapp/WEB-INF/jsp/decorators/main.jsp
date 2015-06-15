@@ -1,108 +1,63 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
-    prefix="decorator"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<%@ include file="/WEB-INF/jsp/includes/common.jspf"%>
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="lytz system">
-<meta name="author" content="88993531@qq.com">
-<title><decorator:title default="Welcome to lytz system" /></title>
 
-<!-- Bootstrap Core CSS -->
-<link href="${ctx}/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- jQuery -->
-<script src="${ctx}/js/jquery-1.11.3.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="${ctx}/js/bootstrap.min.js"></script>
-
-<script>
-$(document).ready(function(){
-    $("#signup_link").click(function(){
-        $("#signup_img").attr("src", '${ctx}/kaptcha.jpg?signup=' + Math.random());
-        $("#signupModal").modal();
-    });
-    <shiro:guest>
-    $("#signin_link").click(function(){
-    	$("#signin_img").attr("src", '${ctx}/kaptcha.jpg?signin=' + Math.random());
-        $("#signinModal").modal();
-    });
-    </shiro:guest>
-});
-</script>
-<style>
-.lytz_spacer {
-    margin-top: 50px;
-}
-</style>
+<%@ include file="/WEB-INF/jsp/includes/header.jspf"%>
 <decorator:head />
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/includes/signup.jsp"%>
-
-                   <shiro:guest>
-                   <%@ include file="/WEB-INF/jsp/includes/signin.jsp"%>
-                      
-                      </shiro:guest>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top"
-        role="navigation">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle"
-                    data-toggle="collapse" data-target="#lytz-navbar">
-                    <span class="sr-only">Toggle navigation</span> <span
-                        class="icon-bar"></span> <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">LYTZ</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="lytz-navbar">
-                <ul class="nav navbar-nav">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                   <li><a id="signup_link" href="#"><fmt:message key="signup.title"/></a></li>
-                   <shiro:guest>
-                   <li><a id="signin_link" href="#"><fmt:message key="login.title"/></a></li>
-                   </shiro:guest>
-                   <shiro:user>
-                   <li><a href="${ctx}/logout"><fmt:message key="user.logout"/></a></li>
-                   </shiro:user>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-    
+    <%@ include file="/WEB-INF/jsp/includes/nav.jspf"%>
     <!-- Page Content -->
     
-        <decorator:body />
+        <div class="container col-md-12 lytz_spacer">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" class="col-md-1" >
+            <ul class="nav">
+                <shiro:hasRole name="ROLE_ADMIN">
+                <li>
+                    <a href="${ctx}/admin/user">User Management</a>
+                </li>
+                <li>
+                    <a href="${ctx}/metrics">System Metrics</a>
+                </li>
+                <li>
+                    <a href="${ctx}/simon-console">System Monitor</a>
+                </li>
+                </shiro:hasRole>
+                <shiro:hasAnyRoles name="ROLE_ADMIN,ROLE_VIP">
+                <li>
+                    <a href="#">Services</a>
+                </li>
+                <li>
+                    <a href="#">Events</a>
+                </li>
+                </shiro:hasAnyRoles>
+                
+                <shiro:hasAnyRoles name="ROLE_ADMIN,ROLE_VIP,ROLE_USER">
+                <li>
+                    <a href="#">Services</a>
+                </li>
+                </shiro:hasAnyRoles>
+                
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper" class="col-md-11">
+            
+                        <h1>Simple Sidebar</h1>
+                        <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
+                        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                
+        </div>
+        <!-- /#page-content-wrapper -->
+
+</div>
     
-        <hr>
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; LYTZ Website 2015</p>
-                </div>
-            </div>
-        </footer>
+<%@ include file="/WEB-INF/jsp/includes/footer.jspf"%>
 
 </body>
 </html>

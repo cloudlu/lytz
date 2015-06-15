@@ -13,9 +13,9 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="container  col-md-12 lytz_spacer">
         <!-- Jumbotron Header -->
-        <header class="jumbotron lytz_spacer">
+        <header class="jumbotron">
             <h1>A Warm Welcome!</h1>
             <p>LYTZ, your choice to success for your future.</p>
             <shiro:user>
@@ -34,9 +34,9 @@
         <!-- /.row -->
 
         <!-- Page Features -->
-        <div class="row text-center height:32px">
+        <div class="row text-center">
 
-            <div class="col-md-12 col-sm-12">
+            <div class="col-md-9 col-sm-9">
                 <div class="thumbnail" >
                         <h3>市场新闻</h3>
                     <div class="caption" >
@@ -58,9 +58,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row text-center">
-            <div class="col-md-6 col-sm-6">
+        <!-- </div>
+        <div class="row text-center"> -->
+            <div class="col-md-3 col-sm-3">
                 <div class="thumbnail">
                     <div class="caption">
                         <h3>本站公告</h3>

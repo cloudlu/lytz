@@ -1,0 +1,9 @@
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row lytz_spacer">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; LYTZ Website 2015</p>
+                </div>
+            </div>
+        </footer>

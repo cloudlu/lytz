@@ -1,0 +1,20 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="lytz system">
+<meta name="author" content="88993531@qq.com">
+<title><decorator:title default="Welcome to lytz system" /></title>
+<!-- Bootstrap Core CSS -->
+<link href="${ctx}/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- jQuery -->
+<script src="${ctx}/js/jquery-1.11.3.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="${ctx}/js/bootstrap.min.js"></script>
+
+<style>
+.lytz_spacer {
+    margin-top: 50px;
+}
+</style>

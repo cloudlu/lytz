@@ -1,6 +1,5 @@
 package com.lytz.finance.vo;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,14 +19,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -41,15 +35,12 @@ import org.hibernate.validator.constraints.NotBlank;
             query = "select r from User r where r.username = :username "
     )
 })
-public class User implements Serializable {
+public class User extends TimestampHibernateEntitiy {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2989448605305814612L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 	@Basic(optional = true)
 	@Column(nullable = true, length = 50)
 	//@NotNull
@@ -82,16 +73,6 @@ public class User implements Serializable {
 	@Basic(optional = true)
 	@Column(nullable = true, length = 20)
 	private String phoneNumber;
-	@Basic(optional = false)
-	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	@CreationTimestamp
-	private Date registeredTime;
-	@Basic(optional = false)
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-	@UpdateTimestamp
-    private Date lastUpdatedTime;
     
 	@Basic(optional = false)
 	@Column(nullable = false, name="accountEnabled")
@@ -127,28 +108,17 @@ public class User implements Serializable {
 	@OneToMany(cascade=CascadeType.MERGE,fetch=FetchType.LAZY, mappedBy="user")
 	private Set<Topic> topics = new HashSet<Topic>();
 	
-	@Version
-	private Integer version;
-	
-	public Integer getVersion() {
-		return version;
-	}
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-	
 	public User() {
 
 	}
 	
-	public User(Integer id, String realname, String username,
+	public User(String realname, String username,
 			String password, String passwordHint, String email,
 			String phoneNumber, boolean enabled,
 			boolean accountExpired, boolean accountLocked,
 			boolean credentialsExpired, Date expiredTime) {
 		super();
-		this.id = id;
 		this.realname = realname;
 		this.username = username;
 		this.password = password;
@@ -160,14 +130,6 @@ public class User implements Serializable {
 		this.accountLocked = accountLocked;
 		this.credentialsExpired = credentialsExpired;
 		this.expiredTime = expiredTime;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getUsername() {
@@ -280,14 +242,6 @@ public class User implements Serializable {
 		return getRoles().remove(role);
 	}
 
-	public Date getRegisteredTime() {
-		return registeredTime;
-	}
-
-	public void setRegisteredTime(Date registeredTime) {
-		this.registeredTime = registeredTime;
-	}
-
 	public Date getExpiredTime() {
 		return expiredTime;
 	}
@@ -323,14 +277,6 @@ public class User implements Serializable {
 	public boolean isEnabled() {
 		return enabled;
 	}	
-	
-   public Date getLastUpdatedTime() {
-        return lastUpdatedTime;
-    }
-
-    public void setLastUpdatedTime(Date lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
-    }
     
     /**
 	 * {@inheritDoc}
