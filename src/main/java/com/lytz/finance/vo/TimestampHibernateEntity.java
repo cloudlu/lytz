@@ -24,7 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
  *
  */
 @MappedSuperclass
-public class TimestampHibernateEntitiy implements Serializable{
+public class TimestampHibernateEntity implements Serializable{
 
     /**
      * 
@@ -63,10 +63,10 @@ public class TimestampHibernateEntitiy implements Serializable{
         this.version = version;
     }
     
-    public Date getCreatedTme() {
+    public Date getCreatedTime() {
         return createdTime;
     }
-    public void setCreatedTme(Date createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
     public Date getLastUpdatedTime() {

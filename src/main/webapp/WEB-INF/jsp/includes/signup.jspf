@@ -26,7 +26,7 @@
               <input class="form-control" type="text" placeholder="Password Hint" id="passwordHint" name="passwordHint" required>
             </div>
             <div class="form-group">
-                <img src="${ctx}/kaptcha.jpg?signup" id="signup_img" onclick="document.getElementById('signup_img').src = '${ctx}/kaptcha.jpg?signup=' + Math.random(); 
+                <img src="" id="signup_img" onclick="document.getElementById('signup_img').src = '${ctx}/kaptcha.jpg?signup=' + Math.random(); 
                        return false" class="img-thumbnail" alt="click click image to refresh if u can't recognize the content" /> 
                 <input type="text" name="captcha" class="form-control" placeholder="Captcha" name="captcha" required>
                 <a href="#" onclick="">Refresh Captcha</a>

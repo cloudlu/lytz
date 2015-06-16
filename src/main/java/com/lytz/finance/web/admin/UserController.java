@@ -41,6 +41,24 @@ public class UserController {
     public void setUserService(UserService userManager) {
         this.userManager = userManager;
     }
+    
+    @RequestMapping(method = RequestMethod.GET)
+    public String list(Model model) throws Exception {
+        if(LOG.isTraceEnabled()){
+            LOG.trace("entering 'list' method...");
+        }
+        UserQuery query = new UserQuery();
+        if(totalUserNum == 0){
+            totalUserNum = userManager.getTotalCount(query);
+            model.addAttribute("totalUserNum", totalUserNum);
+        }
+        Pager pager = new Pager(totalUserNum);
+        query.setStartRow(pager.getStartRow());
+        query.setQuerySize(pager.getPageSize());
+        model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
+        model.addAttribute("pager", pager);
+        return "admin/user/adminUserList";
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public String search(@ModelAttribute(value="totalUserNum") int totalUserNum, @RequestParam(value="pageNum", required=false) int pageNum, @RequestParam(value="roleName", required=false) String rolename, Model model) throws Exception {

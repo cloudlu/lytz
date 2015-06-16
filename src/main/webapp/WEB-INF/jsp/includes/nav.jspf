@@ -1,7 +1,6 @@
-<%@ include file="/WEB-INF/jsp/includes/signup.jsp"%>
-
 <shiro:guest>
-    <%@ include file="/WEB-INF/jsp/includes/signin.jsp"%>
+    <%@ include file="/WEB-INF/jsp/includes/signup.jspf"%>
+    <%@ include file="/WEB-INF/jsp/includes/signin.jspf"%>
 </shiro:guest>
 
 <!-- Navigation -->

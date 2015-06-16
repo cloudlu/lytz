@@ -18,7 +18,13 @@
   <loggers>
     <logger name="com.lytz" additivity="false" level="trace">
         <AppenderRef ref="Async" level="trace"/>
-    </logger>    
+    </logger>
+    <logger name="com.lytz.finance.service.impl.NewsServiceImpl" additivity="false" level="trace">
+        <AppenderRef ref="Async" level="trace"/>
+    </logger> 
+    <logger name="org.springframework" additivity="false" level="trace">
+        <AppenderRef ref="Async" level="trace"/>
+    </logger>     
     <root level="info">    
       <AppenderRef ref="Async"/>
     </root>    

@@ -28,15 +28,13 @@ public class LoginController {
 	    if(LOG.isDebugEnabled()){
 	        LOG.debug("try to add news to request, its size: " + newsService.getNews().size());
 	    }
-	    model.addAttribute("news",newsService.getNews());
-		return "index";
+		return "login";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String fail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model) {
 		model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, userName);
-		model.addAttribute("news",newsService.getNews());
-		return "index";
+		return "login";
 	}
 
 }

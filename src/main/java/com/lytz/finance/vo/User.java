@@ -35,7 +35,7 @@ import org.hibernate.validator.constraints.NotBlank;
             query = "select r from User r where r.username = :username "
     )
 })
-public class User extends TimestampHibernateEntitiy {
+public class User extends TimestampHibernateEntity {
 
 	/**
 	 * 

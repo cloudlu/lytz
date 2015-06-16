@@ -75,7 +75,7 @@ public class UserDAOTest {
     	 userInfo.setExpiredTime(expiredTime);
     	 userInfo.setPasswordHint("passwordHint");
     	 userInfo.setPhoneNumber("7572875728");
-    	 userInfo.setCreatedTme(registerTime);
+    	 userInfo.setCreatedTime(registerTime);
     	 userInfo.setPassword(passwordService.encryptPassword(userInfo.getPassword()));
 	 }
 	 
@@ -90,7 +90,7 @@ public class UserDAOTest {
     	 cl.add(Calendar.MONTH, 6);
     	 Date expiredTime = cl.getTime();
     	 User user = addUser(registerTime, expiredTime);
-    	 assertFalse(registerTime.equals(user.getCreatedTme()));
+    	 assertFalse(registerTime.equals(user.getCreatedTime()));
     	 assertEquals(expiredTime, user.getExpiredTime());
     	 assertEquals("ROLE_ADMIN", ((Role)(user.getRoles().toArray()[0])).getName());
     	 /* for oenjpa, version starts from 1 */

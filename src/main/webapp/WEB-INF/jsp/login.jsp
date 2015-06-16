@@ -1,10 +1,18 @@
+<%@ include file="/WEB-INF/jsp/includes/common.jspf"%>
+<html>
+<head>
+<title>welcome</title>
+</head>
+<body>
+
+    <div class="container  col-md-12 lytz_spacer">
+
 <div class="modal fade" id="signinModal" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4>
                     <span class="glyphicon glyphicon-lock"></span>
                     <fmt:message key="login.heading" />
@@ -19,10 +27,7 @@
                             <c:out value="${shiroLoginFailure}" />
                         </c:otherwise>
                     </c:choose>
-                    <script>
-                        $("#signin_img").attr("src", '${ctx}/kaptcha.jpg?signin=' + Math.random());
-                        $("#signinModal").modal();
-                    </script>
+                    
                 </c:if>
             </div>
             <div class="modal-body">
@@ -45,9 +50,9 @@
                             name="password" required>
                     </div>
                     <div class="form-group">
-                        <img src="${ctx}/kaptcha.jpg?signin"
+                        <img src=""
                             onclick="document.getElementById('signin_img').src = '${ctx}/kaptcha.jpg?signin=' + Math.random(); 
-                	   return false"
+                       return false"
                             id="signin_img" class="img-thumbnail"
                             alt="click click image to refresh if u can't recognize the content" />
                         <input type="text" name="captcha"
@@ -55,7 +60,7 @@
                             name="captcha" required>
                     </div>
                     <div class="checkbox">
-                        <label><input type="checkbox" value=""
+                        <label><input type="checkbox" name="rememberMe" value="true"
                             checked>
                         <fmt:message key="login.rememberMe" /></label>
                     </div>
@@ -67,12 +72,12 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit"
+                <%-- <button type="submit"
                     class="btn btn-danger btn-default pull-left"
                     data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
                     <fmt:message key="button.cancel" />
-                </button>
+                </button> --%>
                 <p>
                     <fmt:message key="login.signup" />
                 </p>
@@ -90,3 +95,12 @@
 
     </div>
 </div>
+    </div>
+<script>
+    $("#signin_img").attr("src", '${ctx}/kaptcha.jpg?signin=' + Math.random());
+    $("#signinModal").modal();
+</script>
+    
+</body>
+
+</html>

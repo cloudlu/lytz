@@ -36,7 +36,7 @@ import com.google.common.base.MoreObjects;
             query = "select t from Topic t where t.title = :title "
     )
 })
-public class Topic extends TimestampHibernateEntitiy{
+public class Topic extends TimestampHibernateEntity{
     /**
      * 
      */
