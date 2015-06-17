@@ -19,10 +19,6 @@
                             <c:out value="${shiroLoginFailure}" />
                         </c:otherwise>
                     </c:choose>
-                    <script>
-                        $("#signin_img").attr("src", '${ctx}/kaptcha.jpg?signin=' + Math.random());
-                        $("#signinModal").modal();
-                    </script>
                 </c:if>
             </div>
             <div class="modal-body">
@@ -90,3 +86,10 @@
 
     </div>
 </div>
+
+<c:if test="${not empty shiroLoginFailure}">                
+    <script>
+        $("#signin_img").attr("src", '${ctx}/kaptcha.jpg?signin=' + Math.random());
+        $("#signinModal").modal();
+    </script>
+</c:if>

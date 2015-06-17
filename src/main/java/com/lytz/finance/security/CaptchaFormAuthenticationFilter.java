@@ -15,6 +15,9 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
+import org.springframework.web.servlet.LocaleResolver;
 
 /**
  * @author cloudlu
@@ -23,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CaptchaFormAuthenticationFilter.class);  
-    
+
     public CaptchaFormAuthenticationFilter() {  
     }  
     
@@ -35,6 +38,28 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
 		this.sessionManager = sessionManager;
 	} 
     
+    private MessageSource messageSource;
+    
+    /**
+     * @param messageSource the messageSource to set
+     */
+    @Autowired
+    @Qualifier(value="messageSource")
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    private LocaleResolver localeResolver;
+    
+    /**
+     * @param localResolver the localResolver to set
+     */
+    @Autowired
+    @Qualifier(value="localeResolver")
+    public void setLocaleResolver(LocaleResolver localeResolver) {
+        this.localeResolver = localeResolver;
+    }
+    
     @Override  
     /** 
      * 登录验证 
@@ -44,7 +69,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
         CaptchaUsernamePasswordToken token = createToken(request, response);
         try {
             if(null == token){
-                throw new AuthenticationException("invalid request");
+                throw new AuthenticationException(messageSource.getMessage("errors.invalid", new Object[]{"token"}, localeResolver.resolveLocale((HttpServletRequest) request)));
             }
             doCaptchaValidate((HttpServletRequest) request, token);  
             Subject subject = getSubject(request, response);  
@@ -67,7 +92,7 @@ public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
         String captcha = (String) request.getSession().getAttribute(  
                 com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);   
         if (captcha != null && !captcha.equalsIgnoreCase(token.getCaptcha())) {  
-            throw new IncorrectCaptchaException("invalid captcha code！");  
+            throw new IncorrectCaptchaException(messageSource.getMessage("errors.invalid", new Object[]{"captcha"}, localeResolver.resolveLocale(request)));  
         }  
     }  
   

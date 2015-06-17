@@ -26,6 +26,7 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
         return null;
     }*/
 
+    @SuppressWarnings("unchecked")
     public List<Topic> findByQuery(TopicQuery query) {
         Criteria c = createCriteria(query);
         return c.list();

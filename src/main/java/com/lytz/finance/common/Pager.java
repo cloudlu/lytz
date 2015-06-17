@@ -3,11 +3,16 @@
  */
 package com.lytz.finance.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author cloudlu
  *
  */
-public class Pager {
+public class Pager{
+    
+    private static final Logger LOG = LoggerFactory.getLogger(Pager.class);
     
     private int totalRows;
     private int pageSize = 10;
@@ -66,6 +71,18 @@ public class Pager {
     }
 
     public void setCurrentPage(int currentPage) {
+        if(currentPage < 1){
+            if(LOG.isWarnEnabled()){
+                LOG.warn("pageNum is invalid, input pageNum is: " + currentPage);
+            }
+            this.currentPage = 1;
+        }
+        if(currentPage > getTotalPages()){
+            if(LOG.isWarnEnabled()){
+                LOG.warn("pageNum is invalid, input pageNum is: " + currentPage);
+            }
+            this.currentPage = getTotalPages();
+        }
         this.currentPage = currentPage;
     }
 

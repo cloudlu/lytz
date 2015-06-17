@@ -49,7 +49,7 @@ UserDAO {
         Criteria c = getSession().createCriteria(User.class);
 	    if(EnumUtils.isValidEnum(RoleNameEnum.class, query.getRolename())){
 	        c.createAlias("roles", "role");
-	        c.add(Restrictions.eq( "role.name", query.getRolename()));
+	        c.add(Restrictions.eq("role.name", query.getRolename()));
 	    }
 	    if (query.getStartRow() != null){
             c.setFirstResult(query.getStartRow());

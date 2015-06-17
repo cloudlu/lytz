@@ -5,6 +5,8 @@
 
     <decorator name="null">
         <pattern>/kaptcha.jpg</pattern>
+        <pattern>/simon-console/*</pattern>
+        <pattern>/metrics*</pattern>
     </decorator>
 
     <decorator name="welcome" page="welcome.jsp">

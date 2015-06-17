@@ -30,7 +30,7 @@ import com.lytz.finance.vo.User;
  */
 @Controller
 @RequestMapping("/admin/user")
-@SessionAttributes("totalUserNum")
+@SessionAttributes({"userQuery","userPager"})
 public class UserController {
     
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
@@ -43,39 +43,35 @@ public class UserController {
     }
     
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Model model) throws Exception {
-        if(LOG.isTraceEnabled()){
-            LOG.trace("entering 'list' method...");
-        }
-        UserQuery query = new UserQuery();
-        if(totalUserNum == 0){
-            totalUserNum = userManager.getTotalCount(query);
-            model.addAttribute("totalUserNum", totalUserNum);
-        }
-        Pager pager = new Pager(totalUserNum);
-        query.setStartRow(pager.getStartRow());
-        query.setQuerySize(pager.getPageSize());
-        model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
-        model.addAttribute("pager", pager);
-        return "admin/user/adminUserList";
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String search(@ModelAttribute(value="totalUserNum") int totalUserNum, @RequestParam(value="pageNum", required=false) int pageNum, @RequestParam(value="roleName", required=false) String rolename, Model model) throws Exception {
+    public String search(UserQuery query, Model model) throws Exception {
         if(LOG.isTraceEnabled()){
             LOG.trace("entering 'search' method...");
         }
-        UserQuery query = new UserQuery();
-        query.setRolename(rolename);
-        if(totalUserNum == 0){
-            totalUserNum = userManager.getTotalCount(query);
-            model.addAttribute("totalUserNum", totalUserNum);
+        if(null == query){
+            query = new UserQuery();
         }
-        Pager pager = new Pager(totalUserNum);
+        Pager pager = new Pager(userManager.getTotalCount(query));
+        query.setStartRow(pager.getStartRow());
+        if(null == query.getQuerySize()){
+            query.setQuerySize(pager.getPageSize());
+        }
+        model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
+        model.addAttribute("userPager", pager);
+        model.addAttribute("userQuery", query);
+        return "admin/user/adminUserList";
+    }
+
+    @RequestMapping(value="list", method = RequestMethod.GET)
+    public String list(@ModelAttribute(value="userQuery") UserQuery query, @ModelAttribute(value="userPager") Pager pager, @RequestParam(value="pageNum", required=false) int pageNum, Model model) throws Exception {
+        if(LOG.isTraceEnabled()){
+            LOG.trace("entering 'list' method...");
+        }
+        
+        pager.setCurrentPage(pageNum);
         query.setStartRow(pager.getStartRow());
         query.setQuerySize(pager.getPageSize());
         model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
-        model.addAttribute("pager", pager);
+        model.addAttribute("userPager", pager);
         return "admin/user/adminUserList";
     }
     
