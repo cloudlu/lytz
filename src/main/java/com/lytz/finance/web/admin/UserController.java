@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,6 +36,9 @@ public class UserController {
     
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
+    @Value("${pager.size}")
+    private int pageSize;
+    
     private UserService userManager = null;
 
     @Autowired
@@ -42,36 +46,42 @@ public class UserController {
         this.userManager = userManager;
     }
     
+    @ModelAttribute(value="userSearchQuery")
+    public UserQuery createQuery(){
+        UserQuery query = new UserQuery();
+        query.setQuerySize(pageSize);
+        return query;
+    }
+    
     @RequestMapping(method = RequestMethod.GET)
-    public String search(UserQuery query, Model model) throws Exception {
+    public String search(@ModelAttribute(value="userSearchQuery") UserQuery query, Model model) throws Exception {
         if(LOG.isTraceEnabled()){
-            LOG.trace("entering 'search' method...");
+            LOG.trace("entering 'search' method...with query: " + query);
         }
-        if(null == query){
-            query = new UserQuery();
-        }
-        Pager pager = new Pager(userManager.getTotalCount(query));
+        Pager pager = new Pager(userManager.getTotalCount(query), query.getQuerySize());
         query.setStartRow(pager.getStartRow());
-        if(null == query.getQuerySize()){
-            query.setQuerySize(pager.getPageSize());
-        }
         model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
         model.addAttribute("userPager", pager);
-        model.addAttribute("userQuery", query);
+        UserQuery searchQuery = new UserQuery(query);
+        model.addAttribute("userQuery", searchQuery);
+        if(LOG.isTraceEnabled()){
+            LOG.trace("finish 'search' method...with query: " + query + " pager: " + pager);
+        }
         return "admin/user/adminUserList";
     }
 
     @RequestMapping(value="list", method = RequestMethod.GET)
     public String list(@ModelAttribute(value="userQuery") UserQuery query, @ModelAttribute(value="userPager") Pager pager, @RequestParam(value="pageNum", required=false) int pageNum, Model model) throws Exception {
         if(LOG.isTraceEnabled()){
-            LOG.trace("entering 'list' method...");
+            LOG.trace("entering 'list' method...with query: " + query + " pager: " + pager);
         }
-        
         pager.setCurrentPage(pageNum);
         query.setStartRow(pager.getStartRow());
-        query.setQuerySize(pager.getPageSize());
         model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
         model.addAttribute("userPager", pager);
+        if(LOG.isTraceEnabled()){
+            LOG.trace("finish 'list' method...with query: " + query + " pager: " + pager);
+        }
         return "admin/user/adminUserList";
     }
     

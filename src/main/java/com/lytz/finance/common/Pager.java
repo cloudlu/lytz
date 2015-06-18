@@ -24,11 +24,16 @@ public class Pager{
     private boolean hasNext;
 
     public Pager(int totalRows) {
-        fillPager(totalRows);
+        fillPager(totalRows, pageSize);
+    }
+    
+    public Pager(int totalRows, int pageSize) {
+        fillPager(totalRows, pageSize);
     }
 
-    private void fillPager(int totalRows) {
+    private void fillPager(int totalRows, int pageSize) {
         this.totalRows = totalRows;
+        this.pageSize = pageSize;
         totalPages = ((totalRows % pageSize == 0) ? (totalRows / pageSize) : (totalRows
                 / pageSize + 1));
         currentPage = 1;
@@ -66,7 +71,7 @@ public class Pager{
     public void setTotalRows(int totalRows) {
         if(this.totalRows != totalRows){
             this.totalRows = totalRows;
-            fillPager(totalRows);
+            fillPager(totalRows, this.pageSize);
         }
     }
 
@@ -88,7 +93,7 @@ public class Pager{
 
     public void setPageSize(int pageSize) {
         if(this.pageSize != pageSize){
-            fillPager(totalRows);
+            fillPager(totalRows, pageSize);
         }
     }
 

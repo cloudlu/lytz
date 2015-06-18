@@ -17,6 +17,17 @@ public class TopicQuery extends Query {
     
     private String status;
 
+    public TopicQuery(){
+        
+    }
+    
+    public TopicQuery(TopicQuery query){
+        super(query);
+        this.username = query.username;
+        this.title = query.title;
+        this.status = query.status;
+    }
+    
     public String getUsername() {
         return username;
     }

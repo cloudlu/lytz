@@ -9,9 +9,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -21,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -42,23 +40,23 @@ public class User extends TimestampHibernateEntity {
 	 */
 	private static final long serialVersionUID = 2989448605305814612L;
 	@Basic(optional = true)
-	@Column(nullable = true, length = 50)
+	@Column(nullable = true, length = 30)
 	//@NotNull
 	//@NotBlank
-    @Length(min = 4, max = 50)
+    @Length(min = 4, max = 30)
 	private String realname;
 	@Basic(optional = false)
-	@Column(nullable = false, length = 50, unique = true)
+	@Column(nullable = false, length = 30, unique = true)
 	@NotNull
 	@NotBlank
-	//@Pattern(regexp = "[A-Za-z0-9]{4,50}", message = "{username.illegal}")
-    @Length(min = 4, max = 50)
+	@Pattern(regexp = "[A-Za-z0-9]{4,30}", message = "{username.illegal}")
+    @Length(min = 4, max = 30)
 	private String username;
 	@Basic(optional = false)
-	@Column(nullable = false, length = 150)
+	@Column(nullable = false, length = 20)
 	@NotNull
 	@NotBlank
-    @Length(min = 4, max = 150)
+    @Length(min = 4, max = 20)
 	private String password;
 	@Basic(optional = false)
 	@Column(nullable = false)
@@ -68,7 +66,7 @@ public class User extends TimestampHibernateEntity {
 	@Basic(optional = true)
 	@Column(nullable = true, length = 50, unique = true)
 	@Email
-	@Length(min = 1, max = 50)
+	@Length(min = 1, max = 30)
 	private String email;
 	@Basic(optional = true)
 	@Column(nullable = true, length = 20)

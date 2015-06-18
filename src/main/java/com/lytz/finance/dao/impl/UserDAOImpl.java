@@ -38,7 +38,14 @@ UserDAO {
 	}
 
 	public int getTotalCount(UserQuery query) {
-	    Criteria c = createCriteria(query);
+	    if(LOG.isDebugEnabled()){
+            LOG.debug("create criteria with query: " + query);
+        }
+        Criteria c = getSession().createCriteria(User.class);
+        if(EnumUtils.isValidEnum(RoleNameEnum.class, query.getRolename())){
+            c.createAlias("roles", "role");
+            c.add(Restrictions.eq("role.name", query.getRolename()));
+        }
         return ((Long)c.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 

@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,8 +28,11 @@ public class SignupController {
 	}*/
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String register(@Valid User user, RedirectAttributes redirectAttributes) {
-		try {
+	public String register(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+	    if (bindingResult.hasErrors()) {
+            return "forward:/welcome";
+        }
+	    try {
 			userService.registerUser(user);
 			redirectAttributes.addFlashAttribute("username", user.getUsername());
 			return "redirect:/";

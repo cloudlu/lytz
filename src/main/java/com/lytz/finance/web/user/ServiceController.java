@@ -18,8 +18,6 @@ import com.lytz.finance.common.Pager;
 @RequestMapping("/service")
 public class ServiceController {
     
-    private Pager pager;
-    
     @RequestMapping(value="/list",method = RequestMethod.GET)
     public String list() {
         return "service/home";

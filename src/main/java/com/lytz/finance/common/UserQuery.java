@@ -15,6 +15,16 @@ public class UserQuery extends Query {
 
     private String rolename;
     
+    public UserQuery(){
+        
+    }
+    
+    public UserQuery(UserQuery query){
+        super(query);
+        this.username = query.username;
+        this.rolename = query.rolename;
+    }
+    
     public String getUsername() {
         return username;
     }

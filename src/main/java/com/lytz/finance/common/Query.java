@@ -4,7 +4,6 @@
 package com.lytz.finance.common;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * @author cloud
@@ -18,6 +17,17 @@ public class Query {
     private String sortType;
 
     private Integer querySize;
+    
+    public Query(){
+        
+    }
+    
+    public Query(Query query){
+        this.startRow = query.startRow;
+        this.sortBy = query.sortBy;
+        this.sortType = query.sortType;
+        this.querySize= query.querySize;
+    }
 
     public Integer getStartRow() {
         return startRow;
