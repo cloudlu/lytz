@@ -19,7 +19,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="lytz-navbar">
             <ul class="nav navbar-nav">
-                <li><a href="/service/list">Services</a></li>
+                <li><a href="${ctx}/service/list">Services</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
