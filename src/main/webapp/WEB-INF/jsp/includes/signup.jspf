@@ -47,3 +47,12 @@
       
     </div>
   </div> 
+  
+<c:if test="${not empty requestScope['org.springframework.validation.BindingResult.user'].allErrors}">                
+    <script>
+        $("#signup_img").attr("src", '${ctx}/kaptcha.jpg?signup=' + Math.random());
+        $("#signupModal").modal();
+    </script>
+</c:if>  
+  
+  

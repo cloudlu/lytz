@@ -1,7 +1,8 @@
 <%@ include file="/WEB-INF/jsp/includes/common.jspf"%>
 <html>
 <head>
-<title>welcome</title>
+<%@ include file="/WEB-INF/jsp/includes/header.jspf"%>
+<title><fmt:message key="webapp.name"/></title>
 </head>
 <body>
 

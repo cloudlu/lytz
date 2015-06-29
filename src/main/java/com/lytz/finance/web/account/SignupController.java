@@ -30,7 +30,9 @@ public class SignupController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String register(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 	    if (bindingResult.hasErrors()) {
-            return "forward:/welcome";
+	        redirectAttributes.addFlashAttribute("user", user);
+	        redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "user", bindingResult);
+            return "redirect:/";
         }
 	    try {
 			userService.registerUser(user);

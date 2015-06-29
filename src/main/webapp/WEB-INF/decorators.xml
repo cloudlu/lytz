@@ -7,11 +7,11 @@
         <pattern>/kaptcha.jpg</pattern>
         <pattern>/simon-console/*</pattern>
         <pattern>/metrics*</pattern>
+        <pattern>/login</pattern>
     </decorator>
 
     <decorator name="welcome" page="welcome.jsp">
         <pattern>/</pattern>
-        <pattern>/login</pattern>
         <!-- redirect is used
         <pattern>/logout</pattern>
         <pattern>/signup</pattern> -->

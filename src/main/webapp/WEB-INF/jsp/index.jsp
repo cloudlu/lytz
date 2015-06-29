@@ -9,7 +9,7 @@
 
 <html>
 <head>
-<title>welcome</title>
+<title><fmt:message key="webapp.name"/></title>
 </head>
 <body>
 

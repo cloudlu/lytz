@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="lytz system">
 <meta name="author" content="88993531@qq.com">
-<title><decorator:title default="Welcome to lytz system" /></title>
+<title><decorator:title default="<fmt:message key="webapp.name"/>" /></title>
 <!-- Bootstrap Core CSS -->
 <link href="${ctx}/css/bootstrap.min.css" rel="stylesheet">
 
