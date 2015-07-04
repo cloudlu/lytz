@@ -24,6 +24,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.google.common.base.MoreObjects;
+
 
 @Entity
 @Table(name = "user")
@@ -53,10 +55,10 @@ public class User extends TimestampHibernateEntity {
     @Length(min = 4, max = 30)
 	private String username;
 	@Basic(optional = false)
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false, length = 150)
 	@NotNull
 	@NotBlank
-    @Length(min = 4, max = 20)
+    @Length(min = 6, max = 150)
 	private String password;
 	@Basic(optional = false)
 	@Column(nullable = false)
@@ -305,28 +307,19 @@ public class User extends TimestampHibernateEntity {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getClass().getCanonicalName()).append(" username: ")
-				.append(this.username).append(" enabled: ").append(this.enabled)
-				.append(" accountExpired: ").append(this.accountExpired)
-				.append(" credentialsExpired: ").append(this.credentialsExpired)
-				.append(" accountLocked: ").append(this.accountLocked);
+	    MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this.getClass()).add("username",this.username).add("enabled",this.enabled)
+				.add("accountExpired",this.accountExpired)
+				.add("credentialsExpired",this.credentialsExpired)
+				.add("accountLocked",this.accountLocked);
 
 		if (null != roles) {
-			sb.append(" Granted Authorities: ");
-
-			int i = 0;
 			for (Role role : roles) {
-				if (i > 0) {
-					sb.append(", ");
-				}
-				sb.append(role.toString());
-				i++;
+				helper.add("role", role.toString());
 			}
 		} else {
-			sb.append(" No Granted Authorities");
+		    helper.addValue("No Granted Roles");
 		}
-		return sb.toString();
+		return helper.toString();
 	}
 
 	

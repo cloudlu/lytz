@@ -41,11 +41,7 @@ UserDAO {
 	    if(LOG.isDebugEnabled()){
             LOG.debug("create criteria with query: " + query);
         }
-        Criteria c = getSession().createCriteria(User.class);
-        if(EnumUtils.isValidEnum(RoleNameEnum.class, query.getRolename())){
-            c.createAlias("roles", "role");
-            c.add(Restrictions.eq("role.name", query.getRolename()));
-        }
+        Criteria c =  createCriteria(query);
         return ((Long)c.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 
@@ -58,12 +54,6 @@ UserDAO {
 	        c.createAlias("roles", "role");
 	        c.add(Restrictions.eq("role.name", query.getRolename()));
 	    }
-	    if (query.getStartRow() != null){
-            c.setFirstResult(query.getStartRow());
-	    }
-        if (query.getQuerySize() != null){
-            c.setMaxResults(query.getQuerySize());
-        }
         return c;
     } 
 
@@ -74,6 +64,12 @@ UserDAO {
 	@SuppressWarnings("unchecked")
     public List<User> findUserByQuery(UserQuery query) {
 	    Criteria c = createCriteria(query);
+	    if (query.getStartRow() != null){
+            c.setFirstResult(query.getStartRow());
+        }
+        if (query.getQuerySize() != null){
+            c.setMaxResults(query.getQuerySize());
+        }
 	    return c.list();
 	}
 

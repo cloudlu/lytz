@@ -103,7 +103,7 @@ public class UserDAOTest {
 
      
      private User addUser(Date registerTime, Date expiredTime){
-    	 String username = "addTest" + System.nanoTime() + Thread.currentThread().getName();
+    	 String username = "addTest";
     	 String userId = username;
     	 User userInfo = new User();
     	  

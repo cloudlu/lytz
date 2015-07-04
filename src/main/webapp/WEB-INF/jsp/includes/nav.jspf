@@ -23,14 +23,12 @@
                 <shiro:hasAnyRoles name="ROLE_ADMIN,ROLE_VIP,ROLE_USER">
                     <li><a href="${ctx}/service/list">龙影服务</a></li>
                 </shiro:hasAnyRoles>
-                <li><a href="#">演唱会资讯</a></li>
+                <shiro:guest><li><a href="#">演唱会资讯</a></li></shiro:guest>
                  <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 关于 <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                       <li><a href="#">jmeter</a></li>
-                       <li><a href="#">EJB</a></li>
-                       <li><a href="#">Jasper Report</a></li>
+                       <li><a href="#">联系信息</a></li>
                        <li class="divider"></li>
                        <li><a href="#">分离的链接</a></li>
                        <li class="divider"></li>

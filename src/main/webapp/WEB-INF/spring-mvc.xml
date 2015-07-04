@@ -55,6 +55,8 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
     
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    
     <!-- 定义无需Controller的url<->view直接映射 
     <mvc:view-controller path="/" view-name="forward:/login"/>
     -->

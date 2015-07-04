@@ -1,10 +1,12 @@
 /**
  * 
  */
-package com.lytz.finance.web.admin;
+package com.lytz.finance.web.account;
 
 import javax.validation.Valid;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +32,11 @@ import com.lytz.finance.vo.User;
  *
  */
 @Controller
-@RequestMapping("/admin/user")
 @SessionAttributes({"userQuery","userPager"})
 public class UserController {
     
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+    private static final Logger AUDIT = LoggerFactory.getLogger("AUDITLOG");
 
     @Value("${pager.size}")
     private int pageSize;
@@ -46,6 +48,36 @@ public class UserController {
         this.userManager = userManager;
     }
     
+    private User getCurrentUser(){
+        Subject currentUser = SecurityUtils.getSubject();
+        return userManager.getUserByName((String) currentUser.getPrincipal());
+    }
+    
+    @RequestMapping(value = "/user/view", method = RequestMethod.GET)
+    public String updateForm(Model model) {
+        model.addAttribute("user", getCurrentUser());
+        return "service/user/userForm";
+    }
+      
+    @RequestMapping(value = "/user/update", method = RequestMethod.POST)
+    public String update(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+        User currentUser = getCurrentUser();
+        if(user.getId() != currentUser.getId()){
+            redirectAttributes.addFlashAttribute("message", "非法用户，只能更新自己的信息");
+            return "redirect:/";
+        }
+        
+        currentUser.setConfirmPassword(user.getConfirmPassword());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setPassword(user.getPassword());
+        currentUser.setPasswordHint(user.getPasswordHint());
+        currentUser.setPhoneNumber(user.getPhoneNumber());
+        currentUser.setRealname(user.getRealname());
+        userManager.save(currentUser);
+        redirectAttributes.addFlashAttribute("message", "更新用户" + user.getUsername() + "成功");
+        return "redirect:/";
+    }
+    
     @ModelAttribute(value="userSearchQuery")
     public UserQuery createQuery(){
         UserQuery query = new UserQuery();
@@ -53,7 +85,7 @@ public class UserController {
         return query;
     }
     
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value="/admin/user", method = RequestMethod.GET)
     public String search(@ModelAttribute(value="userSearchQuery") UserQuery query, Model model) throws Exception {
         if(LOG.isTraceEnabled()){
             LOG.trace("entering 'search' method...with query: " + query);
@@ -67,10 +99,10 @@ public class UserController {
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'search' method...with query: " + query + " pager: " + pager);
         }
-        return "admin/user/adminUserList";
+        return "service/admin/user/adminUserList";
     }
 
-    @RequestMapping(value="list", method = RequestMethod.GET)
+    @RequestMapping(value="/admin/user/list", method = RequestMethod.GET)
     public String list(@ModelAttribute(value="userQuery") UserQuery query, @ModelAttribute(value="userPager") Pager pager, @RequestParam(value="pageNum", required=false) int pageNum, Model model) throws Exception {
         if(LOG.isTraceEnabled()){
             LOG.trace("entering 'list' method...with query: " + query + " pager: " + pager);
@@ -82,25 +114,31 @@ public class UserController {
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'list' method...with query: " + query + " pager: " + pager);
         }
-        return "admin/user/adminUserList";
+        return "service/admin/user/adminUserList";
     }
     
-    @RequestMapping(value = "update/{id}", method = RequestMethod.GET)
-    public String updateForm(@PathVariable("id") Integer id, Model model) {
+    @RequestMapping(value = "/admin/user/update/{id}", method = RequestMethod.GET)
+    public String adminUpdateForm(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("user", userManager.findById(id));
-        return "admin/user/adminUserForm";
+        return "service/admin/user/adminUserForm";
     }
       
-    @RequestMapping(value = "update", method = RequestMethod.POST)
-    public String update(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/admin/user/update", method = RequestMethod.POST)
+    public String adminUpdate(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+        if(AUDIT.isInfoEnabled()){
+            AUDIT.info(getCurrentUser().getUsername() + "try to update user: " + user);
+        }
         userManager.save(user);
         redirectAttributes.addFlashAttribute("message", "更新用户" + user.getUsername() + "成功");
         return "redirect:/admin/user";
     }
 
-    @RequestMapping(value = "delete/{id}")
+    @RequestMapping(value = "/admin/user/delete/{id}")
     public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         User user = userManager.findById(id);
+        if(AUDIT.isInfoEnabled()){
+            AUDIT.info(getCurrentUser().getUsername() + "try to delete user: " + user);
+        }
         userManager.remove(id);
         redirectAttributes.addFlashAttribute("message", "删除用户" + user.getUsername() + "成功");
         return "redirect:/admin/user";

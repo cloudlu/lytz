@@ -5,29 +5,24 @@ package com.lytz.finance.dao.impl;
 
 import java.util.List;
 
-import org.apache.commons.lang3.EnumUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
-import com.lytz.finance.common.TopicQuery;
-import com.lytz.finance.dao.TopicDAO;
-import com.lytz.finance.vo.Status;
-import com.lytz.finance.vo.Topic;
+import com.lytz.finance.common.ShowQuery;
+import com.lytz.finance.dao.ShowDAO;
+import com.lytz.finance.vo.Show;
 
 /**
  * @author cloudlu
  *
  */
-public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDAO{
-
-    /*public Topic getTopicByTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
-    }*/
-
+@Repository("showDAO")
+public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
+    
     @SuppressWarnings("unchecked")
-    public List<Topic> findByQuery(TopicQuery query) {
+    public List<Show> findByQuery(ShowQuery query) {
         Criteria search = createCriteria(query);
         if (query.getStartRow() != null){
             search.setFirstResult(query.getStartRow());
@@ -38,19 +33,16 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
         return search.list();
     }
 
-    public int getTotalCount(TopicQuery query) {
+    public int getTotalCount(ShowQuery query) {
         Criteria c = createCriteria(query);
         return ((Long)c.setProjection(Projections.rowCount()).uniqueResult()).intValue();
     }
 
-    private Criteria createCriteria(TopicQuery query) {
-        Criteria search = getSession().createCriteria(Topic.class);
-        if(EnumUtils.isValidEnum(Status.class, query.getStatus())){
-            search.add(Restrictions.eq("status", query.getStatus()));
-        }
+    private Criteria createCriteria(ShowQuery query) {
+        Criteria search = getSession().createCriteria(Show.class);
         if(query.getTitle() != null){
             search.add(Restrictions.eq("title", query.getTitle()));
         }
         return search;
-    } 
+    }
 }
