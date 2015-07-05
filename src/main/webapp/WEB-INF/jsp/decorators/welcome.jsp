@@ -1,3 +1,5 @@
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
+    prefix="decorator"%>
 <%@ include file="/WEB-INF/jsp/includes/common.jspf"%>
 <!DOCTYPE HTML>
 <html>

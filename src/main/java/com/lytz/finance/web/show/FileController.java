@@ -54,7 +54,7 @@ public class FileController {
         this.messageSource = messageSource;
     }
     
-    @RequestMapping(value = "/file/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/file/upload", method = RequestMethod.POST)
     public @ResponseBody String onSubmit(FileUpload fileUpload, BindingResult errors, HttpServletRequest request)
             throws Exception {
 
@@ -67,7 +67,7 @@ public class FileController {
         }*/
 
         // validate a file was entered
-        if (fileUpload.getBytes().length == 0) {
+        if (fileUpload.getBytes() == null || fileUpload.getBytes().length == 0) {
             return messageSource.getMessage("uploadForm.file", new Object[]{fileUpload.getName()}, localeResolver.resolveLocale((HttpServletRequest) request));
         }
 

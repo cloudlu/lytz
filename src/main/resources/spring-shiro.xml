@@ -28,6 +28,7 @@
 				/css/** = anon
                 /js/** = anon
                 /fonts/** = anon
+                <!-- /show/** = anon -->
                 /login = authc
 				/logout = logout
 				/simon-console/** = authc, roles[ROLE_ADMIN]

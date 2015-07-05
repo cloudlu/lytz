@@ -11,15 +11,21 @@
         <mapping class="com.lytz.finance.vo.Role" />
         <mapping class="com.lytz.finance.vo.User" />
         <mapping class="com.lytz.finance.vo.Topic" />
+        <mapping class="com.lytz.finance.vo.Show" />
+        <!-- second layer cache non-lazy: specifies that properties of the entity mapped with lazy="true" cannot be cached when attribute-level lazy fetching is enabled -->
         <class-cache class="com.lytz.finance.vo.Role"
             include="non-lazy" usage="read-only" />
         <class-cache class="com.lytz.finance.vo.User"
-            include="non-lazy" usage="transactional" />
+            include="all" usage="transactional" />
         <collection-cache collection="com.lytz.finance.vo.User.roles"
             usage="transactional" />
         <collection-cache collection="com.lytz.finance.vo.User.topics"
             usage="read-only" />
         <class-cache class="com.lytz.finance.vo.Topic"
             include="non-lazy" usage="transactional" />
+        <class-cache class="com.lytz.finance.vo.Topic"
+            include="all" usage="transactional" />
+        <class-cache class="com.lytz.finance.vo.Show"
+            include="all" usage="transactional" />
     </session-factory>
 </hibernate-configuration>

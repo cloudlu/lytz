@@ -12,7 +12,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.lytz.finance.common.TopicQuery;
 import com.lytz.finance.dao.TopicDAO;
-import com.lytz.finance.vo.Status;
+import com.lytz.finance.vo.TopicStatus;
 import com.lytz.finance.vo.Topic;
 
 /**
@@ -45,7 +45,7 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
 
     private Criteria createCriteria(TopicQuery query) {
         Criteria search = getSession().createCriteria(Topic.class);
-        if(EnumUtils.isValidEnum(Status.class, query.getStatus())){
+        if(EnumUtils.isValidEnum(TopicStatus.class, query.getStatus())){
             search.add(Restrictions.eq("status", query.getStatus()));
         }
         if(query.getTitle() != null){

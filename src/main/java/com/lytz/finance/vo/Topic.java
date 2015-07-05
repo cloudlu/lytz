@@ -71,9 +71,8 @@ public class Topic extends TimestampHibernateEntity{
     @Basic(optional = false)
     @Column(nullable = false, length = 10)
     @NotNull
-    @NotBlank
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private TopicStatus status;
     
 
     public String getTitle() {
@@ -117,11 +116,11 @@ public class Topic extends TimestampHibernateEntity{
         this.comment = comment;
     }
 
-    public Status getStatus() {
+    public TopicStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(TopicStatus status) {
         this.status = status;
     }
     

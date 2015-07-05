@@ -6,9 +6,9 @@ package com.lytz.finance.vo;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -37,22 +37,21 @@ public class Show extends TimestampHibernateEntity {
      * 
      */
     private static final long serialVersionUID = 7180548859709667484L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    public Integer getId() {
-        return id;
-    }
 
     @Basic(optional = false)
-    @Column(nullable = false, length = 50, unique = true)
+    @Column(nullable = false, length = 100)
     @NotNull
-    @Length(min = 1, max = 50)
+    @Length(min = 4, max = 50)
     @NotBlank
     private String title;
+    @Basic(fetch = FetchType.LAZY)
     @Column(length = 10000)
     private String content;
-
+    @Basic(optional = false)
+    @Column(nullable = false, length = 10)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ShowStatus status;
     /**
      * Default constructor - creates a new instance with no values set.
      */
@@ -73,6 +72,14 @@ public class Show extends TimestampHibernateEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public ShowStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ShowStatus status) {
+        this.status = status;
     }
 
     public boolean equals(Object o) {
@@ -99,6 +106,8 @@ public class Show extends TimestampHibernateEntity {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this.getClass())
+                .add("id", getId())
                 .add("title", title).add("content", this.getContent())
+                .add("status", status)
                 .toString();
     }}

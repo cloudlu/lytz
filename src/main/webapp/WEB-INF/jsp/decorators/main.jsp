@@ -1,3 +1,5 @@
+<%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
+    prefix="decorator"%>
 <%@ include file="/WEB-INF/jsp/includes/common.jspf"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE HTML>
@@ -31,10 +33,10 @@
                     </li>
                     <li class="nav-header">系统</li>
                     <li class="active">
-                        <a href="${ctx}/metrics">系统监控</a>
+                        <a href="${ctx}/metrics" target="_blank">系统监控</a>
                     </li>
                     <li class="active">
-                        <a href="${ctx}/simon-console">系统性能</a>
+                        <a href="${ctx}/simon-console" target="_blank">系统性能</a>
                     </li>
                 </shiro:hasRole>
             </ul>
@@ -42,7 +44,7 @@
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-        <div id="page-content-wrapper" class="col-md-11">
+        <div id="page-content-wrapper" class="col-md-10">
             
             <decorator:body />
                 

@@ -37,4 +37,9 @@ private static final Logger LOG = LoggerFactory.getLogger(LoginController.class)
         model.addAttribute("news",newsService.getNews());
         return "index";
     }
+    
+    @RequestMapping(value="/services", method = RequestMethod.GET)
+    public String service(Model model) {
+        return "service/home";
+    }
 }

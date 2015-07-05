@@ -12,7 +12,8 @@
 
     <decorator name="welcome" page="welcome.jsp">
         <pattern>/</pattern>
-        <!-- redirect is used
+        <!-- <pattern>/show*</pattern>
+         redirect is used
         <pattern>/logout</pattern>
         <pattern>/signup</pattern> -->
     </decorator>

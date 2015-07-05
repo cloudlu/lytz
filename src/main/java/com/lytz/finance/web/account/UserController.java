@@ -73,6 +73,7 @@ public class UserController {
         currentUser.setPasswordHint(user.getPasswordHint());
         currentUser.setPhoneNumber(user.getPhoneNumber());
         currentUser.setRealname(user.getRealname());
+        currentUser.setVersion(user.getVersion());
         userManager.save(currentUser);
         redirectAttributes.addFlashAttribute("message", "更新用户" + user.getUsername() + "成功");
         return "redirect:/";

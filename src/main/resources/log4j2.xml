@@ -22,8 +22,8 @@
     <logger name="com.lytz.finance.service.impl.NewsServiceImpl" additivity="false" level="warn">
         <AppenderRef ref="Async" level="warn"/>
     </logger> 
-    <logger name="org.springframework" additivity="false" level="trace">
-        <AppenderRef ref="Async" level="trace"/>
+    <logger name="org.springframework" additivity="false" level="debug">
+        <AppenderRef ref="Async" level="debug"/>
     </logger>     
     <root level="info">    
       <AppenderRef ref="Async"/>
