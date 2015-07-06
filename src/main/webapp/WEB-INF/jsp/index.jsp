@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ page
     import="org.apache.shiro.web.filter.authc.FormAuthenticationFilter"%>

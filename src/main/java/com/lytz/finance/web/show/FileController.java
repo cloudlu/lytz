@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,14 +15,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.LocaleResolver;
-
-import com.lytz.finance.common.Constants;
 
 /**
  * @author cloudlu
@@ -54,6 +54,12 @@ public class FileController {
         this.messageSource = messageSource;
     }
     
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(byte[].class,
+                new ByteArrayMultipartFileEditor());
+    }
+    
     @RequestMapping(value = "/admin/file/upload", method = RequestMethod.POST)
     public @ResponseBody String onSubmit(FileUpload fileUpload, BindingResult errors, HttpServletRequest request)
             throws Exception {
@@ -67,7 +73,7 @@ public class FileController {
         }*/
 
         // validate a file was entered
-        if (fileUpload.getBytes() == null || fileUpload.getBytes().length == 0) {
+        if (fileUpload.getFile() == null || fileUpload.getFile().length == 0) {
             return messageSource.getMessage("uploadForm.file", new Object[]{fileUpload.getName()}, localeResolver.resolveLocale((HttpServletRequest) request));
         }
 
@@ -107,6 +113,6 @@ public class FileController {
         //close the stream
         stream.close();
 
-        return "<img src='" + request.getContextPath() + "/resources/"+ fileUpload.getName() +"' />";
+        return request.getContextPath() + "/resources/"+ fileUpload.getName();
     }
 }

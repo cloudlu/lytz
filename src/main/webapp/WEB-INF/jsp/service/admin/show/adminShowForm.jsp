@@ -76,67 +76,71 @@
 </head>
 
 <body>
-    <%--<textarea class="pageText" id="text1"></textarea>  
-  <textarea class="ddddpageText" id="text2">111111</textarea>  
-  <input type="button" value="adfasdfsadf" id="aa"/>  --%>
-    <form method="post" action="${ctx}/admin/show/save"
-        accept-charset="UTF-8" role="form" id="showForm">
-        <fieldset>
-            <legend>发表演唱会信息</legend>
-            <div class="control-group">
-                <label for="title" class="control-label">标题</label>
-                <div class="controls">
-                    <input type="text" style="width: 100%" id="title"
-                        name="title" value="${show.title}"
-                        class="input-large required" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label for="content" class="control-label">内容</label>
-                <div class="controls">
-                    <textarea id="content" name="content"
-                        style="width: 100%; height: 550px">${show.content}</textarea>
-                </div>
-            </div>
-            <input type="hidden" name="id" value="${show.id}" />
-            <input type="hidden" name="status" value="${show.status}" />
-        </fieldset>
-    </form>
-
-    <fieldset style="margin-top: 10px; padding: 4px 10px 10px 10px;">
-        <legend>上传图片</legend>
-        <table border="0" cellpadding="0" cellspacing="0"
-            style="width: 100%;">
-            <tr>
-                <td valign="top">
-                    <ol id="ol_img"></ol>
-                    <p id="p_err" style="color: Red;"></p>
-                </td>
-                <td rowspan="2" valign="top" style="width: 240px;">
-                    <div
-                        style="border: solid 1px #999; background-color: #f0f0f0; font-size: 11px; padding-left: 10px;">
-                        <p>
-                            1、图片大小不能超过<b>2M</b>
-                        </p>
-                        <p>2、支持格式：.jpg .gif .png .bmp</p>
+    <div class="panel panel-info">
+        <div class="panel-heading clearfix">
+            <h4 class="panel-title pull-left">发表演唱会信息</h4>
+            <%--<c:if test="${not empty message}">
+                <div id="message" class="alert alert-success">
+                    <button data-dismiss="alert" class="close">×</button>${message}</div>
+            </c:if> --%>
+        </div>
+        <div class="panel-body">
+            <form method="post" action="${ctx}/admin/show/save"
+                accept-charset="UTF-8" role="form" id="showForm">
+                    <div class="control-group">
+                        <label for="title" class="control-label">标题</label>
+                        <div class="controls">
+                            <input type="text" style="width: 100%" id="title"
+                                name="title" value="${show.title}"
+                                class="input-large required" />
+                        </div>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td valign="bottom"><input type="file" name="file" id="file" />
-                    <input type="button" value="上传"
-                    style="padding: 2px 4px;"
-                    onclick="uploadFileData();" /></td>
-            </tr>
-        </table>
-    </fieldset>
-
-    <div class="form-actions">
-        <input id="submit_btn" class="btn btn-primary" type="button"
-            onclick="publishFormData();" value="提交" />&nbsp;
-        <input id="submit_btn" class="btn" type="button" value="保存" onclick="saveFormData();"/>
+                    <div class="control-group">
+                        <label for="content" class="control-label">内容</label>
+                        <div class="controls">
+                            <textarea id="content" name="content"
+                                style="width: 100%; height: 550px">${show.content}</textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="${show.id}" />
+                    <input type="hidden" name="status" id="showStatus" value="${show.status}" />
+            </form>
+            <fieldset style="margin-top: 10px; padding: 4px 10px 10px 10px;">
+                <legend>上传图片</legend>
+                <table border="0" cellpadding="0" cellspacing="0"
+                    style="width: 100%;">
+                    <tr>
+                        <td valign="top">
+                            <ol id="ol_img"></ol>
+                            <p id="p_err" style="color: Red;"></p>
+                        </td>
+                        <td rowspan="2" valign="top" style="width: 240px;">
+                            <div
+                                style="border: solid 1px #999; background-color: #f0f0f0; font-size: 11px; padding-left: 10px;">
+                                <p>
+                                    1、图片大小不能超过<b>2M</b>
+                                </p>
+                                <p>2、支持格式：.jpg .gif .png .bmp</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom"><input type="file" name="file" id="file" />
+                            <input type="button" value="上传"
+                            style="padding: 2px 4px;"
+                            onclick="uploadFileData();" /></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+        <div class="panel-footer">
+         <a class="pull-right" id="cancel_btn" onclick="history.back()"><span class="glyphicon glyphicon-arrow-left">返回</span></a>
+                <a class="pull-right" id="submit_btn" onclick="saveFormData();"><span class="glyphicon glyphicon-save">保存</span></a>
+             <a class="pull-right" id="submit_btn" onclick="publishFormData();"><span class="glyphicon glyphicon-save">提交</span></a>
+               
+            <div class="clearfix"></div>
+        </div>
     </div>
-
 </body>
 
 </html>

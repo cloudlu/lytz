@@ -474,6 +474,18 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
+                    <version>2.9</version>
+                    <configuration>
+                      <projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
+                      <wtpmanifest>true</wtpmanifest>
+                      <wtpapplicationxml>true</wtpapplicationxml>
+                      <wtpversion>2.0</wtpversion>
+                      <manifest>${basedir}/src/main/resources/META-INF/MANIFEST.MF</manifest>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>de.juplo</groupId>
                     <artifactId>hibernate4-maven-plugin</artifactId>
                     <version>1.1.0</version>

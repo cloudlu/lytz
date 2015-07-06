@@ -10,7 +10,7 @@ package com.lytz.finance.web.show;
 public class FileUpload {
 
     private int length;
-    private byte[] bytes;
+    private byte[] file;
     private String name;
     private String type;
     
@@ -20,12 +20,7 @@ public class FileUpload {
     public void setLength(int length) {
         this.length = length;
     }
-    public byte[] getBytes() {
-        return bytes;
-    }
-    public void setBytes(byte[] bytes) {
-        this.bytes = bytes;
-    }
+
     public String getName() {
         return name;
     }
@@ -37,5 +32,17 @@ public class FileUpload {
     }
     public void setType(String type) {
         this.type = type;
+    }
+    /**
+     * @return the file
+     */
+    public byte[] getFile() {
+        return file;
+    }
+    /**
+     * @param file the file to set
+     */
+    public void setFile(byte[] file) {
+        this.file = file;
     }
 }
