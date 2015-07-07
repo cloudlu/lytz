@@ -43,6 +43,9 @@ public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
         if(query.getTitle() != null){
             search.add(Restrictions.eq("title", query.getTitle()));
         }
+        if(query.getTitle() != null){
+            search.add(Restrictions.eq("status", query.getStatus()));
+        }
         return search;
     }
 }

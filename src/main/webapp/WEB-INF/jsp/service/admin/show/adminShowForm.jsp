@@ -53,23 +53,39 @@
 		//   $('#result').html('');
         alert("123");
 		var oMyForm = new FormData();
-		oMyForm.append("file", file.files[0]);
-
-		$.ajax({
-			url : '${ctx}/admin/file/upload',
-			data : oMyForm,
-			dataType : 'text',
-			processData : false,
-			contentType : false,
-			type : 'POST',
-			success : function(data) {
-				var li = "<li><span>" + data + "</span><a href='#' onclick='javascript:insertImage(this);return false;'>[插入]</a></li>";
-				$('#ol_img').append(li);
-			},
-			error : function(data) {
-				alert("上传失败，请重试");
-			}
-		});
+		var file = $('#file')[0].files[0];
+		name = file.name;
+		length = file.size;
+	    type = file.type;
+	    if(file.name.length < 1) {
+	    }
+	    else if(file.size > 8388608) {
+	        alert("文件太大");
+	    }
+	    else if(file.type != 'image/png' && file.type != 'image/bmp' && file.type != 'image/jpg' && !file.type != 'image/gif' && file.type != 'image/jpeg' ) {
+	        alert("文件类型不符合bmp, png, jpg or gif");
+	    }
+	    else {
+    		oMyForm.append("file", file);
+    		oMyForm.append("name", name);
+    		oMyForm.append("length", length);
+    		oMyForm.append("type", type);
+    		$.ajax({
+    			url : '${ctx}/admin/file/upload',
+    			data : oMyForm,
+    			dataType : 'text',
+    			processData : false,
+    			contentType : false,
+    			type : 'POST',
+    			success : function(data) {
+    				var li = "<li><span>" + data + "</span><a href='#' onclick='javascript:insertImage(this);return false;'>[插入]</a></li>";
+    				$('#ol_img').append(li);
+    			},
+    			error : function(data) {
+    				alert("上传失败，请重试");
+    			}
+    		});
+	    };
 	}
 </script>
 
@@ -114,7 +130,7 @@
                             <ol id="ol_img"></ol>
                             <p id="p_err" style="color: Red;"></p>
                         </td>
-                        <td rowspan="2" valign="top" style="width: 240px;">
+                        <td rowspan="2" valign="bottom" style="width: 240px;">
                             <div
                                 style="border: solid 1px #999; background-color: #f0f0f0; font-size: 11px; padding-left: 10px;">
                                 <p>
@@ -126,17 +142,16 @@
                     </tr>
                     <tr>
                         <td valign="bottom"><input type="file" name="file" id="file" />
-                            <input type="button" value="上传"
-                            style="padding: 2px 4px;"
-                            onclick="uploadFileData();" /></td>
+                            <a class="pull-right btn btn-info btn-lg"
+                            onclick="uploadFileData();" ><span class="glyphicon glyphicon-save">上传</span></a></td>
                     </tr>
                 </table>
             </fieldset>
         </div>
         <div class="panel-footer">
-         <a class="pull-right" id="cancel_btn" onclick="history.back()"><span class="glyphicon glyphicon-arrow-left">返回</span></a>
-                <a class="pull-right" id="submit_btn" onclick="saveFormData();"><span class="glyphicon glyphicon-save">保存</span></a>
-             <a class="pull-right" id="submit_btn" onclick="publishFormData();"><span class="glyphicon glyphicon-save">提交</span></a>
+         <a class="pull-right" id="cancel_btn" onclick="history.back()" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-arrow-left">返回</span></a>
+                <a class="pull-right" id="submit_btn" onclick="saveFormData();" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-save">保存</span></a>
+             <a class="pull-right" id="submit_btn" onclick="publishFormData();" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-save">提交</span></a>
                
             <div class="clearfix"></div>
         </div>

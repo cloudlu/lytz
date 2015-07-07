@@ -13,6 +13,7 @@ import com.lytz.finance.vo.ShowStatus;
 public class ShowQuery extends Query {
     
     private String title;
+    private String keyword;
     private ShowStatus status;
 
     public ShowQuery(){
@@ -22,6 +23,8 @@ public class ShowQuery extends Query {
     public ShowQuery(ShowQuery query){
         super(query);
         this.title = query.title;
+        this.status = query.status;
+        this.keyword = query.keyword;
     }
     
     public String getTitle() {
@@ -52,7 +55,7 @@ public class ShowQuery extends Query {
         return MoreObjects.toStringHelper(this.getClass())
                 .add("startRow", getStartRow()).add("querySize", getQuerySize())
                 .add("sortBy", getSortBy()).add("sortType", getSortType())
-                .add("title", title).add("status", status)
+                .add("title", title).add("status", status).add("keyword", keyword)
                 .toString();
     }
     

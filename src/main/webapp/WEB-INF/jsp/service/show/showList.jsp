@@ -25,12 +25,27 @@
             </c:if>
             <shiro:hasRole name="ROLE_ADMIN">
                 <div class="btn-group pull-right">
-                    <a href="${ctx}/admin/show/new"><span
-                        class="glyphicon glyphicon-plus">添加</span></a>
+                    <form class="form-inline pull-right" action="${ctx}/show">
+                      <div class="form-group">
+                        <label class="sr-only" for="searchText">关键字</label>
+                        <input type="text" class="form-control" id="searchText" name="keyword" placeholder="关键字">
+                      </div>
+                      <div class="form-group">
+                        <label class="sr-only" for="status">状态</label>
+                        <input type="text" class="form-control" id="status" name="status" placeholder="状态">
+                      </div>
+                      <button type="submit" class="btn btn-default">查询</button>
+                    </form>
                 </div>
             </shiro:hasRole>
         </div>
         <div class="panel-body">
+            <shiro:hasRole name="ROLE_ADMIN">
+                <a href="${ctx}/admin/show/new"><span
+                            class="glyphicon glyphicon-plus" >添加</span></a> 
+                       </shiro:hasRole>
+              <%--  <p><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>添加</button></p> --%>
+              
             <ul class="list-group">
                 <c:forEach items="${shows}" var="show">
                     <li class="list-group-item"><shiro:hasRole

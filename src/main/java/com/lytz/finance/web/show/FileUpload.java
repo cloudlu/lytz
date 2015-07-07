@@ -3,6 +3,10 @@
  */
 package com.lytz.finance.web.show;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * @author cloudlu
  *
@@ -10,8 +14,11 @@ package com.lytz.finance.web.show;
 public class FileUpload {
 
     private int length;
+    @NotNull
     private byte[] file;
+    @NotBlank
     private String name;
+    @NotBlank
     private String type;
     
     public int getLength() {

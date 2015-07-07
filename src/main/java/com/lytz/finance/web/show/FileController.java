@@ -8,8 +8,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpUtils;
+import javax.validation.Valid;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -31,6 +35,11 @@ import org.springframework.web.servlet.LocaleResolver;
  */
 @Controller
 public class FileController {
+    
+    //inject url/uploaddir later
+    private String uri = null;
+    
+    private String uploadDir = null;
 
     private LocaleResolver localeResolver;
     
@@ -61,16 +70,8 @@ public class FileController {
     }
     
     @RequestMapping(value = "/admin/file/upload", method = RequestMethod.POST)
-    public @ResponseBody String onSubmit(FileUpload fileUpload, BindingResult errors, HttpServletRequest request)
+    public @ResponseBody String onSubmit(@Valid FileUpload fileUpload, BindingResult errors, HttpServletRequest request)
             throws Exception {
-
-        /*if (validator != null) { 
-            validator.validate(fileUpload, errors);
-
-            if (errors.hasErrors()) {
-                return "fileupload";
-            }
-        }*/
 
         // validate a file was entered
         if (fileUpload.getFile() == null || fileUpload.getFile().length == 0) {
@@ -87,7 +88,7 @@ public class FileController {
         if (uploadDir == null) {
             uploadDir = new File("src/main/webapp/resources").getAbsolutePath();
         }
-        uploadDir += "/" + request.getRemoteUser() + "/";
+        uploadDir += "/";
 
         // Create the directory if it doesn't exist
         File dirPath = new File(uploadDir);
@@ -95,24 +96,24 @@ public class FileController {
         if (!dirPath.exists()) {
             dirPath.mkdirs();
         }
-
+        InputStream stream = null;
+        OutputStream bos = null;
+        try{
         //retrieve the file data
-        InputStream stream = file.getInputStream();
+        stream = file.getInputStream();
 
         //write the file to the file specified
-        OutputStream bos = new FileOutputStream(uploadDir + file.getOriginalFilename());
+        bos = new FileOutputStream(uploadDir + file.getOriginalFilename());
         int bytesRead;
         byte[] buffer = new byte[8192];
 
         while ((bytesRead = stream.read(buffer, 0, 8192)) != -1) {
             bos.write(buffer, 0, bytesRead);
         }
-
-        bos.close();
-
-        //close the stream
-        stream.close();
-
-        return request.getContextPath() + "/resources/"+ fileUpload.getName();
+        } finally{
+            IOUtils.closeQuietly(bos);
+            IOUtils.closeQuietly(stream);
+        }
+        return new StringBuilder(request.getContextPath()).append("/resources/").append(fileUpload.getName()).toString();
     }
 }
