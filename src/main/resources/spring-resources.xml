@@ -34,8 +34,8 @@
                                 等方法获得的数据结果集的话，就需要设置hibernate.cache.use_query_cache true  -->
                 <prop key="hibernate.cache.use_query_cache">true</prop>
                 <prop key="net.sf.ehcache.configurationResourceName">ehcache-hibernate.xml</prop>
-                <!-- Hibernate Search index directory
-                <prop key="hibernate.search.default.indexBase">${app.search.index.basedir}</prop> -->
+                <!-- Hibernate Search index directory -->
+                <prop key="hibernate.search.default.indexBase">indexes/</prop> 
             </props>
         </property>
     </bean> 

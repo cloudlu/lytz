@@ -45,7 +45,7 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
 
     private Criteria createCriteria(TopicQuery query) {
         Criteria search = getSession().createCriteria(Topic.class);
-        if(EnumUtils.isValidEnum(TopicStatus.class, query.getStatus())){
+        if(query.getStatus() != null && EnumUtils.isValidEnum(TopicStatus.class, query.getStatus().name())){
             search.add(Restrictions.eq("status", query.getStatus()));
         }
         if(query.getTitle() != null){

@@ -36,6 +36,14 @@ public class ShowQuery extends Query {
     }
 
     
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     /**
      * @return the status
      */

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,6 @@ import com.lytz.finance.common.Constants;
 import com.lytz.finance.common.Pager;
 import com.lytz.finance.common.ShowQuery;
 import com.lytz.finance.service.ShowService;
-import com.lytz.finance.vo.Role;
 import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.Show;
 import com.lytz.finance.vo.ShowStatus;
@@ -53,7 +53,6 @@ public class ShowController {
     public ShowQuery createQuery(){
         ShowQuery query = new ShowQuery();
         query.setQuerySize(pageSize);
-        query.setStatus(ShowStatus.COMPLETED);
         return query;
     }
     
@@ -61,6 +60,9 @@ public class ShowController {
     public String search(@ModelAttribute(value="showSearchQuery") ShowQuery query, Model model) throws Exception {
         if(LOG.isTraceEnabled()){
             LOG.trace("entering 'search' method...with query: " + query);
+        }
+        if(query.getQuerySize() == null){
+            query.setQuerySize(pageSize);
         }
         Pager pager = new Pager(showService.getTotalCount(query), query.getQuerySize());
         query.setStartRow(pager.getStartRow());
@@ -90,7 +92,7 @@ public class ShowController {
             query.setStatus(ShowStatus.COMPLETED);
         }
         model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
-        model.addAttribute("showPager", pager);
+        //model.addAttribute("showPager", pager);
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'list' method...with query: " + query + " pager: " + pager);
         }
@@ -169,12 +171,6 @@ public class ShowController {
         return "service/show/showDetail";
     }
     
-    /*@RequestMapping(value = "/user/show/view/{id}", method = RequestMethod.GET)
-    public String userViewDetail(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("show", showService.findById(id));
-        return "service/show/showDetail";
-    }*/
-    
     @RequestMapping(value = "/admin/show/new", method = RequestMethod.GET)
     public String newForm(Model model) {
         return "service/admin/show/adminShowForm";
@@ -189,10 +185,19 @@ public class ShowController {
     }
       
     @RequestMapping(value = "admin/show/save", method = RequestMethod.POST)
-    public String update(@Valid @ModelAttribute("show") Show show, RedirectAttributes redirectAttributes) {
+    public String update(@Valid @ModelAttribute("show") Show show, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         //show.setStatus(ShowStatus.COMPLETED);
         if(LOG.isTraceEnabled()){
             LOG.trace(show.toString());
+        }
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message", "添入演唱会信息不正确");
+            redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "show", bindingResult);
+            if(null != show.getId()){
+                return "redirect:/show/view/"+show.getId();
+            } else {
+                return "redirect:/admin/show/new";
+            }
         }
         if(null != show.getId()){
             Show oldShow = showService.findById(show.getId());

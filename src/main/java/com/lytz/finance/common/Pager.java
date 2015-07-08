@@ -18,10 +18,6 @@ public class Pager{
     private int pageSize = 10;
     private int currentPage;
     private int totalPages;
-    private int startRow;
-    private int endRow;
-    private boolean hasPrevious;
-    private boolean hasNext;
 
     public Pager(int totalRows) {
         fillPager(totalRows, pageSize);
@@ -37,23 +33,28 @@ public class Pager{
         totalPages = ((totalRows % pageSize == 0) ? (totalRows / pageSize) : (totalRows
                 / pageSize + 1));
         currentPage = 1;
-        setStartEndRow();
     }
 
-    public int getEndRow() {
+/*    public int getEndRow() {
         return endRow;
-    }
+    }*/
 
-    public boolean hasPrevious() {
+    public boolean isPreviousExists() {
+        if(0 == totalPages){
+            return false;
+        }
         return currentPage == 1 ? false : true;
     }
 
-    public boolean hasNext() {
+    public boolean isNextExists() {
+        if(0 == totalPages){
+            return false;
+        }
         return currentPage == totalPages ? false : true;
     }
     
     public int getStartRow() {
-        return startRow;
+        return (currentPage - 1) * pageSize;
     }
 
     public int getTotalPages() {
@@ -101,37 +102,26 @@ public class Pager{
         return totalRows;
     }
 
-    public void first() {
-        currentPage = 1;
-        setStartEndRow();
+    public int getFirstPage() {
+        return 1;
     }
 
-    public void previous() {
+    public int getPreviousPage() {
         if (currentPage == 1 || currentPage == 0) {
-            return;
+            return 1;
         }
-        currentPage--;
-        setStartEndRow();
+        return currentPage - 1;
     }
 
-    private void setStartEndRow() {
-        startRow = (currentPage - 1) * pageSize;
-        endRow = startRow + pageSize;
-        if(currentPage == totalPages){
-            endRow = totalRows;
-        }
-    }
-
-    public void next() {
+    public int getNextPage() {
         if (currentPage < totalPages) {
-            currentPage++;
+            return currentPage + 1;
         }
-        setStartEndRow();
+        return totalPages;
     }
 
-    public void last() {
-        currentPage = totalPages;
-        setStartEndRow();
+    public int getLastPage() {
+        return totalPages;
     }
 
 }

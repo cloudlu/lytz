@@ -142,16 +142,16 @@
                     </tr>
                     <tr>
                         <td valign="bottom"><input type="file" name="file" id="file" />
-                            <a class="pull-right btn btn-info btn-lg"
+                            <a class="pull-right btn btn-info btn-default"
                             onclick="uploadFileData();" ><span class="glyphicon glyphicon-save">上传</span></a></td>
                     </tr>
                 </table>
             </fieldset>
         </div>
-        <div class="panel-footer">
-         <a class="pull-right" id="cancel_btn" onclick="history.back()" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-arrow-left">返回</span></a>
-                <a class="pull-right" id="submit_btn" onclick="saveFormData();" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-save">保存</span></a>
-             <a class="pull-right" id="submit_btn" onclick="publishFormData();" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-save">提交</span></a>
+        <div class="panel-footer" style="text-align: center">
+         <a class="btn btn-info btn-default" id="submit_btn" onclick="publishFormData();"><span class="glyphicon glyphicon-save">提交</span></a>
+                <a class="btn btn-info btn-default" id="submit_btn" onclick="saveFormData();"><span class="glyphicon glyphicon-save">保存</span></a>
+             <a class="btn btn-info btn-default" id="cancel_btn" onclick="history.back()"><span class="glyphicon glyphicon-arrow-left">返回</span></a>
                
             <div class="clearfix"></div>
         </div>

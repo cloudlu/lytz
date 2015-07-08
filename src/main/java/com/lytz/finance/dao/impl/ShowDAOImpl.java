@@ -5,6 +5,7 @@ package com.lytz.finance.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.EnumUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.lytz.finance.common.ShowQuery;
 import com.lytz.finance.dao.ShowDAO;
 import com.lytz.finance.vo.Show;
+import com.lytz.finance.vo.ShowStatus;
 
 /**
  * @author cloudlu
@@ -43,7 +45,7 @@ public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
         if(query.getTitle() != null){
             search.add(Restrictions.eq("title", query.getTitle()));
         }
-        if(query.getTitle() != null){
+        if(query.getStatus() != null && EnumUtils.isValidEnum(ShowStatus.class, query.getStatus().name())){
             search.add(Restrictions.eq("status", query.getStatus()));
         }
         return search;

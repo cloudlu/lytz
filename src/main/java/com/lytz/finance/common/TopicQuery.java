@@ -4,6 +4,7 @@
 package com.lytz.finance.common;
 
 import com.google.common.base.MoreObjects;
+import com.lytz.finance.vo.TopicStatus;
 
 /**
  * @author cloudlu
@@ -15,7 +16,7 @@ public class TopicQuery extends Query {
     
     private String title;
     
-    private String status;
+    private TopicStatus status;
 
     public TopicQuery(){
         
@@ -44,11 +45,11 @@ public class TopicQuery extends Query {
         this.title = title;
     }
 
-    public String getStatus() {
+    public TopicStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TopicStatus status) {
         this.status = status;
     }
     

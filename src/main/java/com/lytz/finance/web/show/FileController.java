@@ -7,10 +7,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpUtils;
 import javax.validation.Valid;
 
 import org.apache.commons.io.IOUtils;
@@ -98,12 +97,13 @@ public class FileController {
         }
         InputStream stream = null;
         OutputStream bos = null;
+        String newFilename = System.currentTimeMillis()+"_" + InetAddress.getLocalHost().getHostAddress() +"_img";
         try{
         //retrieve the file data
         stream = file.getInputStream();
 
         //write the file to the file specified
-        bos = new FileOutputStream(uploadDir + file.getOriginalFilename());
+        bos = new FileOutputStream(uploadDir + newFilename);
         int bytesRead;
         byte[] buffer = new byte[8192];
 
@@ -114,6 +114,6 @@ public class FileController {
             IOUtils.closeQuietly(bos);
             IOUtils.closeQuietly(stream);
         }
-        return new StringBuilder(request.getContextPath()).append("/resources/").append(fileUpload.getName()).toString();
+        return new StringBuilder(request.getContextPath()).append("/resources/").append(newFilename).toString();
     }
 }

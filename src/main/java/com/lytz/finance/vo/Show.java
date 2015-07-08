@@ -14,6 +14,21 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.apache.lucene.analysis.charfilter.HTMLStripCharFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.CharFilterDef;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Parameter;
+import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -31,6 +46,26 @@ import com.google.common.base.MoreObjects;
             query = "select show from Show show where show.title = :name "
     )
 })
+@Indexed
+@AnalyzerDef(
+        name="appAnalyzer",
+        charFilters={
+            @CharFilterDef(factory=HTMLStripCharFilterFactory.class)
+        },
+        tokenizer=@TokenizerDef(factory=StandardTokenizerFactory.class),
+        filters={
+            @TokenFilterDef(factory=StandardFilterFactory.class),
+            @TokenFilterDef(factory=StopFilterFactory.class),
+            @TokenFilterDef(factory=PhoneticFilterFactory.class,
+                params = {
+                    @Parameter(name="encoder", value="DoubleMetaphone")
+                }),
+            @TokenFilterDef(factory=SnowballPorterFilterFactory.class,
+                params = {
+                    @Parameter(name="language", value="English")
+                })
+            }
+    )
 public class Show extends TimestampHibernateEntity {
     
     /**
@@ -43,9 +78,11 @@ public class Show extends TimestampHibernateEntity {
     @NotNull
     @Length(min = 4, max = 50)
     @NotBlank
+    @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
     private String title;
     @Basic(fetch = FetchType.LAZY)
     @Column(length = 10000)
+    @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
     private String content;
     @Basic(optional = false)
     @Column(nullable = false, length = 10)

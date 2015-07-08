@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,8 +61,12 @@ public class UserController {
     }
       
     @RequestMapping(value = "/user/update", method = RequestMethod.POST)
-    public String update(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+    public String update(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         User currentUser = getCurrentUser();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("message", "用户信息不正确");
+            return "service/user/userForm";
+        }
         if(user.getId() != currentUser.getId()){
             redirectAttributes.addFlashAttribute("message", "非法用户，只能更新自己的信息");
             return "redirect:/";
@@ -91,6 +96,9 @@ public class UserController {
         if(LOG.isTraceEnabled()){
             LOG.trace("entering 'search' method...with query: " + query);
         }
+        if(query.getQuerySize() == null){
+            query.setQuerySize(pageSize);
+        }
         Pager pager = new Pager(userManager.getTotalCount(query), query.getQuerySize());
         query.setStartRow(pager.getStartRow());
         model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
@@ -111,7 +119,7 @@ public class UserController {
         pager.setCurrentPage(pageNum);
         query.setStartRow(pager.getStartRow());
         model.addAttribute(Constants.USER_LIST, userManager.findByQuery(query));
-        model.addAttribute("userPager", pager);
+        //model.addAttribute("userPager", pager);
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'list' method...with query: " + query + " pager: " + pager);
         }
@@ -125,9 +133,13 @@ public class UserController {
     }
       
     @RequestMapping(value = "/admin/user/update", method = RequestMethod.POST)
-    public String adminUpdate(@Valid @ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+    public String adminUpdate(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if(AUDIT.isInfoEnabled()){
             AUDIT.info(getCurrentUser().getUsername() + "try to update user: " + user);
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("message", "用户信息不正确");
+            return "service/user/userForm";
         }
         userManager.save(user);
         redirectAttributes.addFlashAttribute("message", "更新用户" + user.getUsername() + "成功");
