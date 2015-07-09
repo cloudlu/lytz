@@ -1,6 +1,6 @@
 package com.lytz.finance.dao.impl;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lytz.finance.common.ShowQuery;
 import com.lytz.finance.dao.ShowDAO;
+import com.lytz.finance.vo.ShowStatus;
 
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
@@ -59,21 +60,44 @@ public class ShowDAOTest {
      }    
      
      @Test
-     public void testDAOGetTotalUser(){
+     public void testDAOGetTotal(){
     	 
     	 long count = showDAO.getTotalCount();
     	 
-    	 assertNotNull(count);
+    	 assertTrue(count == 6);
     	 
     	 logger.info("===========================" + count + "===========================");
     	 
     	 con = new ShowQuery();
     	 con.setStartRow(0);
     	 con.setQuerySize(10);
-    	 
+    	 con.setKeyword("测试");
     	 count = showDAO.getTotalCount(con);
+    	 assertTrue(count == 5);
+    	 logger.info("=================" + count + "===========================");
     	 
-    	 logger.info("=========query admin========" + count + "===========================");
+    	 con.setKeyword("测试");
+    	 con.setStatus(ShowStatus.COMPLETED);
+         count = showDAO.getTotalCount(con);
+         assertTrue(count == 2);
+         logger.info("=================" + count + "===========================");
+    	 
+         con.setKeyword("测试");
+         con.setStartRow(0);
+         con.setQuerySize(2);
+         con.setStatus(ShowStatus.DRAFT);
+         count = showDAO.getTotalCount(con);
+         assertTrue(count == 3);
+         assertTrue(showDAO.findByQuery(con).size() == 2);
+         con.setStartRow(2);
+         assertTrue(showDAO.findByQuery(con).size() == 1);
+         logger.info("=================" + count + "===========================");
+         
+    	 con.setKeyword("电商");
+    	 con.setStatus(null);
+         count = showDAO.getTotalCount(con);
+         assertTrue(count == 1);
+         logger.info("=================" + count + "===========================");
     	 }
      
  

@@ -15,20 +15,25 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.apache.lucene.analysis.charfilter.HTMLStripCharFilterFactory;
+import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.phonetic.PhoneticFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.CharFilterDef;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.search.bridge.builtin.EnumBridge;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -47,8 +52,9 @@ import com.google.common.base.MoreObjects;
     )
 })
 @Indexed
+@Analyzer(impl=SmartChineseAnalyzer.class)
 @AnalyzerDef(
-        name="appAnalyzer",
+        name="enShowAnalyzer",
         charFilters={
             @CharFilterDef(factory=HTMLStripCharFilterFactory.class)
         },
@@ -88,6 +94,7 @@ public class Show extends TimestampHibernateEntity {
     @Column(nullable = false, length = 10)
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Field(index=Index.YES, analyze=Analyze.NO, store=Store.NO, bridge=@FieldBridge(impl=EnumBridge.class))
     private ShowStatus status;
     /**
      * Default constructor - creates a new instance with no values set.

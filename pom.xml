@@ -60,6 +60,7 @@
         <jackson.version>2.5.3</jackson.version>
         <jsoup.version>1.8.2</jsoup.version>
         <hibernate-search.version>5.3.0.Final</hibernate-search.version>
+        <lucene.version>4.10.4</lucene.version>
         <!-- web -->
         <shiro.version>1.2.3</shiro.version>
         <servlet-api.version>3.0-alpha-1</servlet-api.version>
@@ -206,6 +207,22 @@
            <version>${hibernate-search.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-smartcn</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-phonetic</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        
         <!-- system monitor -->
         <!-- Core JAR is absolutely necessary to use Simons (Stopwatch, etc.) -->
         <dependency>

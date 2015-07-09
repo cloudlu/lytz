@@ -66,10 +66,6 @@ public class ShowController {
         }
         Pager pager = new Pager(showService.getTotalCount(query), query.getQuerySize());
         query.setStartRow(pager.getStartRow());
-        Subject currentUser = SecurityUtils.getSubject();
-        if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
-            query.setStatus(ShowStatus.COMPLETED);
-        }
         model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
         model.addAttribute("showPager", pager);
         ShowQuery searchQuery = new ShowQuery(query);
@@ -85,12 +81,11 @@ public class ShowController {
         if(LOG.isTraceEnabled()){
             LOG.trace("entering 'list' method...with query: " + query + " pager: " + pager);
         }
+        if(null == pager){
+            return "forward:/show";
+        }
         pager.setCurrentPage(pageNum);
         query.setStartRow(pager.getStartRow());
-        Subject currentUser = SecurityUtils.getSubject();
-        if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
-            query.setStatus(ShowStatus.COMPLETED);
-        }
         model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
         //model.addAttribute("showPager", pager);
         if(LOG.isTraceEnabled()){
