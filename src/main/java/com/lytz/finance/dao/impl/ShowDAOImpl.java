@@ -6,6 +6,7 @@ package com.lytz.finance.dao.impl;
 import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Repository;
 import com.lytz.finance.common.ShowQuery;
 import com.lytz.finance.dao.ShowDAO;
 import com.lytz.finance.vo.Show;
-import com.lytz.finance.vo.ShowStatus;
+import com.lytz.finance.vo.Status;
 
 /**
  * @author cloudlu
@@ -29,7 +30,7 @@ public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
 
     @SuppressWarnings("unchecked")
     public List<Show> findByQuery(ShowQuery query) {
-        if (null == query.getKeyword()) {
+        if (StringUtils.isBlank(query.getKeyword())) {
             Criteria search = createCriteria(query);
             if (query.getStartRow() != null) {
                 search.setFirstResult(query.getStartRow());
@@ -82,7 +83,7 @@ public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
     }
 
     public int getTotalCount(ShowQuery query) {
-        if (null == query.getKeyword()) {
+        if (StringUtils.isBlank(query.getKeyword())) {
             Criteria c = createCriteria(query);
             return ((Long) c.setProjection(Projections.rowCount())
                     .uniqueResult()).intValue();
@@ -98,7 +99,7 @@ public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
             search.add(Restrictions.eq("title", query.getTitle()));
         }
         if (query.getStatus() != null
-                && EnumUtils.isValidEnum(ShowStatus.class, query.getStatus()
+                && EnumUtils.isValidEnum(Status.class, query.getStatus()
                         .name())) {
             search.add(Restrictions.eq("status", query.getStatus()));
         }

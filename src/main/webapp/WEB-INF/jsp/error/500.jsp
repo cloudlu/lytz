@@ -5,12 +5,14 @@
 
 <html>
 <head>
-    <title><fmt:message key="errorPage.title"/></title>
+    <title><fmt:message key="500.title"/></title>
+    <meta name="heading" content="<fmt:message key='500.title'/>"/>
 </head>
-<body id="error">
-    <div class="container">
-        <h1><fmt:message key="errorPage.heading"/></h1>
-        
-    </div>
+<body>
+<p>
+    <fmt:message key="500.message">
+        <fmt:param><c:url value="/"/></fmt:param>
+    </fmt:message>
+</p>
 </body>
 </html>

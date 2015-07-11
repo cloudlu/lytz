@@ -67,21 +67,14 @@ public class UserController {
             model.addAttribute("message", "用户信息不正确");
             return "service/user/userForm";
         }
-        if(user.getId() != currentUser.getId()){
-            redirectAttributes.addFlashAttribute("message", "非法用户，只能更新自己的信息");
+        try {
+            userManager.save(currentUser);
+            redirectAttributes.addFlashAttribute("message", "更新用户" + user.getUsername() + "成功");
+            return "redirect:/";
+        } catch (IllegalArgumentException e){
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
             return "redirect:/";
         }
-        
-        currentUser.setConfirmPassword(user.getConfirmPassword());
-        currentUser.setEmail(user.getEmail());
-        currentUser.setPassword(user.getPassword());
-        currentUser.setPasswordHint(user.getPasswordHint());
-        currentUser.setPhoneNumber(user.getPhoneNumber());
-        currentUser.setRealname(user.getRealname());
-        currentUser.setVersion(user.getVersion());
-        userManager.save(currentUser);
-        redirectAttributes.addFlashAttribute("message", "更新用户" + user.getUsername() + "成功");
-        return "redirect:/";
     }
     
     @ModelAttribute(value="userSearchQuery")

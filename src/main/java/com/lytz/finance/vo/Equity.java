@@ -44,11 +44,11 @@ import com.google.common.base.MoreObjects;
  *
  */
 @Entity
-@Table(name = "show")
+@Table(name = "equity")
 @NamedQueries({
     @NamedQuery(
-            name = "findShowByTitle",
-            query = "select show from Show show where show.title = :name "
+            name = "findEquityByTitle",
+            query = "select equity from Equity equity where equity.title = :name "
     )
 })
 @Indexed
@@ -72,7 +72,7 @@ import com.google.common.base.MoreObjects;
                 })
             }
     )
-public class Show extends TimestampHibernateEntity {
+public class Equity extends TimestampHibernateEntity {
     
     /**
      * 
@@ -99,7 +99,7 @@ public class Show extends TimestampHibernateEntity {
     /**
      * Default constructor - creates a new instance with no values set.
      */
-    public Show() {
+    public Equity() {
     }
 
     public String getTitle() {
@@ -130,11 +130,11 @@ public class Show extends TimestampHibernateEntity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Show)) {
+        if (!(o instanceof Equity)) {
             return false;
         }
 
-        final Show show = (Show) o;
+        final Equity show = (Equity) o;
 
         return show.getId() == this.getId();
 

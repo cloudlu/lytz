@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lytz.finance.common.ShowQuery;
 import com.lytz.finance.dao.ShowDAO;
-import com.lytz.finance.vo.ShowStatus;
+import com.lytz.finance.vo.Status;
 
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
@@ -77,7 +77,7 @@ public class ShowDAOTest {
     	 logger.info("=================" + count + "===========================");
     	 
     	 con.setKeyword("测试");
-    	 con.setStatus(ShowStatus.COMPLETED);
+    	 con.setStatus(Status.COMPLETED);
          count = showDAO.getTotalCount(con);
          assertTrue(count == 2);
          logger.info("=================" + count + "===========================");
@@ -85,7 +85,7 @@ public class ShowDAOTest {
          con.setKeyword("测试");
          con.setStartRow(0);
          con.setQuerySize(2);
-         con.setStatus(ShowStatus.DRAFT);
+         con.setStatus(Status.DRAFT);
          count = showDAO.getTotalCount(con);
          assertTrue(count == 3);
          assertTrue(showDAO.findByQuery(con).size() == 2);

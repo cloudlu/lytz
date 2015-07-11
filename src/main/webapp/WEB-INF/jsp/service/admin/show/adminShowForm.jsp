@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%@ page contentType="text/html;charset=UTF-8"%>
 <html>
@@ -95,16 +96,16 @@
     <div class="panel panel-info">
         <div class="panel-heading clearfix">
             <h4 class="panel-title pull-left">发表演唱会信息</h4>
-            <%--<c:if test="${not empty message}">
+            <c:if test="${not empty message}">
                 <div id="message" class="alert alert-success">
                     <button data-dismiss="alert" class="close">×</button>${message}</div>
-            </c:if> --%>
+            </c:if>
         </div>
         <div class="panel-body">
-            <form method="post" action="${ctx}/admin/show/save"
-                accept-charset="UTF-8" role="form" id="showForm">
+            <form:form method="post" action="${ctx}/admin/show/save"
+                accept-charset="UTF-8" role="form" id="showForm" modelAttribute="show">
                     <div class="control-group">
-                        <label for="title" class="control-label">标题</label>
+                        <label for="title" class="control-label">标题</label><form:errors path="title" cssStyle="color: #ff0000;"/>
                         <div class="controls">
                             <input type="text" style="width: 100%" id="title"
                                 name="title" value="${show.title}"
@@ -112,7 +113,7 @@
                         </div>
                     </div>
                     <div class="control-group">
-                        <label for="content" class="control-label">内容</label>
+                        <label for="content" class="control-label">内容</label><form:errors path="content" cssStyle="color: #ff0000;"/>
                         <div class="controls">
                             <textarea id="content" name="content"
                                 style="width: 100%; height: 550px">${show.content}</textarea>
@@ -120,10 +121,10 @@
                     </div>
                     <input type="hidden" name="id" value="${show.id}" />
                     <input type="hidden" name="status" id="showStatus" value="${show.status}" />
-            </form>
+            </form:form>
             <fieldset style="margin-top: 10px; padding: 4px 10px 10px 10px;">
                 <legend>上传图片</legend>
-                <table border="0" cellpadding="0" cellspacing="0"
+                <table
                     style="width: 100%;">
                     <tr>
                         <td valign="top">
@@ -151,7 +152,7 @@
         <div class="panel-footer" style="text-align: center">
          <a class="btn btn-info btn-default" id="submit_btn" onclick="publishFormData();"><span class="glyphicon glyphicon-save">提交</span></a>
                 <a class="btn btn-info btn-default" id="submit_btn" onclick="saveFormData();"><span class="glyphicon glyphicon-save">保存</span></a>
-             <a class="btn btn-info btn-default" id="cancel_btn" onclick="history.back()"><span class="glyphicon glyphicon-arrow-left">返回</span></a>
+             <a class="btn btn-info btn-default" id="cancel_btn" href="${ctx}/show/list?pageNum=${showPager.currentPage}"><span class="glyphicon glyphicon-arrow-left">返回</span></a>
                
             <div class="clearfix"></div>
         </div>

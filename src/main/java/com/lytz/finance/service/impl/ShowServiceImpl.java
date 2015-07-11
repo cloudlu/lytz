@@ -16,7 +16,7 @@ import com.lytz.finance.dao.ShowDAO;
 import com.lytz.finance.service.ShowService;
 import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.Show;
-import com.lytz.finance.vo.ShowStatus;
+import com.lytz.finance.vo.Status;
 
 /**
  * @author cloudlu
@@ -38,12 +38,25 @@ public class ShowServiceImpl extends BaseServiceImpl<Show, Integer> implements
     public List<Show> findByQuery(ShowQuery query) {
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
-            query.setStatus(ShowStatus.COMPLETED);
+            query.setStatus(Status.COMPLETED);
         }
         return showDAO.findByQuery(query);
     }
 
     public int getTotalCount(ShowQuery query) {
         return showDAO.getTotalCount(query);
+    }
+    
+    @Override
+    public Show save(Show show){
+        if(null != show.getId()){
+            Show oldShow = findById(show.getId());
+            oldShow.setContent(show.getContent());
+            oldShow.setTitle(show.getTitle());
+            oldShow.setStatus(show.getStatus());
+            return super.save(oldShow);
+        } else {
+            return super.save(show);
+        }
     }
 }

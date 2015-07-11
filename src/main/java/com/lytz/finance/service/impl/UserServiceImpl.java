@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.PasswordService;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,8 +74,31 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 	}*/
 
 	//@Transactional
-	public User save(User user) {	
-		return  super.save(user);
+	public User save(User user) {
+	    if(null == user.getId()){
+	        //new user
+	        return super.save(user);
+	    }
+	    //update
+	    Subject userSubject = SecurityUtils.getSubject();
+	    User currentUser = getUserByName((String) userSubject.getPrincipal());
+	    if(!userSubject.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
+	        if(user.getId() != currentUser.getId()){
+	            throw new IllegalArgumentException("非法用户，只能更新自己的信息");
+	        }
+	        currentUser.setConfirmPassword(user.getConfirmPassword());
+            currentUser.setEmail(user.getEmail());
+            currentUser.setPassword(user.getPassword());
+            currentUser.setPasswordHint(user.getPasswordHint());
+            currentUser.setPhoneNumber(user.getPhoneNumber());
+            currentUser.setRealname(user.getRealname());
+            currentUser.setVersion(user.getVersion());
+            return  super.save(currentUser);
+	    } else {
+	        //admin can update any user
+	        return super.save(user);
+	    }
+		
 	}
 
 	public boolean changeUserPassword(String username, String oldPassword,

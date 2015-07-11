@@ -3,6 +3,9 @@
  */
 package com.lytz.finance.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,12 +16,18 @@ import org.slf4j.LoggerFactory;
 public class Pager{
     
     private static final Logger LOG = LoggerFactory.getLogger(Pager.class);
-    
+    private boolean configured = false;
     private int totalRows;
     private int pageSize = 10;
+    private int showPages = 5;
+    private int showPageOffset = 2;
     private int currentPage;
     private int totalPages;
 
+    public Pager(){
+        
+    }
+    
     public Pager(int totalRows) {
         fillPager(totalRows, pageSize);
     }
@@ -27,14 +36,18 @@ public class Pager{
         fillPager(totalRows, pageSize);
     }
 
-    private void fillPager(int totalRows, int pageSize) {
+    public void fillPager(int totalRows, int pageSize) {
         this.totalRows = totalRows;
         this.pageSize = pageSize;
         totalPages = ((totalRows % pageSize == 0) ? (totalRows / pageSize) : (totalRows
                 / pageSize + 1));
         currentPage = 1;
+        this.configured = true;
     }
 
+    public boolean isConfigured(){
+        return this.configured;
+    }
 /*    public int getEndRow() {
         return endRow;
     }*/
@@ -124,4 +137,43 @@ public class Pager{
         return totalPages;
     }
 
+    
+    public boolean isPreviousMoreThanOffset(){
+        return ((currentPage - showPageOffset) > 1) ? true : false;
+    }
+    
+    public boolean isNextMoreThanOffset(){
+        return ((currentPage + showPageOffset) < totalPages) ? true : false;
+    }
+    
+    public void setShowPageOffset(int newShowPageOffset){
+        this.showPageOffset = newShowPageOffset;
+        this.showPages = newShowPageOffset * 2 + 1;
+    }
+    
+    public int getShowPageOffset(){
+        return this.showPageOffset;
+    }
+    
+    public int getShowPages(){
+        return this.showPages;
+    }
+    
+    public List<Integer> getDisplayPages(){
+        List<Integer> list = new ArrayList<Integer>();
+        int start = 1;
+        int end = totalPages;
+        if(totalPages > showPages){
+            if(currentPage > showPageOffset){
+                start = currentPage - showPageOffset;
+                end = ((currentPage + showPageOffset) > totalPages) ? totalPages : (currentPage + showPageOffset);
+            } else {
+                end = this.showPages;
+            }
+        }
+        for(int i = start; i <= end; i++){
+            list.add(i);
+        }
+        return list;
+    }
 }

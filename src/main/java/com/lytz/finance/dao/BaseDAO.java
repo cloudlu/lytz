@@ -31,7 +31,7 @@ public interface BaseDAO <T, ID extends Serializable>{
 	 * R: Count all Ts
 	 * @return the number of T entities, return 0 when no entity is found
 	 */
-	long getTotalCount();
+	int getTotalCount();
 	
     /**
      * Checks for existence of an object of type T using the id arg.

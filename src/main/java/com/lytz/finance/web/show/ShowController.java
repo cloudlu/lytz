@@ -5,8 +5,6 @@ package com.lytz.finance.web.show;
 
 import javax.validation.Valid;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +24,7 @@ import com.lytz.finance.common.Constants;
 import com.lytz.finance.common.Pager;
 import com.lytz.finance.common.ShowQuery;
 import com.lytz.finance.service.ShowService;
-import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.Show;
-import com.lytz.finance.vo.ShowStatus;
 
 /**
  * @author cloudlu
@@ -50,11 +46,25 @@ public class ShowController {
     }
     
     @ModelAttribute(value="showSearchQuery")
+    public ShowQuery createSearchQuery(){
+        ShowQuery query = new ShowQuery();
+        query.setQuerySize(pageSize);
+        return query;
+    }
+    
+    @ModelAttribute(value="showQuery")
     public ShowQuery createQuery(){
         ShowQuery query = new ShowQuery();
         query.setQuerySize(pageSize);
         return query;
     }
+    
+    @ModelAttribute(value="showPager")
+    public Pager createPager(){
+        Pager pager = new Pager();
+        return pager;
+    }
+    
     
     @RequestMapping(value="/show", method = RequestMethod.GET)
     public String search(@ModelAttribute(value="showSearchQuery") ShowQuery query, Model model) throws Exception {
@@ -81,7 +91,7 @@ public class ShowController {
         if(LOG.isTraceEnabled()){
             LOG.trace("entering 'list' method...with query: " + query + " pager: " + pager);
         }
-        if(null == pager){
+        if(null == pager || null == query || !pager.isConfigured()){
             return "forward:/show";
         }
         pager.setCurrentPage(pageNum);
@@ -194,15 +204,7 @@ public class ShowController {
                 return "redirect:/admin/show/new";
             }
         }
-        if(null != show.getId()){
-            Show oldShow = showService.findById(show.getId());
-            oldShow.setContent(show.getContent());
-            oldShow.setTitle(show.getTitle());
-            oldShow.setStatus(show.getStatus());
-            showService.save(oldShow);
-        } else {
-            showService.save(show);
-        }
+        showService.save(show);
         redirectAttributes.addFlashAttribute("message", "更新演唱会信息" + show.getTitle() + "成功");
         return "redirect:/show";
     }

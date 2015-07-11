@@ -16,13 +16,13 @@
 <div class="panel panel-info">
         <div class="panel-heading clearfix">
             <h4 class="panel-title pull-left">${show.title}</h4>
-            <hr><fmt:formatDate value="${show.lastUpdatedTime}" pattern="yyyy年MM月dd日  HH时mm分ss秒" />
+            <hr><h6><fmt:formatDate value="${show.lastUpdatedTime}" pattern="yyyy年MM月dd日  HH时mm分ss秒" /></h6>
         </div>
         <div class="panel-body">
             ${show.content}
         </div>
         <div class="panel-footer">
-            <button id="cancel_btn" class="btn" type="button" onclick="history.back()">返回</button>
+            <a href="${ctx}/show/list?pageNum=${showPager.currentPage}" id="cancel_btn" class="btn btn-info" role="button">返回</a>
             <shiro:hasRole name="ROLE_ADMIN">
                 <a href="${ctx}/admin/show/update/${show.id}" class="btn btn-info" role="button">更新</a>
                  <a href="${ctx}/admin/show/delete/${show.id}" class="btn btn-info" role="button">删除</a>

@@ -4,7 +4,7 @@
 package com.lytz.finance.common;
 
 import com.google.common.base.MoreObjects;
-import com.lytz.finance.vo.ShowStatus;
+import com.lytz.finance.vo.Status;
 
 /**
  * @author cloudlu
@@ -14,7 +14,7 @@ public class ShowQuery extends Query {
     
     private String title;
     private String keyword;
-    private ShowStatus status;
+    private Status status;
 
     public ShowQuery(){
         
@@ -47,14 +47,14 @@ public class ShowQuery extends Query {
     /**
      * @return the status
      */
-    public ShowStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
     /**
      * @param status the status to set
      */
-    public void setStatus(ShowStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

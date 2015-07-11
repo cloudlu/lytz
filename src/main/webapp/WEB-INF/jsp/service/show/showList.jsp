@@ -88,15 +88,22 @@
                         <li class="disabled"
                     </c:when>
                 </c:choose> --%>
-                <li <c:if test="${not showPager.previousExists}"> class="disabled"</c:if>><a href="${ctx}/show/list?pageNum=${showPager.previousPage }" aria-label="Previous"> <span
+                <li <c:if test="${not showPager.previousExists}"> class="disabled"</c:if>><a href="${ctx}/show/list?pageNum=${showPager.firstPage }" aria-label="First"> <span
                         aria-hidden="true">&laquo;</span>
                 </a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li <c:if test="${not showPager.nextExists}"> class="disabled"</c:if>><a href="${ctx}/show/list?pageNum=${showPager.nextPage }" aria-label="Next"> <span
+                <c:if test="${showPager.previousMoreThanOffset}"><li><a href="#">...</a></li></c:if>
+                <c:forEach var="displayPageNum" items="${showPager.displayPages}">
+                    <c:choose>
+                        <c:when test="${displayPageNum eq showPager.currentPage }">
+                            <li class="active"><a href="${ctx}/show/list?pageNum=${showPager.currentPage }">${showPager.currentPage }<span class="sr-only">(current)</span></a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="${ctx}/show/list?pageNum=${displayPageNum}">${displayPageNum}</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+                <c:if test="${showPager.nextMoreThanOffset}"><li><a href="#">...</a></li></c:if>
+                <li <c:if test="${not showPager.nextExists}"> class="disabled"</c:if>><a href="${ctx}/show/list?pageNum=${showPager.lastPage }" aria-label="Last"> <span
                         aria-hidden="true">&raquo;</span>
                 </a></li>
             </ul>

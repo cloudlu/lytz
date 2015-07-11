@@ -106,14 +106,14 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 	}
 	
 	
-	public long getTotalCount() {
+	public int getTotalCount() {
 		Long count = new Long(0);
 		Query q = getSession().createQuery("select count(t) from "
 				+ persistentClass.getSimpleName() + " t");
 		if (!q.list().isEmpty()) {
 			count = (Long) q.list().get(0);
 		}
-		return count.longValue();
+		return count.intValue();
 	}
 
 	/**
