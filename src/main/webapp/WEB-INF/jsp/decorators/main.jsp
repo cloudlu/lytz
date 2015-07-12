@@ -19,7 +19,7 @@
             <ul class="nav">
                 <shiro:hasAnyRoles name="ROLE_ADMIN,ROLE_VIP,ROLE_USER">
                     <li class="nav-header">股票</li>
-                    <li class="active"><a href="#">内参数据</a></li>
+                    <li class="active"><a href="${ctx}/equity">内参数据</a></li>
                     <li class="active"><a href="#">配资</a></li>
                     <li class="nav-header">投融资</li>
                     <li class="active"><a href="#">信息公告</a></li>

@@ -12,5 +12,5 @@ public class Constants {
     public static final String QUERY = "query";
     public static final String USER_LIST = "users";
     public static final String SHOW_LIST = "shows";
-    
+    public static final String EQUITY_LIST = "equities";
 }

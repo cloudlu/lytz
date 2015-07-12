@@ -3,7 +3,6 @@
  */
 package com.lytz.finance.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
@@ -15,23 +14,23 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.lytz.finance.common.ContentUtils;
-import com.lytz.finance.common.ShowQuery;
-import com.lytz.finance.dao.ShowDAO;
+import com.lytz.finance.common.EquityQuery;
+import com.lytz.finance.dao.EquityDAO;
+import com.lytz.finance.service.EquityService;
 import com.lytz.finance.service.FileService;
-import com.lytz.finance.service.ShowService;
+import com.lytz.finance.vo.Equity;
 import com.lytz.finance.vo.RoleNameEnum;
-import com.lytz.finance.vo.Show;
 import com.lytz.finance.vo.Status;
 
 /**
  * @author cloudlu
  *
  */
-@Service("showService")
-public class ShowServiceImpl extends BaseServiceImpl<Show, Integer> implements
-        ShowService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(ShowServiceImpl.class);
+@Service("equityService")
+public class EquityServiceImpl extends BaseServiceImpl<Equity, Integer> implements
+        EquityService {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(EquityServiceImpl.class);
     
     private FileService fileService;
     
@@ -39,47 +38,48 @@ public class ShowServiceImpl extends BaseServiceImpl<Show, Integer> implements
     @Qualifier("fileService")
     public void setFileService(FileService fileService) {
         this.fileService = fileService;
-    }
-
-    private ShowDAO showDAO;
+    } 
+    
+    private EquityDAO equityDAO;
 
     @Autowired
-    @Qualifier("showDAO")
-    public void setShowDAO(ShowDAO showDAO) {
-        this.dao = showDAO;
-        this.showDAO = showDAO;
+    @Qualifier("equityDAO")
+    public void setEquityDAO(EquityDAO equityDAO) {
+        this.dao = equityDAO;
+        this.equityDAO = equityDAO;
     }
     
-    public List<Show> findByQuery(ShowQuery query) {
+    public List<Equity> findByQuery(EquityQuery query) {
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             query.setStatus(Status.COMPLETED);
         }
-        return showDAO.findByQuery(query);
+        return equityDAO.findByQuery(query);
     }
 
-    public int getTotalCount(ShowQuery query) {
-        return showDAO.getTotalCount(query);
+    public int getTotalCount(EquityQuery query) {
+        return equityDAO.getTotalCount(query);
     }
     
     @Override
-    public Show save(Show show){
-       if(null != show.getId()){
+    public Equity save(Equity equity){
+       if(null != equity.getId()){
             //due to create/update time is not passed back from page
-            Show oldShow = findById(show.getId());
-            if(null == oldShow){
+            Equity oldEquity = findById(equity.getId());
+            if(null == oldEquity){
                 return null;
             }
-            List<String> oldFilelist = ContentUtils.getFilePathFromContent(oldShow.getContent());
+            List<String> oldFilelist = ContentUtils.getFilePathFromContent(oldEquity.getContent());
+            
             if(LOG.isDebugEnabled()){
                 LOG.debug("the old content contains " + oldFilelist.size() + " images in image server");
             }
-            oldShow.setContent(show.getContent());
-            oldShow.setTitle(show.getTitle());
-            oldShow.setStatus(show.getStatus());
-            oldShow.setVersion(show.getVersion());
-            show = super.save(oldShow);
-            List<String> newFilelist = ContentUtils.getFilePathFromContent(show.getContent());
+            oldEquity.setContent(equity.getContent());
+            oldEquity.setTitle(equity.getTitle());
+            oldEquity.setStatus(equity.getStatus());
+            oldEquity.setVersion(equity.getVersion());
+            equity = super.save(oldEquity);
+            List<String> newFilelist = ContentUtils.getFilePathFromContent(equity.getContent());
             for(String filePath : oldFilelist){
                 if(!newFilelist.contains(filePath) && fileService.isFileExists(filePath)){
                     if(LOG.isDebugEnabled()){
@@ -88,21 +88,20 @@ public class ShowServiceImpl extends BaseServiceImpl<Show, Integer> implements
                     fileService.removeFile(filePath);
                 }
             }
-            
-            return show;
+            return equity;
         } else {
-            return super.save(show);
+            return super.save(equity);
         }
     }
     
     @Override
-    public void remove(Show show) {
-        super.remove(show);
-        removeAllRelatedImages(show);
+    public void remove(Equity equity) {
+        super.remove(equity);
+        removeAllRelatedImages(equity);
     }
 
-    private void removeAllRelatedImages(Show show) {
-        List<String> filelist = ContentUtils.getFilePathFromContent(show.getContent());
+    private void removeAllRelatedImages(Equity equity) {
+        List<String> filelist = ContentUtils.getFilePathFromContent(equity.getContent());
         for(String filePath : filelist){
             if(fileService.isFileExists(filePath)){
                 if(LOG.isDebugEnabled()){
@@ -115,8 +114,8 @@ public class ShowServiceImpl extends BaseServiceImpl<Show, Integer> implements
     
     @Override
     public void remove(Integer id) {
-        Show show = dao.findById(id);
-        super.remove(show);
-        removeAllRelatedImages(show);
+        Equity equity = dao.findById(id);
+        super.remove(equity);
+        removeAllRelatedImages(equity);
     }
 }

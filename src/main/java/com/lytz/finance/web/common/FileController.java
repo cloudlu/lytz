@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.lytz.finance.web.show;
+package com.lytz.finance.web.common;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -28,6 +30,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.LocaleResolver;
 
+import com.lytz.finance.service.FileService;
+
 /**
  * @author cloudlu
  *
@@ -35,13 +39,22 @@ import org.springframework.web.servlet.LocaleResolver;
 @Controller
 public class FileController {
     
+    private static final Logger LOG = LoggerFactory.getLogger(FileController.class);
+    
     //inject url/uploaddir later
-    private String uri = null;
+    private FileService fileService;
     
-    private String uploadDir = null;
-
     private LocaleResolver localeResolver;
-    
+
+    /**
+     * @param fileService the fileService to set
+     */
+    @Autowired
+    @Qualifier(value="fileService")
+    public void setFileService(FileService fileService) {
+        this.fileService = fileService;
+    }
+
     /**
      * @param localResolver the localResolver to set
      */
@@ -71,49 +84,22 @@ public class FileController {
     @RequestMapping(value = "/admin/file/upload", method = RequestMethod.POST)
     public @ResponseBody String onSubmit(@Valid FileUpload fileUpload, BindingResult errors, HttpServletRequest request)
             throws Exception {
-
+        if(LOG.isDebugEnabled()){
+            LOG.debug(fileUpload.toString());
+        }
         // validate a file was entered
         if (fileUpload.getFile() == null || fileUpload.getFile().length == 0) {
             return messageSource.getMessage("uploadForm.file", new Object[]{fileUpload.getName()}, localeResolver.resolveLocale((HttpServletRequest) request));
         }
-
+        if(fileUpload.getType().equals("image/png") && fileUpload.getType().equals("image/bmp") && fileUpload.getType().equals("image/jpg") && fileUpload.getType().equals("image/gif") && fileUpload.getType().equals("image/jpeg")){
+            throw new IllegalArgumentException("文件类型不对");
+        }
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         CommonsMultipartFile file = (CommonsMultipartFile) multipartRequest.getFile("file");
 
-        // the directory to upload to
-        String uploadDir = request.getSession().getServletContext().getRealPath("/resources");
-
-        // The following seems to happen when running jetty:run
-        if (uploadDir == null) {
-            uploadDir = new File("src/main/webapp/resources").getAbsolutePath();
-        }
-        uploadDir += "/";
-
-        // Create the directory if it doesn't exist
-        File dirPath = new File(uploadDir);
-
-        if (!dirPath.exists()) {
-            dirPath.mkdirs();
-        }
-        InputStream stream = null;
-        OutputStream bos = null;
-        String newFilename = System.currentTimeMillis()+"_" + InetAddress.getLocalHost().getHostAddress() +"_img";
-        try{
-        //retrieve the file data
-        stream = file.getInputStream();
-
-        //write the file to the file specified
-        bos = new FileOutputStream(uploadDir + newFilename);
-        int bytesRead;
-        byte[] buffer = new byte[8192];
-
-        while ((bytesRead = stream.read(buffer, 0, 8192)) != -1) {
-            bos.write(buffer, 0, bytesRead);
-        }
-        } finally{
-            IOUtils.closeQuietly(bos);
-            IOUtils.closeQuietly(stream);
-        }
-        return new StringBuilder(request.getContextPath()).append("/resources/").append(newFilename).toString();
+        String savedUrl = fileService.saveFile(file);
+        
+        
+        return savedUrl.toString();
     }
 }

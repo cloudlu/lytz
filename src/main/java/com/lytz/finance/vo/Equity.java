@@ -54,7 +54,7 @@ import com.google.common.base.MoreObjects;
 @Indexed
 @Analyzer(impl=SmartChineseAnalyzer.class)
 @AnalyzerDef(
-        name="enShowAnalyzer",
+        name="enEquityAnalyzer",
         charFilters={
             @CharFilterDef(factory=HTMLStripCharFilterFactory.class)
         },
@@ -73,12 +73,12 @@ import com.google.common.base.MoreObjects;
             }
     )
 public class Equity extends TimestampHibernateEntity {
-    
+
     /**
      * 
      */
-    private static final long serialVersionUID = 7180548859709667484L;
-
+    private static final long serialVersionUID = 6652059427914519210L;
+    
     @Basic(optional = false)
     @Column(nullable = false, length = 100)
     @NotNull
@@ -87,7 +87,7 @@ public class Equity extends TimestampHibernateEntity {
     @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
     private String title;
     @Basic(fetch = FetchType.LAZY)
-    @Column(length = 10000)
+    @Column(length = 50000)
     @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
     private String content;
     @Basic(optional = false)

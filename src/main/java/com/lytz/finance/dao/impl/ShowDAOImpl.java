@@ -85,8 +85,11 @@ public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
     public int getTotalCount(ShowQuery query) {
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria c = createCriteria(query);
-            return ((Long) c.setProjection(Projections.rowCount())
-                    .uniqueResult()).intValue();
+            Long count = (Long) c.setProjection(Projections.rowCount())
+                    .uniqueResult();
+            if(null == count)
+                return 0;
+            return count.intValue();
         } else {
             FullTextQuery hibernateQuery = findByKeywordQuery(query);
             return hibernateQuery.getResultSize();
