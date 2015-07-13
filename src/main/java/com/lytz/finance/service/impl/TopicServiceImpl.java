@@ -11,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.lytz.finance.common.ContentUtils;
 import com.lytz.finance.common.TopicQuery;
 import com.lytz.finance.dao.TopicDAO;
 import com.lytz.finance.service.TopicService;
-import com.lytz.finance.vo.Topic;
 import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.Topic;
 import com.lytz.finance.vo.TopicStatus;
@@ -54,6 +52,9 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
 
     @Override
     public Topic save(Topic topic){
+        if(null == topic || null == topic.getUser()){
+            throw new IllegalArgumentException("topic should not be null and should has a user");
+        }
         Subject currentUser = SecurityUtils.getSubject();
         if(currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name()) ||
             ((String)currentUser.getPrincipal()).equals(topic.getUser().getUsername())){

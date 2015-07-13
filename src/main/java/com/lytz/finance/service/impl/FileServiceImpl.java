@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,10 +21,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.lytz.finance.service.FileService;
 
 /**
- * @author leehm
+ * @author cloudlu
  *
  */
 @Service("fileService")
+@RequiresRoles("ROLE_ADMIN")
 public class FileServiceImpl implements FileService{
 
     private static final Logger LOG = LoggerFactory.getLogger(FileServiceImpl.class);

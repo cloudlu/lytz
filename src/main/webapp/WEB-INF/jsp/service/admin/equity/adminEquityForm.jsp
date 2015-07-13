@@ -119,6 +119,8 @@
                     <input type="hidden" name="id" value="${equity.id}" />
                     <input type="hidden" name="status" id="equityStatus" value="${equity.status}" />
                     <input type="hidden" name="version" id="version" value="${equity.version}" />
+                    <input type="hidden" name="createdTime" id="createdTime" value="${equity.createdTime}" />
+                    <input type="hidden" name="lastUpdatedTime" id="lastUpdatedTime" value="${equity.lastUpdatedTime}" />
             </form:form>
             <fieldset style="margin-top: 10px; padding: 4px 10px 10px 10px;">
                 <legend>上传图片</legend>

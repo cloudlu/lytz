@@ -122,6 +122,8 @@
                     <input type="hidden" name="id" value="${show.id}" />
                     <input type="hidden" name="status" id="showStatus" value="${show.status}" />
                     <input type="hidden" name="version" id="version" value="${show.version}" />
+                    <input type="hidden" name="createdTime" id="createdTime" value="${show.createdTime}" />
+                    <input type="hidden" name="lastUpdatedTime" id="lastUpdatedTime" value="${show.lastUpdatedTime}" />
             </form:form>
             <fieldset style="margin-top: 10px; padding: 4px 10px 10px 10px;">
                 <legend>上传图片</legend>

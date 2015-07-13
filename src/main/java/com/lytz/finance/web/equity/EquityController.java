@@ -3,15 +3,20 @@
  */
 package com.lytz.finance.web.equity;
 
+import java.util.Date;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lytz.finance.common.Constants;
+import com.lytz.finance.common.LYTZUtils;
 import com.lytz.finance.common.Pager;
 import com.lytz.finance.common.EquityQuery;
 import com.lytz.finance.service.EquityService;
@@ -40,6 +46,12 @@ public class EquityController {
     
     private EquityService equityService = null;
 
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Date.class,
+                new CustomDateEditor(LYTZUtils.getSafeDateFormat(), true));
+    }
+    
     @Autowired
     public void setEquityService(EquityService equityService) {
         this.equityService = equityService;
@@ -130,7 +142,7 @@ public class EquityController {
             LOG.trace(equity.toString());
         }
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("message", "添入信息不正确");
+            redirectAttributes.addFlashAttribute("message", "输入信息不正确");
             redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "equity", bindingResult);
             if(null != equity.getId()){
                 return "redirect:/equity/view/"+equity.getId();

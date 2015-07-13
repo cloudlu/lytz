@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.lytz.finance.common.ContentUtils;
+import com.lytz.finance.common.LYTZUtils;
 import com.lytz.finance.common.EquityQuery;
 import com.lytz.finance.dao.EquityDAO;
 import com.lytz.finance.service.EquityService;
@@ -69,17 +69,17 @@ public class EquityServiceImpl extends BaseServiceImpl<Equity, Integer> implemen
             if(null == oldEquity){
                 return null;
             }
-            List<String> oldFilelist = ContentUtils.getFilePathFromContent(oldEquity.getContent());
+            List<String> oldFilelist = LYTZUtils.getFilePathFromContent(oldEquity.getContent());
             
             if(LOG.isDebugEnabled()){
                 LOG.debug("the old content contains " + oldFilelist.size() + " images in image server");
             }
-            oldEquity.setContent(equity.getContent());
+           /* oldEquity.setContent(equity.getContent());
             oldEquity.setTitle(equity.getTitle());
             oldEquity.setStatus(equity.getStatus());
-            oldEquity.setVersion(equity.getVersion());
-            equity = super.save(oldEquity);
-            List<String> newFilelist = ContentUtils.getFilePathFromContent(equity.getContent());
+            oldEquity.setVersion(equity.getVersion());*/
+            equity = super.save(equity);
+            List<String> newFilelist = LYTZUtils.getFilePathFromContent(equity.getContent());
             for(String filePath : oldFilelist){
                 if(!newFilelist.contains(filePath) && fileService.isFileExists(filePath)){
                     if(LOG.isDebugEnabled()){
@@ -101,7 +101,7 @@ public class EquityServiceImpl extends BaseServiceImpl<Equity, Integer> implemen
     }
 
     private void removeAllRelatedImages(Equity equity) {
-        List<String> filelist = ContentUtils.getFilePathFromContent(equity.getContent());
+        List<String> filelist = LYTZUtils.getFilePathFromContent(equity.getContent());
         for(String filePath : filelist){
             if(fileService.isFileExists(filePath)){
                 if(LOG.isDebugEnabled()){
