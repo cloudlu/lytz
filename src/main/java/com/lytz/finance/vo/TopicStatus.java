@@ -8,5 +8,5 @@ package com.lytz.finance.vo;
  *
  */
 public enum TopicStatus{
-    DRAFT,SUBMITTED,PROCESSING,ACCPECT,DENY,CANCEL
+    DRAFT,SUBMITTED,PROCESSING,ACCPECT,DENY,CANCELLED
 }

@@ -13,6 +13,8 @@
         <mapping class="com.lytz.finance.vo.Topic" />
         <mapping class="com.lytz.finance.vo.Show" />
         <mapping class="com.lytz.finance.vo.Equity" />
+        <mapping class="com.lytz.finance.vo.Message" />
+        <mapping class="com.lytz.finance.vo.Comment" />
         <!-- second layer cache non-lazy: specifies that properties of the entity mapped with lazy="true" cannot be cached when attribute-level lazy fetching is enabled -->
         <class-cache class="com.lytz.finance.vo.Role"
             include="non-lazy" usage="read-only" />
@@ -22,13 +24,17 @@
             usage="transactional" />
         <collection-cache collection="com.lytz.finance.vo.User.topics"
             usage="read-only" />
-        <class-cache class="com.lytz.finance.vo.Topic"
-            include="non-lazy" usage="transactional" />
+        <class-cache class="com.lytz.finance.vo.Message"
+            include="all" usage="transactional" />
         <class-cache class="com.lytz.finance.vo.Topic"
             include="all" usage="transactional" />
+        <collection-cache collection="com.lytz.finance.vo.Topic.comments"
+            usage="read-only" />
         <class-cache class="com.lytz.finance.vo.Show"
             include="all" usage="transactional" />
         <class-cache class="com.lytz.finance.vo.Equity"
+            include="all" usage="transactional" />
+        <class-cache class="com.lytz.finance.vo.Comment"
             include="all" usage="transactional" />
     </session-factory>
 </hibernate-configuration>

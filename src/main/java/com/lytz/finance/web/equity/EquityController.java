@@ -135,7 +135,7 @@ public class EquityController {
         return "service/admin/equity/adminEquityForm";
     }
       
-    @RequestMapping(value = "admin/equity/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/equity/save", method = RequestMethod.POST)
     public String update(@Valid @ModelAttribute("equity") Equity equity, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         //equity.setStatus(EquityStatus.COMPLETED);
         if(LOG.isTraceEnabled()){
@@ -155,7 +155,7 @@ public class EquityController {
         return "redirect:/equity";
     }
 
-    @RequestMapping(value = "admin/equity/delete/{id}")
+    @RequestMapping(value = "/admin/equity/delete/{id}")
     public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         Equity equity = equityService.findById(id);
         equityService.remove(id);

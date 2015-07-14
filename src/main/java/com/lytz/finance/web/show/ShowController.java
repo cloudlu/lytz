@@ -201,7 +201,7 @@ public class ShowController {
         return "service/admin/show/adminShowForm";
     }
       
-    @RequestMapping(value = "admin/show/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/show/save", method = RequestMethod.POST)
     public String update(@Valid @ModelAttribute("show") Show show, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         //show.setStatus(ShowStatus.COMPLETED);
         if(LOG.isTraceEnabled()){
@@ -221,7 +221,7 @@ public class ShowController {
         return "redirect:/show";
     }
 
-    @RequestMapping(value = "admin/show/delete/{id}")
+    @RequestMapping(value = "/admin/show/delete/{id}")
     public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         Show show = showService.findById(id);
         showService.remove(id);

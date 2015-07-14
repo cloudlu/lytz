@@ -105,7 +105,7 @@ public class User extends TimestampHibernateEntity {
 	private Set<Role> roles = new HashSet<Role>();
 
 	//when user is delete(should not call delete), remain topics
-	@OneToMany(cascade=CascadeType.MERGE,fetch=FetchType.LAZY, mappedBy="user")
+	@OneToMany(cascade=CascadeType.MERGE,fetch=FetchType.LAZY, mappedBy="owner")
 	private Set<Topic> topics = new HashSet<Topic>();
 	
 
@@ -314,7 +314,7 @@ public class User extends TimestampHibernateEntity {
 
 		if (null != roles) {
 			for (Role role : roles) {
-				helper.add("role", role.toString());
+				helper.add("role", role.getName());
 			}
 		} else {
 		    helper.addValue("No Granted Roles");
@@ -330,5 +330,9 @@ public class User extends TimestampHibernateEntity {
     //actually not required
     public void setTopics(Set<Topic> topics) {
         this.topics = topics;
+    }
+    
+    public void addTopic(Topic topic){
+        getTopics().add(topic);
     }
 }

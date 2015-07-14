@@ -124,7 +124,7 @@ public class TopicController {
     
     @RequestMapping(value = "/topic/new", method = RequestMethod.GET)
     public String newForm(Model model) {
-        return "service/topicTopicForm";
+        return "service/topic/topicForm";
     }
     
     @RequestMapping(value = "/topic/update/{id}", method = RequestMethod.GET)
@@ -132,10 +132,10 @@ public class TopicController {
         if(id != null){
             model.addAttribute("topic", topicService.findById(id));
         }
-        return "service/topicTopicForm";
+        return "service/topic/topicForm";
     }
       
-    @RequestMapping(value = "topic/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/topic/save", method = RequestMethod.POST)
     public String update(@Valid @ModelAttribute("topic") Topic topic, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         //topic.setStatus(TopicStatus.COMPLETED);
         if(LOG.isTraceEnabled()){
@@ -155,7 +155,7 @@ public class TopicController {
         return "redirect:/topic";
     }
 
-    @RequestMapping(value = "topic/delete/{id}")
+    @RequestMapping(value = "/topic/delete/{id}")
     public String delete(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         Topic topic = topicService.findById(id);
         topicService.remove(id);

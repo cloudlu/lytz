@@ -8,5 +8,5 @@ package com.lytz.finance.vo;
  *
  */
 public enum Status {
-    DRAFT,COMPLETED
+    DRAFT,COMPLETED,CANCELLED
 }

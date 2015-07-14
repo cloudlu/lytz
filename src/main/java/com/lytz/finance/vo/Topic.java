@@ -3,18 +3,21 @@
  */
 package com.lytz.finance.vo;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -48,8 +51,8 @@ public class Topic extends TimestampHibernateEntity{
     @Length(min = 4, max = 50)
     private String title;
     @ManyToOne //default eager, no cascade
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="owner_id")
+    private User owner;
     @Basic(optional = false)
     @Column(nullable = false, length = 1000)
     @NotNull
@@ -57,9 +60,8 @@ public class Topic extends TimestampHibernateEntity{
     @Length(min = 4, max = 1000)
     private String content;
     @Basic(optional = true)
-    @Column(nullable = true, length = 1000)
-    @Length(min = 4, max = 1000)
-    private String comment;
+    @OneToMany(cascade={CascadeType.MERGE,CascadeType.REMOVE},fetch=FetchType.LAZY, mappedBy="owner")
+    private Set<Comment> comments = new HashSet<Comment>();
     @Basic(optional = true)
     @Column(nullable = true, length = 50, unique = true)
     @Email
@@ -99,23 +101,22 @@ public class Topic extends TimestampHibernateEntity{
     public void setContactPhoneNumber(String contactPhoneNumber) {
         this.contactPhoneNumber = contactPhoneNumber;
     }
-
-    public User getUser() {
-        return user;
+    
+    public User getOwner() {
+        return owner;
     }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
-
-    public String getComment() {
-        return comment;
+    public Set<Comment> getComments() {
+        return comments;
     }
-
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
-
+    public void addComment(Comment comment){
+        getComments().add(comment);
+    }
     public TopicStatus getStatus() {
         return status;
     }
@@ -148,9 +149,18 @@ public class Topic extends TimestampHibernateEntity{
     
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this.getClass())
-                .add("title", title).add("user", user.getUsername())
-                .add("status", status)
-                .toString();
+        MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this.getClass())
+                .add("title", title)
+                .add("contactPhoneNumber", contactPhoneNumber)
+                .add("contactEmail", contactEmail);
+        if(null != getOwner()){
+            helper.add("owner", owner.getUsername());
+        }
+        if(null != getComments()){
+            helper.add("comments", comments);
+        }
+        helper.add("status", status);
+        
+        return helper.toString();
     }
 }

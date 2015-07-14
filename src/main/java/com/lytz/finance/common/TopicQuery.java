@@ -18,6 +18,8 @@ public class TopicQuery extends Query {
     
     private TopicStatus status;
 
+    private String keyword;
+    
     public TopicQuery(){
         
     }
@@ -27,6 +29,15 @@ public class TopicQuery extends Query {
         this.username = query.username;
         this.title = query.title;
         this.status = query.status;
+        this.keyword = query.keyword;
+    }
+    
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
     
     public String getUsername() {
@@ -58,7 +69,7 @@ public class TopicQuery extends Query {
         return MoreObjects.toStringHelper(this.getClass())
                 .add("startRow", getStartRow()).add("querySize", getQuerySize())
                 .add("sortBy", getSortBy()).add("sortType", getSortType())
-                .add("username", username).add("title", title)
+                .add("username", username).add("title", title).add("keyword", keyword)
                 .add("status", status)
                 .toString();
     }
