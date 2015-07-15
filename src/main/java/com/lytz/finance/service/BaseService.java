@@ -41,13 +41,29 @@ public interface BaseService<T, ID extends Serializable> {
     boolean exists(ID id);
 
     /**
-     * Generic method to save an object - handles both update and insert.
+     * Method to save an new object
+     * @param object the object to save
+     * @return the saved object
+     * 
+     */
+    T create(T object); 
+    
+    /**
+     * Method to update an object
      * @param object the object to save
      * @return the updated object
      * 
      */
-    T save(T object); // throws ExistsException, DataMissingException;
+    T update(T object); 
 
+    /**
+     * Generic method to save an object create or update
+     * @param object the object to save
+     * @return the updated object
+     * 
+     */
+    T save(T object); 
+    
     /**
      * Generic method to delete an object
      * @param object the object to remove
