@@ -138,11 +138,17 @@ public class Pager{
     }
 
     
-    public boolean isPreviousMoreThanOffset(){
+    public boolean isPreviousMore(){
+        if(totalPages <= showPages){
+            return false;
+        }
         return ((currentPage - showPageOffset) > 1) ? true : false;
     }
     
-    public boolean isNextMoreThanOffset(){
+    public boolean isNextMore(){
+        if(totalPages <= showPages){
+            return false;
+        }
         return ((currentPage + showPageOffset) < totalPages) ? true : false;
     }
     

@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -28,12 +30,16 @@ public class Message extends TimestampHibernateEntity {
      */
     private static final long serialVersionUID = -2636710232385049814L;
 
+    @ManyToOne //default eager, no cascade
+    @JoinColumn(name="receiver_id", insertable=false, updatable=false)
     private User receiver;
     
     @Column(nullable = false, length = 100)
     @Length(min = 4, max = 100)
     private String content;
     
+    @ManyToOne //default eager, no cascade
+    @JoinColumn(name="sender_id",insertable=false, updatable=false)
     private User sender;
     
     @Basic(optional = false)

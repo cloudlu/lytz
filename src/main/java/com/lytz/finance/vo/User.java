@@ -48,7 +48,7 @@ public class User extends TimestampHibernateEntity {
     @Length(min = 4, max = 30)
 	private String realname;
 	@Basic(optional = false)
-	@Column(nullable = false, length = 30, unique = true)
+	@Column(nullable = false, length = 30, unique = true, updatable=false)
 	@NotNull
 	@NotBlank
 	@Pattern(regexp = "[A-Za-z0-9]{4,30}", message = "{errors.invalid}")

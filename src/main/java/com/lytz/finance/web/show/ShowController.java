@@ -77,7 +77,7 @@ public class ShowController {
         return pager;
     }
     
-    
+    //TODO use post for query and get for pageNum and first page
     @RequestMapping(value="/show", method = RequestMethod.GET)
     public String search(@ModelAttribute(value="showSearchQuery") ShowQuery query, Model model) throws Exception {
         if(LOG.isTraceEnabled()){
@@ -92,6 +92,7 @@ public class ShowController {
         model.addAttribute("showPager", pager);
         ShowQuery searchQuery = new ShowQuery(query);
         model.addAttribute("showQuery", searchQuery);
+        model.addAttribute("showStatus", LYTZUtils.getStatusMap());
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'search' method...with query: " + query + " pager: " + pager);
         }
@@ -109,78 +110,12 @@ public class ShowController {
         pager.setCurrentPage(pageNum);
         query.setStartRow(pager.getStartRow());
         model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
-        //model.addAttribute("showPager", pager);
+        model.addAttribute("showStatus", LYTZUtils.getStatusMap());
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'list' method...with query: " + query + " pager: " + pager);
         }
         return "service/show/showList";
     }
-    
-    /*@RequestMapping(value="/user/show", method = RequestMethod.GET)
-    public String userSearch(@ModelAttribute(value="showSearchQuery") ShowQuery query, Model model) throws Exception {
-        if(LOG.isTraceEnabled()){
-            LOG.trace("entering 'userSearch' method...with query: " + query);
-        }
-        Pager pager = new Pager(showService.getTotalCount(query), query.getQuerySize());
-        query.setStartRow(pager.getStartRow());
-        query.setStatus(ShowStatus.COMPLETED);
-        model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
-        model.addAttribute("showPager", pager);
-        ShowQuery searchQuery = new ShowQuery(query);
-        model.addAttribute("showQuery", searchQuery);
-        if(LOG.isTraceEnabled()){
-            LOG.trace("finish 'userSearch' method...with query: " + query + " pager: " + pager);
-        }
-        return "service/show/showList";
-    }
-
-    @RequestMapping(value="/user/show/list", method = RequestMethod.GET)
-    public String userList(@ModelAttribute(value="showQuery") ShowQuery query, @ModelAttribute(value="showPager") Pager pager, @RequestParam(value="pageNum", required=false) int pageNum, Model model) throws Exception {
-        if(LOG.isTraceEnabled()){
-            LOG.trace("entering 'userList' method...with query: " + query + " pager: " + pager);
-        }
-        pager.setCurrentPage(pageNum);
-        query.setStartRow(pager.getStartRow());
-        query.setStatus(ShowStatus.COMPLETED);
-        model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
-        model.addAttribute("showPager", pager);
-        if(LOG.isTraceEnabled()){
-            LOG.trace("finish 'userList' method...with query: " + query + " pager: " + pager);
-        }
-        return "service/show/showList";
-    }
-    
-    @RequestMapping(value="/admin/show", method = RequestMethod.GET)
-    public String adminSearch(@ModelAttribute(value="showSearchQuery") ShowQuery query, Model model) throws Exception {
-        if(LOG.isTraceEnabled()){
-            LOG.trace("entering 'adminSearch' method...with query: " + query);
-        }
-        Pager pager = new Pager(showService.getTotalCount(query), query.getQuerySize());
-        query.setStartRow(pager.getStartRow());
-        model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
-        model.addAttribute("showPager", pager);
-        ShowQuery searchQuery = new ShowQuery(query);
-        model.addAttribute("showQuery", searchQuery);
-        if(LOG.isTraceEnabled()){
-            LOG.trace("finish 'adminSearch' method...with query: " + query + " pager: " + pager);
-        }
-        return "service/show/showList";
-    }
-
-    @RequestMapping(value="/admin/show/list", method = RequestMethod.GET)
-    public String adminList(@ModelAttribute(value="showQuery") ShowQuery query, @ModelAttribute(value="showPager") Pager pager, @RequestParam(value="pageNum", required=false) int pageNum, Model model) throws Exception {
-        if(LOG.isTraceEnabled()){
-            LOG.trace("entering 'adminList' method...with query: " + query + " pager: " + pager);
-        }
-        pager.setCurrentPage(pageNum);
-        query.setStartRow(pager.getStartRow());
-        model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
-        model.addAttribute("showPager", pager);
-        if(LOG.isTraceEnabled()){
-            LOG.trace("finish 'adminList' method...with query: " + query + " pager: " + pager);
-        }
-        return "service/show/showList";
-    }*/
     
     @RequestMapping(value = "/show/view/{id}", method = RequestMethod.GET)
     public String viewDetail(@PathVariable("id") Integer id, Model model) {

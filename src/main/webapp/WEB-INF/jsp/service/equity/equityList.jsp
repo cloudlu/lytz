@@ -91,7 +91,7 @@
                 <li <c:if test="${not equityPager.previousExists}"> class="disabled"</c:if>><a href="${ctx}/equity/list?pageNum=${equityPager.firstPage }" aria-label="First"> <span
                         aria-hidden="true">&laquo;</span>
                 </a></li>
-                <c:if test="${equityPager.previousMoreThanOffset}"><li><a href="#">...</a></li></c:if>
+                <c:if test="${equityPager.previousMore}"><li><a href="#">...</a></li></c:if>
                 <c:forEach var="displayPageNum" items="${equityPager.displayPages}">
                     <c:choose>
                         <c:when test="${displayPageNum eq equityPager.currentPage }">
@@ -102,7 +102,7 @@
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
-                <c:if test="${equityPager.nextMoreThanOffset}"><li><a href="#">...</a></li></c:if>
+                <c:if test="${equityPager.nextMore}"><li><a href="#">...</a></li></c:if>
                 <li <c:if test="${not equityPager.nextExists}"> class="disabled"</c:if>><a href="${ctx}/equity/list?pageNum=${equityPager.lastPage }" aria-label="Last"> <span
                         aria-hidden="true">&raquo;</span>
                 </a></li>

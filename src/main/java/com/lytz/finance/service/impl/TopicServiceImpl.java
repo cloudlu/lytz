@@ -73,6 +73,7 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
             }
             if(currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name()) ||
                     ((String)currentUser.getPrincipal()).equals(oldTopic.getOwner().getUsername())){
+                topic.setOwner(oldTopic.getOwner());
                 return super.save(topic);
             } else {
                 throw new IllegalArgumentException("Invalid user");
@@ -89,7 +90,7 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             if(((String)currentUser.getPrincipal()).equals(topic.getOwner().getUsername())){
                 topic.setStatus(TopicStatus.CANCELLED);
-                super.save(topic);
+                save(topic);
             } else {
                 return;
             }

@@ -2,6 +2,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <html>
@@ -28,7 +29,7 @@
             </c:if>
             <shiro:hasRole name="ROLE_ADMIN">
                 <div class="btn-group pull-right">
-                    <form class="form-inline pull-right" action="${ctx}/show">
+                    <form:form class="form-inline pull-right" action="${ctx}/show" method="GET" accept-charset="UTF-8" modelAttribute="showQuery">
                       <div class="form-group">
                         <label class="sr-only" for="searchText">关键字</label>
                         <input type="text" class="form-control" id="searchText" name="keyword" placeholder="关键字" value="${showQuery.keyword}"/>
@@ -39,28 +40,12 @@
                       </div>
                       <div class="form-group">
                         <label for="status">状态</label>
-                        <select class="form-control" id="status" name="status">
-                            <c:choose>
-                                <c:when test="${showQuery.status eq 'COMPLETED'}">
-                                    <option value="">全部</option>
-                                    <option value ="DRAFT">草稿</option>
-                                    <option value ="COMPLETED" selected="selected">已发布</option>
-                                </c:when>
-                                <c:when test="${showQuery.status eq 'DRAFT'}">
-                                    <option value="">全部</option>
-                                    <option value ="DRAFT" selected="selected">草稿</option>
-                                    <option value ="COMPLETED">已发布</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="" selected="selected">全部</option>
-                                    <option value ="DRAFT">草稿</option>
-                                    <option value ="COMPLETED">已发布</option>
-                                </c:otherwise>
-                            </c:choose>
-                        </select>
+                        <form:select class="form-control" id="status" path="status">
+                            <form:options items="${showStatus }" />
+                        </form:select>
                       </div>
                       <button type="submit" class="btn btn-default">查询</button>
-                    </form>
+                    </form:form>
                 </div>
             </shiro:hasRole>
         </div>
@@ -91,7 +76,7 @@
                 <li <c:if test="${not showPager.previousExists}"> class="disabled"</c:if>><a href="${ctx}/show/list?pageNum=${showPager.firstPage }" aria-label="First"> <span
                         aria-hidden="true">&laquo;</span>
                 </a></li>
-                <c:if test="${showPager.previousMoreThanOffset}"><li><a href="#">...</a></li></c:if>
+                <c:if test="${showPager.previousMore}"><li><a href="#">...</a></li></c:if>
                 <c:forEach var="displayPageNum" items="${showPager.displayPages}">
                     <c:choose>
                         <c:when test="${displayPageNum eq showPager.currentPage }">
@@ -102,7 +87,7 @@
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
-                <c:if test="${showPager.nextMoreThanOffset}"><li><a href="#">...</a></li></c:if>
+                <c:if test="${showPager.nextMore}"><li><a href="#">...</a></li></c:if>
                 <li <c:if test="${not showPager.nextExists}"> class="disabled"</c:if>><a href="${ctx}/show/list?pageNum=${showPager.lastPage }" aria-label="Last"> <span
                         aria-hidden="true">&raquo;</span>
                 </a></li>

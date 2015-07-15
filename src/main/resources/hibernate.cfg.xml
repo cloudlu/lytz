@@ -17,24 +17,24 @@
         <mapping class="com.lytz.finance.vo.Comment" />
         <!-- second layer cache non-lazy: specifies that properties of the entity mapped with lazy="true" cannot be cached when attribute-level lazy fetching is enabled -->
         <class-cache class="com.lytz.finance.vo.Role"
-            include="non-lazy" usage="read-only" />
+            include="non-lazy" usage="nonstrict-read-write" />
         <class-cache class="com.lytz.finance.vo.User"
-            include="all" usage="transactional" />
+            include="all" usage="nonstrict-read-write" />
         <collection-cache collection="com.lytz.finance.vo.User.roles"
-            usage="transactional" />
+            usage="nonstrict-read-write" />
         <collection-cache collection="com.lytz.finance.vo.User.topics"
-            usage="read-only" />
+            usage="nonstrict-read-write" />
         <class-cache class="com.lytz.finance.vo.Message"
-            include="all" usage="transactional" />
+            include="all" usage="nonstrict-read-write" />
         <class-cache class="com.lytz.finance.vo.Topic"
-            include="all" usage="transactional" />
+            include="all" usage="nonstrict-read-write" />
         <collection-cache collection="com.lytz.finance.vo.Topic.comments"
-            usage="read-only" />
+            usage="read-write" />
         <class-cache class="com.lytz.finance.vo.Show"
-            include="all" usage="transactional" />
+            include="all" usage="nonstrict-read-write" />
         <class-cache class="com.lytz.finance.vo.Equity"
-            include="all" usage="transactional" />
+            include="all" usage="nonstrict-read-write" />
         <class-cache class="com.lytz.finance.vo.Comment"
-            include="all" usage="transactional" />
+            include="all" usage="read-write" />
     </session-factory>
 </hibernate-configuration>

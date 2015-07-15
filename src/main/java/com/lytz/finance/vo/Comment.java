@@ -5,6 +5,8 @@ package com.lytz.finance.vo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
@@ -25,12 +27,15 @@ public class Comment extends TimestampHibernateEntity {
      */
     private static final long serialVersionUID = 6835066279858762404L;
 
+    @ManyToOne //default eager, no cascade
+    @JoinColumn(name="topic_id",insertable=false, updatable=false)
     private Topic topic;
     
     @Column(nullable = false, length = 100)
     @Length(min = 4, max = 100)
     private String content;
-    
+    @ManyToOne //default eager, no cascade
+    @JoinColumn(name="owner_id",insertable=false, updatable=false)
     private User owner;
 
     public Topic getTopic() {

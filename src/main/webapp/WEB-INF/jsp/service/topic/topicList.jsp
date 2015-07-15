@@ -80,7 +80,7 @@
                 <li <c:if test="${not topicPager.previousExists}"> class="disabled"</c:if>><a href="${ctx}/topic/list?pageNum=${topicPager.firstPage }" aria-label="First"> <span
                         aria-hidden="true">&laquo;</span>
                 </a></li>
-                <c:if test="${topicPager.previousMoreThanOffset}"><li><a href="#">...</a></li></c:if>
+                <c:if test="${topicPager.previousMore}"><li><a href="#">...</a></li></c:if>
                 <c:forEach var="displayPageNum" items="${topicPager.displayPages}">
                     <c:choose>
                         <c:when test="${displayPageNum eq topicPager.currentPage }">
@@ -91,7 +91,7 @@
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
-                <c:if test="${topicPager.nextMoreThanOffset}"><li><a href="#">...</a></li></c:if>
+                <c:if test="${topicPager.nextMore}"><li><a href="#">...</a></li></c:if>
                 <li <c:if test="${not topicPager.nextExists}"> class="disabled"</c:if>><a href="${ctx}/topic/list?pageNum=${topicPager.lastPage }" aria-label="Last"> <span
                         aria-hidden="true">&raquo;</span>
                 </a></li>

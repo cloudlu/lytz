@@ -15,6 +15,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lytz.finance.common.ShowQuery;
+import com.lytz.finance.dao.DAOUtils;
 import com.lytz.finance.dao.ShowDAO;
 import com.lytz.finance.vo.Status;
 
@@ -38,7 +39,7 @@ public class ShowDAOTest {
 	 */
 	@Before
 	public void setUp() {
-		
+		DAOUtils.reBuildIndex();
 	}
 	
 	@After
