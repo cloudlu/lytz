@@ -32,6 +32,9 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
 
     @SuppressWarnings("unchecked")
     public List<Topic> findByQuery(TopicQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria search = createCriteria(query);
             if (query.getStartRow() != null) {
@@ -85,6 +88,9 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
     }
 
     public int getTotalCount(TopicQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria c = createCriteria(query);
             Long count = (Long) c.setProjection(Projections.rowCount())

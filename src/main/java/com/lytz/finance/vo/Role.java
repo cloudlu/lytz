@@ -16,6 +16,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,6 +31,9 @@ import org.hibernate.validator.constraints.NotBlank;
             query = "select r from Role r where r.name = :name "
     )
 })
+@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,include="non-lazy")
+@DynamicUpdate
+@DynamicInsert
 public class Role implements Serializable {
 
 	/**

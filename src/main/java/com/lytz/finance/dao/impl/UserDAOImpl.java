@@ -38,6 +38,9 @@ UserDAO {
 	}
 
 	public int getTotalCount(UserQuery query) {
+	    if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
 	    if(LOG.isDebugEnabled()){
             LOG.debug("create criteria with query: " + query);
         }
@@ -63,6 +66,9 @@ UserDAO {
 	 */
 	@SuppressWarnings("unchecked")
     public List<User> findUserByQuery(UserQuery query) {
+	    if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
 	    Criteria c = createCriteria(query);
 	    if (query.getStartRow() != null){
             c.setFirstResult(query.getStartRow());

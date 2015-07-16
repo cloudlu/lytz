@@ -34,6 +34,9 @@ public class EquityDAOImpl extends BaseDAOImpl<Equity, Integer> implements Equit
     
     @SuppressWarnings("unchecked")
     public List<Equity> findByQuery(EquityQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria search = createCriteria(query);
             if (query.getStartRow() != null) {
@@ -84,6 +87,9 @@ public class EquityDAOImpl extends BaseDAOImpl<Equity, Integer> implements Equit
     }
 
     public int getTotalCount(EquityQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         if(LOG.isDebugEnabled()){
             LOG.debug(query.toString());
         }

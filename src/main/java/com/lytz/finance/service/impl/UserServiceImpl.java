@@ -168,10 +168,16 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 	}
 
     public List<User> findByQuery(UserQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         return userDAO.findUserByQuery(query);
     }
     
     public int getTotalCount(UserQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         return userDAO.getTotalCount(query);
     }
 

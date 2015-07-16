@@ -75,10 +75,34 @@
                         </div>
                     </div>
                     <div class="control-group">
+                        <label for="title" class="control-label">联系人</label><form:errors path="contactName" cssStyle="color: #ff0000;"/>
+                        <div class="controls">
+                            <input type="text" id="contactName"
+                                name="contactName" value="${topic.contactName}"
+                                class="input-large required" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="title" class="control-label">联系电话</label><form:errors path="contactPhoneNumber" cssStyle="color: #ff0000;"/>
+                        <div class="controls">
+                            <input type="text" id="contactPhoneNumber"
+                                name="contactPhoneNumber" value="${topic.contactPhoneNumber}"
+                                class="input-large required" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="title" class="control-label">联系邮箱</label><form:errors path="contactEmail" cssStyle="color: #ff0000;"/>
+                        <div class="controls">
+                            <input type="text" id="contactEmail"
+                                name="contactEmail" value="${topic.contactEmail}"
+                                class="input-large required" />
+                        </div>
+                    </div>
+                    <div class="control-group">
                         <label for="content" class="control-label">内容</label><form:errors path="content" cssStyle="color: #ff0000;"/>
                         <div class="controls">
                             <textarea id="content" name="content"
-                                style="width: 100%; height: 550px">${topic.content}</textarea>
+                                style="width: 100%; height: 200px">${topic.content}</textarea>
                         </div>
                     </div>
                     <input type="hidden" name="id" value="${topic.id}" />

@@ -30,6 +30,9 @@ public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
 
     @SuppressWarnings("unchecked")
     public List<Show> findByQuery(ShowQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria search = createCriteria(query);
             if (query.getStartRow() != null) {
@@ -83,6 +86,9 @@ public class ShowDAOImpl extends BaseDAOImpl<Show, Integer> implements ShowDAO {
     }
 
     public int getTotalCount(ShowQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria c = createCriteria(query);
             Long count = (Long) c.setProjection(Projections.rowCount())

@@ -21,6 +21,10 @@ import org.apache.lucene.analysis.phonetic.PhoneticFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
@@ -51,6 +55,9 @@ import com.google.common.base.MoreObjects;
             query = "select show from Show show where show.title = :name "
     )
 })
+@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,include="all")
+@DynamicUpdate
+@DynamicInsert
 @Indexed
 @Analyzer(impl=SmartChineseAnalyzer.class)
 @AnalyzerDef(

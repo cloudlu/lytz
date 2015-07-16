@@ -20,6 +20,10 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -35,6 +39,9 @@ import com.google.common.base.MoreObjects;
             query = "select r from User r where r.username = :username "
     )
 })
+@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,include="all")
+@DynamicUpdate
+@DynamicInsert
 public class User extends TimestampHibernateEntity {
 
 	/**
@@ -102,10 +109,12 @@ public class User extends TimestampHibernateEntity {
             joinColumns = { @JoinColumn(name = "user_id",  referencedColumnName="id") },
             inverseJoinColumns = @JoinColumn(name = "role_id",  referencedColumnName="id")
     )
+	@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<Role> roles = new HashSet<Role>();
 
 	//when user is delete(should not call delete), remain topics
 	@OneToMany(cascade=CascadeType.MERGE,fetch=FetchType.LAZY, mappedBy="owner")
+	@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<Topic> topics = new HashSet<Topic>();
 	
 

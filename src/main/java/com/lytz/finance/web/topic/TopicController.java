@@ -92,6 +92,7 @@ public class TopicController {
         model.addAttribute("topicPager", pager);
         TopicQuery searchQuery = new TopicQuery(query);
         model.addAttribute("topicQuery", searchQuery);
+        model.addAttribute("topicStatus", LYTZUtils.getTopicStatusMap());
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'search' method...with query: " + query + " pager: " + pager);
         }
@@ -109,6 +110,7 @@ public class TopicController {
         pager.setCurrentPage(pageNum);
         query.setStartRow(pager.getStartRow());
         model.addAttribute(Constants.TOPIC_LIST, topicService.findByQuery(query));
+        model.addAttribute("topicStatus", LYTZUtils.getTopicStatusMap());
         //model.addAttribute("topicPager", pager);
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'list' method...with query: " + query + " pager: " + pager);

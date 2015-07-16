@@ -44,6 +44,9 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
     }
     
     public List<Topic> findByQuery(TopicQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             query.setUsername((String)currentUser.getPrincipal());
@@ -52,6 +55,9 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
     }
 
     public int getTotalCount(TopicQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             query.setUsername((String)currentUser.getPrincipal());
@@ -60,32 +66,50 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
     }
 
     @Override
+    public Topic create(Topic topic){
+        if(null == topic || null != topic.getId()){
+            throw new IllegalArgumentException("topic should not be null or topic id should be null");
+        }
+        Subject currentUser = SecurityUtils.getSubject();
+        topic.setOwner(userDAO.getUserByName((String)currentUser.getPrincipal()));
+        return super.save(topic);
+    }
+    
+    @Override
+    public Topic update(Topic topic){
+        if(null == topic || null == topic.getId()){
+            throw new IllegalArgumentException("topic should not be null and topic id should not be null");
+        }
+        Subject currentUser = SecurityUtils.getSubject();
+        Topic oldTopic = findById(topic.getId());
+        if(null == oldTopic){
+            new IllegalArgumentException("topic id invalid");
+        }
+        if(currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name()) ||
+                ((String)currentUser.getPrincipal()).equals(oldTopic.getOwner().getUsername())){
+            topic.setOwner(oldTopic.getOwner());
+            return super.save(topic);
+        } else {
+            throw new IllegalArgumentException("Invalid user");
+        }
+    }
+    @Override
     public Topic save(Topic topic){
         if(null == topic){
             throw new IllegalArgumentException("topic should not be null");
         }
-        Subject currentUser = SecurityUtils.getSubject();
         if(null != topic.getId()){
-            //due to create/update time is not passed back from page
-            Topic oldTopic = findById(topic.getId());
-            if(null == oldTopic){
-                new IllegalArgumentException("topic id invalid");
-            }
-            if(currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name()) ||
-                    ((String)currentUser.getPrincipal()).equals(oldTopic.getOwner().getUsername())){
-                topic.setOwner(oldTopic.getOwner());
-                return super.save(topic);
-            } else {
-                throw new IllegalArgumentException("Invalid user");
-            }
+            return update(topic);
         } else {
-            topic.setOwner(userDAO.getUserByName((String)currentUser.getPrincipal()));
-            return super.save(topic);
+            return create(topic);
         }
     }
     
     @Override
     public void remove(Topic topic) {
+        if(null == topic){
+            return;
+        }
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             if(((String)currentUser.getPrincipal()).equals(topic.getOwner().getUsername())){

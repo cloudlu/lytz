@@ -30,10 +30,16 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Integer>
     }
 
     public List<Message> findByQuery(MessageQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         return messageDAO.findByQuery(query);
     }
 
     public int getTotalCount(MessageQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         return messageDAO.getTotalCount(query);
     }
 }

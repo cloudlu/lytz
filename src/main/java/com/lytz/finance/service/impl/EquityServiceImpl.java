@@ -50,6 +50,9 @@ public class EquityServiceImpl extends BaseServiceImpl<Equity, Integer> implemen
     }
     
     public List<Equity> findByQuery(EquityQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             query.setStatus(Status.COMPLETED);
@@ -58,6 +61,9 @@ public class EquityServiceImpl extends BaseServiceImpl<Equity, Integer> implemen
     }
 
     public int getTotalCount(EquityQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         return equityDAO.getTotalCount(query);
     }
     

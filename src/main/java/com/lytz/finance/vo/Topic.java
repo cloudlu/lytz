@@ -29,6 +29,10 @@ import org.apache.lucene.analysis.phonetic.PhoneticFilterFactory;
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
@@ -60,6 +64,9 @@ import com.google.common.base.MoreObjects;
             query = "select t from Topic t where t.title = :title "
     )
 })
+@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,include="all")
+@DynamicUpdate
+@DynamicInsert
 @Indexed
 @Analyzer(impl=SmartChineseAnalyzer.class)
 @AnalyzerDef(
@@ -110,11 +117,12 @@ public class Topic extends TimestampHibernateEntity{
     private String contactName;
     @Basic(optional = true)
     @OneToMany(cascade={CascadeType.MERGE,CascadeType.REMOVE},fetch=FetchType.LAZY, mappedBy="topic")
+    @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Comment> comments = new HashSet<Comment>();
     @Basic(optional = true)
     @Column(nullable = true, length = 50)
     @Email
-    @Length(min = 1, max = 50)
+    @Length(min = 5, max = 50)
     private String contactEmail;
     @Basic(optional = true)
     @Column(nullable = true, length = 20)
@@ -176,6 +184,12 @@ public class Topic extends TimestampHibernateEntity{
     }
     
     
+    public String getContactName() {
+        return contactName;
+    }
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -202,6 +216,7 @@ public class Topic extends TimestampHibernateEntity{
         MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this.getClass())
                 .add("title", title)
                 .add("contactPhoneNumber", contactPhoneNumber)
+                .add("contactName", contactName)
                 .add("contactEmail", contactEmail);
         if(null != getOwner()){
             helper.add("owner", owner.getUsername());

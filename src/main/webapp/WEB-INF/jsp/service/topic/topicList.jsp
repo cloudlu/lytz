@@ -2,6 +2,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <html>
@@ -22,7 +23,7 @@
             </c:if>
             <shiro:hasRole name="ROLE_ADMIN">
                 <div class="btn-group pull-right">
-                    <form class="form-inline pull-right" action="${ctx}/topic">
+                    <form:form class="form-inline pull-right" action="${ctx}/topic" accept-charset="UTF-8" modelAttribute="topicQuery">
                       <div class="form-group">
                         <label class="sr-only" for="searchText">关键字</label>
                         <input type="text" class="form-control" id="searchText" name="keyword" placeholder="关键字" value="${topicQuery.keyword}"/>
@@ -33,28 +34,12 @@
                       </div>
                       <div class="form-group">
                         <label for="status">状态</label>
-                        <select class="form-control" id="status" name="status">
-                            <c:choose>
-                                <c:when test="${topicQuery.status eq 'SUBMITTED'}">
-                                    <option value="">全部</option>
-                                    <option value ="DRAFT">草稿</option>
-                                    <option value ="SUBMITTED" selected="selected">已提交</option>
-                                </c:when>
-                                <c:when test="${topicQuery.status eq 'DRAFT'}">
-                                    <option value="">全部</option>
-                                    <option value ="DRAFT" selected="selected">草稿</option>
-                                    <option value ="SUBMITTED">已发布</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="" selected="selected">全部</option>
-                                    <option value ="DRAFT">草稿</option>
-                                    <option value ="SUBMITTED">已发布</option>
-                                </c:otherwise>
-                            </c:choose>
-                        </select>
+                        <form:select class="form-control" id="status" path="status">
+                            <form:options items="${topicStatus }" />
+                        </form:select>
                       </div>
                       <button type="submit" class="btn btn-default">查询</button>
-                    </form>
+                    </form:form>
                 </div>
             </shiro:hasRole>
         </div>

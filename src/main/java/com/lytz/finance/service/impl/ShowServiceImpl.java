@@ -52,6 +52,9 @@ public class ShowServiceImpl extends BaseServiceImpl<Show, Integer> implements
     }
     
     public List<Show> findByQuery(ShowQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             query.setStatus(Status.COMPLETED);
@@ -60,6 +63,9 @@ public class ShowServiceImpl extends BaseServiceImpl<Show, Integer> implements
     }
 
     public int getTotalCount(ShowQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         return showDAO.getTotalCount(query);
     }
     

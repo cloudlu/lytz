@@ -9,6 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import com.google.common.base.MoreObjects;
@@ -19,6 +23,9 @@ import com.google.common.base.MoreObjects;
  */
 @Entity
 @Table(name = "comment")
+@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,include="all")
+@DynamicUpdate
+@DynamicInsert
 public class Comment extends TimestampHibernateEntity {
 
     

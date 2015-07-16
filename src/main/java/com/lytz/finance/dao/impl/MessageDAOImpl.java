@@ -29,6 +29,9 @@ public class MessageDAOImpl extends BaseDAOImpl<Message, Integer> implements
      */
     @SuppressWarnings("unchecked")
     public List<Message> findByQuery(MessageQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         Criteria search = createCriteria(query);
         if (query.getStartRow() != null) {
             search.setFirstResult(query.getStartRow());
@@ -43,6 +46,9 @@ public class MessageDAOImpl extends BaseDAOImpl<Message, Integer> implements
      * @see com.lytz.finance.dao.MessageDAO#getTotalCount(com.lytz.finance.common.MessageQuery)
      */
     public int getTotalCount(MessageQuery query) {
+        if(null == query){
+            throw new IllegalArgumentException("query should not be null");
+        }
         Criteria c = createCriteria(query);
         Long count = (Long) c.setProjection(Projections.rowCount())
                 .uniqueResult();
