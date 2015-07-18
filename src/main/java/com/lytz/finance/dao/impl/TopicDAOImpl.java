@@ -13,7 +13,9 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.hibernate.search.query.dsl.MustJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.query.dsl.TermTermination;
 import org.springframework.stereotype.Repository;
 
 import com.lytz.finance.common.TopicQuery;
@@ -63,23 +65,30 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
         QueryBuilder queryBuilder = fullTextSession.getSearchFactory()
                 .buildQueryBuilder().forEntity(Topic.class).get();
         org.apache.lucene.search.Query luceneQuery = null;
-        if (null == query.getStatus()) {
+        if (null == query.getStatus() && null == query.getUsername()) {
             luceneQuery = queryBuilder.keyword()// .wildcard()
                     .onFields("title", "content").matching(query.getKeyword())
                     // .matching("*" + query.getKeyword() + "*")
                     .createQuery();
         } else {
-            luceneQuery = queryBuilder
-                    .bool()
-                    .must(queryBuilder.keyword()
+           MustJunction term = queryBuilder.bool().must(queryBuilder.keyword()
+                   // .wildcard()
+                   .onFields("title", "content")
+                   .matching(query.getKeyword()).createQuery());
+           if(null != query.getStatus()){
+               term.must(queryBuilder.keyword()
                             // .wildcard()
                             .onField("status")
-                            .matching(query.getStatus()).createQuery())
-                    .must(queryBuilder.keyword()
+                            .matching(query.getStatus()).createQuery());
+           }
+           if(null != query.getUsername()){
+               term.must(queryBuilder.keyword()
                             // .wildcard()
-                            .onFields("title", "content")
-                            .matching(query.getKeyword()).createQuery())
-                    .createQuery();
+                            .onField("owner.username")
+                             .ignoreFieldBridge()
+                            .matching(query.getStatus()).createQuery());
+           }
+           luceneQuery =term.createQuery();
         }
         // BooleanQuery
         FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(
@@ -111,6 +120,10 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
         }
         if(query.getTitle() != null){
             search.add(Restrictions.eq("title", query.getTitle()));
+        }
+        if(query.getUsername() != null){
+            search.createAlias("owner","user")
+            .add( Restrictions.eq("user.username", query.getUsername()));
         }
         search.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return search;

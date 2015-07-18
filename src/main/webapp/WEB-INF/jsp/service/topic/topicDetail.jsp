@@ -16,7 +16,12 @@
             <hr><h6><fmt:formatDate value="${topic.lastUpdatedTime}" pattern="yyyy年MM月dd日  HH时mm分ss秒" /></h6>
         </div>
         <div class="panel-body">
+            ${topic.contactName }
+            ${topic.contactPhoneNumber }
+            ${topic.contactEmail}
+            <hr/>
             ${topic.content}
+            
         </div>
         <div class="panel-footer">
             <a href="${ctx}/topic/list?pageNum=${topicPager.currentPage}" id="cancel_btn" class="btn btn-info" role="button">返回</a>
@@ -31,7 +36,7 @@
         <div class="panel-body">
             <c:forEach var="comment" items="${topic.comments }">
                 <p>
-                    ${comment.lastUpdateTime } ${comment.content }
+                    ${comment.lastUpdatedTime } <hr/> ${comment.content }
                 </p>
             </c:forEach>
             <hr/>

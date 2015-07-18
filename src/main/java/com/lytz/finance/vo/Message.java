@@ -38,15 +38,15 @@ public class Message extends TimestampHibernateEntity {
     private static final long serialVersionUID = -2636710232385049814L;
 
     @ManyToOne //default eager, no cascade
-    @JoinColumn(name="receiver_id", insertable=false, updatable=false)
+    @JoinColumn(name="receiver_id", updatable=false)
     private User receiver;
     
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100, updatable=false)
     @Length(min = 4, max = 100)
     private String content;
     
     @ManyToOne //default eager, no cascade
-    @JoinColumn(name="sender_id",insertable=false, updatable=false)
+    @JoinColumn(name="sender_id",updatable=false)
     private User sender;
     
     @Basic(optional = false)
@@ -55,6 +55,38 @@ public class Message extends TimestampHibernateEntity {
     @Enumerated(EnumType.STRING)
     private MessageStatus status = MessageStatus.UNREAD;
     
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public MessageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MessageStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this.getClass())

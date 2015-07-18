@@ -13,35 +13,36 @@
 <body>
     <div class="panel panel-info">
         <div class="panel-heading clearfix">
-            <h4 class="panel-title pull-left">资讯</h4><shiro:hasRole name="ROLE_ADMIN">
+            <h4 class="panel-title pull-left">资讯</h4>
                 <a href="${ctx}/topic/new" title="添加"><span
                             class="glyphicon glyphicon-plus" ></span></a> 
-                       </shiro:hasRole>
             <c:if test="${not empty message}">
                 <div id="message" class="alert alert-success">
                     <button data-dismiss="alert" class="close">×</button>${message}</div>
             </c:if>
-            <shiro:hasRole name="ROLE_ADMIN">
-                <div class="btn-group pull-right">
-                    <form:form class="form-inline pull-right" action="${ctx}/topic" accept-charset="UTF-8" modelAttribute="topicQuery">
-                      <div class="form-group">
-                        <label class="sr-only" for="searchText">关键字</label>
-                        <input type="text" class="form-control" id="searchText" name="keyword" placeholder="关键字" value="${topicQuery.keyword}"/>
-                      </div>
-                      <div class="form-group">
-                        <label class="sr-only" for="status">显示数目</label>
-                        <input type="text" class="form-control" id="querySize" name="querySize" placeholder="显示数目" value="${topicQuery.querySize}"/>
-                      </div>
+            
+            <div class="btn-group pull-right">
+                <form:form class="form-inline pull-right" action="${ctx}/topic" accept-charset="UTF-8" modelAttribute="topicQuery" method="GET">
+                  <div class="form-group">
+                    <label class="sr-only" for="searchText">关键字</label>
+                    <input type="text" class="form-control" id="searchText" name="keyword" placeholder="关键字" value="${topicQuery.keyword}"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="sr-only" for="status">显示数目</label>
+                    <input type="text" class="form-control" id="querySize" name="querySize" placeholder="显示数目" value="${topicQuery.querySize}"/>
+                  </div>
+                  <shiro:hasRole name="ROLE_ADMIN">
                       <div class="form-group">
                         <label for="status">状态</label>
                         <form:select class="form-control" id="status" path="status">
                             <form:options items="${topicStatus }" />
                         </form:select>
                       </div>
-                      <button type="submit" class="btn btn-default">查询</button>
-                    </form:form>
-                </div>
-            </shiro:hasRole>
+                  </shiro:hasRole>
+                  <button type="submit" class="btn btn-default">查询</button>
+                </form:form>
+            </div>
+            
         </div>
         <div class="panel-body">
             <ul class="list-group">

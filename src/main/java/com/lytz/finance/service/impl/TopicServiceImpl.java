@@ -12,9 +12,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.lytz.finance.common.TopicQuery;
+import com.lytz.finance.dao.CommentDAO;
+import com.lytz.finance.dao.MessageDAO;
 import com.lytz.finance.dao.TopicDAO;
 import com.lytz.finance.dao.UserDAO;
 import com.lytz.finance.service.TopicService;
+import com.lytz.finance.vo.Comment;
+import com.lytz.finance.vo.Message;
 import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.Topic;
 import com.lytz.finance.vo.TopicStatus;
@@ -33,6 +37,22 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
     public void setTopicDAO(TopicDAO topicDAO) {
         this.dao = topicDAO;
         this.topicDAO = topicDAO;
+    }
+    
+    private CommentDAO commentDAO;
+
+    @Autowired
+    @Qualifier("commentDAO")
+    public void setCommentDAO(CommentDAO commentDAO) {
+        this.commentDAO = commentDAO;
+    }
+    
+    private MessageDAO messageDAO;
+
+    @Autowired
+    @Qualifier("messageDAO")
+    public void setMessageDAO(MessageDAO messageDAO) {
+        this.messageDAO = messageDAO;
     }
     
     private UserDAO userDAO;
@@ -130,5 +150,24 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
             return;
         }
         remove(topic);
+    }
+
+    @Override
+    public Comment addComment(Integer topicId, Comment comment) {
+        Topic topic = findById(topicId);
+        Subject currentUser = SecurityUtils.getSubject();
+        comment.setOwner(userDAO.getUserByName((String)currentUser.getPrincipal()));
+        comment.setTopic(topic);
+        commentDAO.save(comment);
+        if(!comment.getOwner().equals(topic.getOwner())){
+            Message message = new Message();
+            message.setSender(comment.getOwner());
+            message.setReceiver(topic.getOwner());
+            message.setContent(topic.getTitle() + "有更新");
+            messageDAO.save(message);
+        }
+        topic.addComment(comment);
+        save(topic);
+        return comment;
     }
 }

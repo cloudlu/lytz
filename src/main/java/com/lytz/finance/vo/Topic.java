@@ -20,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import org.apache.lucene.analysis.charfilter.HTMLStripCharFilterFactory;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
@@ -41,6 +40,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
@@ -101,7 +101,8 @@ public class Topic extends TimestampHibernateEntity{
     @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
     private String title;
     @ManyToOne //default eager, no cascade
-    @JoinColumn(name="owner_id",insertable=false, updatable=false)
+    @JoinColumn(name="owner_id",updatable=false)
+    @IndexedEmbedded(depth = 1)
     private User owner;
     @Basic(optional = false)
     @Column(nullable = false, length = 1000)
@@ -113,10 +114,10 @@ public class Topic extends TimestampHibernateEntity{
     @Basic(optional = false)
     @Column(nullable = false, length = 30)
     @NotBlank
-    @Length(min = 4, max = 30)
+    @Length(min = 1, max = 10)
     private String contactName;
     @Basic(optional = true)
-    @OneToMany(cascade={CascadeType.MERGE,CascadeType.REMOVE},fetch=FetchType.LAZY, mappedBy="topic")
+    @OneToMany(cascade={CascadeType.REMOVE},fetch=FetchType.LAZY, mappedBy="topic")
     @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Comment> comments = new HashSet<Comment>();
     @Basic(optional = true)

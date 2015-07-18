@@ -30,6 +30,7 @@ import com.lytz.finance.common.LYTZUtils;
 import com.lytz.finance.common.Pager;
 import com.lytz.finance.common.TopicQuery;
 import com.lytz.finance.service.TopicService;
+import com.lytz.finance.vo.Comment;
 import com.lytz.finance.vo.Topic;
 
 /**
@@ -155,6 +156,22 @@ public class TopicController {
         topicService.save(topic);
         redirectAttributes.addFlashAttribute("message", "更新信息" + topic.getTitle() + "成功");
         return "redirect:/topic";
+    }
+    
+    @RequestMapping(value = "/topic/addComment", method = RequestMethod.POST)
+    public String addComment(@Valid @ModelAttribute("comment") Comment comment, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        //topic.setStatus(TopicStatus.COMPLETED);
+        if(LOG.isTraceEnabled()){
+            LOG.trace(comment.toString());
+        }
+        if (null == comment.getTopic().getId() || bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("message", "输入信息不正确");
+            redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "comment", bindingResult);
+            return "redirect:/topic/view/"+comment.getTopic().getId();
+        }
+        topicService.addComment(comment.getTopic().getId(), comment);
+        redirectAttributes.addFlashAttribute("message", "更新信息成功");
+        return "redirect:/topic/view/"+comment.getTopic().getId();
     }
 
     @RequestMapping(value = "/topic/delete/{id}")

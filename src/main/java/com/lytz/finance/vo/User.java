@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,6 +23,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -42,6 +47,7 @@ import com.google.common.base.MoreObjects;
 @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE,include="all")
 @DynamicUpdate
 @DynamicInsert
+@Indexed
 public class User extends TimestampHibernateEntity {
 
 	/**
@@ -60,6 +66,7 @@ public class User extends TimestampHibernateEntity {
 	@NotBlank
 	@Pattern(regexp = "[A-Za-z0-9]{4,30}", message = "{errors.invalid}")
     @Length(min = 4, max = 30)
+    @Field(index=Index.YES, analyze=Analyze.NO, store=Store.NO)
 	private String username;
 	@Basic(optional = false)
 	@Column(nullable = false, length = 150)
@@ -100,10 +107,18 @@ public class User extends TimestampHibernateEntity {
 	//@Column(nullable = false)
 	//private String credentialsSalt;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="receiver")
+    @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	private Set<Message> receivedMessage = new HashSet<Message>(); 
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="sender")
+    @Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	private Set<Message> sentMessage = new HashSet<Message>(); 
+	
     @Transient
 	private String confirmPassword;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST/* , CascadeType.MERGE */ })
+	@ManyToMany(fetch = FetchType.EAGER/*,  cascade = { CascadeType.PERSIST , CascadeType.MERGE }*/ )
     @JoinTable(
             name = "user_role",
             joinColumns = { @JoinColumn(name = "user_id",  referencedColumnName="id") },
@@ -112,9 +127,11 @@ public class User extends TimestampHibernateEntity {
 	@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<Role> roles = new HashSet<Role>();
 
-	//when user is delete(should not call delete), remain topics
-	@OneToMany(cascade=CascadeType.MERGE,fetch=FetchType.LAZY, mappedBy="owner")
+	//when user is modified, remain no change to topics, no cascade required
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="owner")
 	@Cache(usage=CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+	@ContainedIn
 	private Set<Topic> topics = new HashSet<Topic>();
 	
 
@@ -287,6 +304,22 @@ public class User extends TimestampHibernateEntity {
 		return enabled;
 	}	
     
+    public Set<Message> getReceivedMessage() {
+        return receivedMessage;
+    }
+
+    public void setReceivedMessage(Set<Message> receivedMessage) {
+        this.receivedMessage = receivedMessage;
+    }
+
+    public Set<Message> getSentMessage() {
+        return sentMessage;
+    }
+
+    public void setSentMessage(Set<Message> sentMessage) {
+        this.sentMessage = sentMessage;
+    }
+
     /**
 	 * {@inheritDoc}
 	 */

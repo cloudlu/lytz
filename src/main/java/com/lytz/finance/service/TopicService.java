@@ -6,6 +6,7 @@ package com.lytz.finance.service;
 import java.util.List;
 
 import com.lytz.finance.common.TopicQuery;
+import com.lytz.finance.vo.Comment;
 import com.lytz.finance.vo.Topic;
 
 /**
@@ -19,4 +20,6 @@ public interface TopicService extends BaseService<Topic, Integer> {
     List<Topic> findByQuery(TopicQuery query);
     
     int getTotalCount(TopicQuery query);
+
+    Comment addComment(Integer topicId, Comment comment);
 }

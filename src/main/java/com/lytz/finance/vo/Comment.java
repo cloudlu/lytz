@@ -34,15 +34,15 @@ public class Comment extends TimestampHibernateEntity {
      */
     private static final long serialVersionUID = 6835066279858762404L;
 
-    @ManyToOne //default eager, no cascade
-    @JoinColumn(name="topic_id",insertable=false, updatable=false)
+    @ManyToOne //default eager, no cascade insertable=false is used to control by another side
+    @JoinColumn(name="topic_id", updatable=false)
     private Topic topic;
     
     @Column(nullable = false, length = 100)
     @Length(min = 4, max = 100)
     private String content;
     @ManyToOne //default eager, no cascade
-    @JoinColumn(name="owner_id",insertable=false, updatable=false)
+    @JoinColumn(name="owner_id",updatable=false)
     private User owner;
 
     public Topic getTopic() {
