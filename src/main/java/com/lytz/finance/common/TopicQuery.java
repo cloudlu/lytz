@@ -20,6 +20,8 @@ public class TopicQuery extends Query {
 
     private String keyword;
     
+    private TopicStatus excludeStatus;
+    
     public TopicQuery(){
         
     }
@@ -30,6 +32,7 @@ public class TopicQuery extends Query {
         this.title = query.title;
         this.status = query.status;
         this.keyword = query.keyword;
+        this.excludeStatus = query.excludeStatus;
     }
     
     public String getKeyword() {
@@ -64,13 +67,27 @@ public class TopicQuery extends Query {
         this.status = status;
     }
     
+    /**
+     * @return the excludeStatus
+     */
+    public TopicStatus getExcludeStatus() {
+        return excludeStatus;
+    }
+
+    /**
+     * @param excludeStatus the excludeStatus to set
+     */
+    public void setExcludeStatus(TopicStatus excludeStatus) {
+        this.excludeStatus = excludeStatus;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this.getClass())
                 .add("startRow", getStartRow()).add("querySize", getQuerySize())
                 .add("sortBy", getSortBy()).add("sortType", getSortType())
                 .add("username", username).add("title", title).add("keyword", keyword)
-                .add("status", status)
+                .add("status", status).add("excludeStatus", excludeStatus)
                 .toString();
     }
     

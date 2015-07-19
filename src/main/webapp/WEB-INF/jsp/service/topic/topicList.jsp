@@ -47,15 +47,14 @@
         <div class="panel-body">
             <ul class="list-group">
                 <c:forEach items="${topics}" var="topic">
-                    <li class="list-group-item"><shiro:hasRole
-                            name="ROLE_ADMIN">
+                    <li class="list-group-item">
                                 <a class="badge"
                                     href="${ctx}/topic/delete/${topic.id}"><span
                                     class="glyphicon glyphicon-minus">删除</span></a>
                                 <a class="badge"
                                     href="${ctx}/topic/update/${topic.id}"><span
                                     class="glyphicon glyphicon-edit">修改</span></a>
-                        </shiro:hasRole> <a href="${ctx}/topic/view/${topic.id}">${topic.title}</a>
+                                <a href="${ctx}/topic/view/${topic.id}">${topic.title}</a>
                     </li>
                 </c:forEach>
             </ul>

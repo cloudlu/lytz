@@ -13,15 +13,24 @@
     <div class="panel panel-info">
         <div class="panel-heading clearfix">
             <h4 class="panel-title pull-left">${topic.title}</h4>
-            <hr><h6><fmt:formatDate value="${topic.lastUpdatedTime}" pattern="yyyy年MM月dd日  HH时mm分ss秒" /></h6>
+            <br/><h6><fmt:formatDate value="${topic.lastUpdatedTime}" pattern="yyyy年MM月dd日  HH时mm分ss秒" /></h6>
         </div>
         <div class="panel-body">
-            ${topic.contactName }
-            ${topic.contactPhoneNumber }
-            ${topic.contactEmail}
-            <hr/>
-            ${topic.content}
-            
+        
+        <dl>
+          <dt>联系人</dt>
+          <dd>${topic.contactName }</dd>
+          <dt>联系电话</dt>
+          <dd> ${topic.contactPhoneNumber }</dd>
+          <dt>联系邮箱</dt>
+          <dd> ${topic.contactEmail}</dd>
+          <shiro:hasRole name="ROLE_ADMIN">
+          <dt>状态</dt>
+          <dd> ${topic.status}</dd>
+          </shiro:hasRole>
+          <dt>资讯细节</dt>
+          <dd>${topic.content}</dd>
+        </dl>
         </div>
         <div class="panel-footer">
             <a href="${ctx}/topic/list?pageNum=${topicPager.currentPage}" id="cancel_btn" class="btn btn-info" role="button">返回</a>

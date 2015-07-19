@@ -65,7 +65,7 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
         QueryBuilder queryBuilder = fullTextSession.getSearchFactory()
                 .buildQueryBuilder().forEntity(Topic.class).get();
         org.apache.lucene.search.Query luceneQuery = null;
-        if (null == query.getStatus() && null == query.getUsername()) {
+        if (null == query.getStatus() && null == query.getUsername() && null == query.getExcludeStatus()) {
             luceneQuery = queryBuilder.keyword()// .wildcard()
                     .onFields("title", "content").matching(query.getKeyword())
                     // .matching("*" + query.getKeyword() + "*")
@@ -81,12 +81,18 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
                             .onField("status")
                             .matching(query.getStatus()).createQuery());
            }
+           if(null != query.getExcludeStatus()){
+               term.not().must(queryBuilder.keyword()
+                            // .wildcard()
+                            .onField("status")
+                            .matching(query.getExcludeStatus()).createQuery());
+           }
            if(null != query.getUsername()){
                term.must(queryBuilder.keyword()
                             // .wildcard()
                             .onField("owner.username")
                              .ignoreFieldBridge()
-                            .matching(query.getStatus()).createQuery());
+                            .matching(query.getUsername()).createQuery());
            }
            luceneQuery =term.createQuery();
         }
@@ -118,6 +124,10 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
         if(query.getStatus() != null && EnumUtils.isValidEnum(TopicStatus.class, query.getStatus().name())){
             search.add(Restrictions.eq("status", query.getStatus()));
         }
+        if(query.getExcludeStatus() != null && EnumUtils.isValidEnum(TopicStatus.class, query.getExcludeStatus().name())){
+            search.add(Restrictions.not(Restrictions.eq("status", query.getExcludeStatus())));
+        }
+        
         if(query.getTitle() != null){
             search.add(Restrictions.eq("title", query.getTitle()));
         }

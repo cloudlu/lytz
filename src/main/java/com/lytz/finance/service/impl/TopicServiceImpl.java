@@ -70,6 +70,7 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             query.setUsername((String)currentUser.getPrincipal());
+            query.setExcludeStatus(TopicStatus.CANCELLED);
         }
         return topicDAO.findByQuery(query);
     }
@@ -81,6 +82,7 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name())){
             query.setUsername((String)currentUser.getPrincipal());
+            query.setExcludeStatus(TopicStatus.CANCELLED);
         }
         return topicDAO.getTotalCount(query);
     }
