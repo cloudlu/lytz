@@ -15,15 +15,14 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.MustJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.hibernate.search.query.dsl.TermTermination;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.lytz.finance.common.TopicQuery;
 import com.lytz.finance.common.TopicQuery;
 import com.lytz.finance.dao.TopicDAO;
 import com.lytz.finance.vo.Topic;
 import com.lytz.finance.vo.TopicStatus;
-import com.lytz.finance.vo.Topic;
 
 /**
  * @author cloudlu
@@ -32,10 +31,15 @@ import com.lytz.finance.vo.Topic;
 @Repository("topicDAO")
 public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDAO{
 
+    private static Logger LOG = LoggerFactory.getLogger(TopicDAOImpl.class);
+    
     @SuppressWarnings("unchecked")
     public List<Topic> findByQuery(TopicQuery query) {
         if(null == query){
             throw new IllegalArgumentException("query should not be null");
+        }
+        if(LOG.isDebugEnabled()){
+            LOG.debug(query.toString());
         }
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria search = createCriteria(query);
@@ -70,6 +74,9 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
                     .onFields("title", "content").matching(query.getKeyword())
                     // .matching("*" + query.getKeyword() + "*")
                     .createQuery();
+            if(LOG.isDebugEnabled()){
+                LOG.debug("create clean keyword search query: " + luceneQuery.toString());
+            }
         } else {
            MustJunction term = queryBuilder.bool().must(queryBuilder.keyword()
                    // .wildcard()
@@ -82,10 +89,10 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
                             .matching(query.getStatus()).createQuery());
            }
            if(null != query.getExcludeStatus()){
-               term.not().must(queryBuilder.keyword()
+               term.must(queryBuilder.keyword()
                             // .wildcard()
                             .onField("status")
-                            .matching(query.getExcludeStatus()).createQuery());
+                            .matching(query.getExcludeStatus()).createQuery()).not();
            }
            if(null != query.getUsername()){
                term.must(queryBuilder.keyword()
@@ -95,6 +102,9 @@ public class TopicDAOImpl extends BaseDAOImpl<Topic, Integer> implements TopicDA
                             .matching(query.getUsername()).createQuery());
            }
            luceneQuery =term.createQuery();
+           if(LOG.isDebugEnabled()){
+               LOG.debug("create complicated keyword search query: " + luceneQuery.toString());
+           }
         }
         // BooleanQuery
         FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(

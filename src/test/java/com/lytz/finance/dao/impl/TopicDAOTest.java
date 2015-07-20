@@ -71,11 +71,21 @@ public class TopicDAOTest {
     	 logger.info("===========================" + count + "===========================");
     	 
     	 con = new TopicQuery();
+         con.setStartRow(0);
+         con.setQuerySize(10);
+        // con.setStatus(TopicStatus.SUBMITTED);
+         con.setExcludeStatus(TopicStatus.CANCELLED);
+         con.setUsername("123456");
+         count = topicDAO.getTotalCount(con);
+         assertTrue(count == 1);
+         logger.info("=================" + count + "===========================");
+    	 
+    	 con = new TopicQuery();
     	 con.setStartRow(0);
     	 con.setQuerySize(10);
     	 con.setStatus(TopicStatus.SUBMITTED);
          count = topicDAO.getTotalCount(con);
-         assertTrue(count == 3);
+         assertTrue(count == 2);
          logger.info("=================" + count + "===========================");
          
          con.setStatus(TopicStatus.ACCPECT);
@@ -137,6 +147,28 @@ public class TopicDAOTest {
          con.setUsername("admin");
          count = topicDAO.getTotalCount(con);
          assertTrue(count == 1);
+         logger.info("=================" + count + "===========================");
+         
+         con = new TopicQuery();
+         con.setStartRow(0);
+         con.setQuerySize(10);
+         //con.setStatus(TopicStatus.SUBMITTED);
+         con.setExcludeStatus(TopicStatus.CANCELLED);
+         
+         count = topicDAO.getTotalCount(con);
+         //assertTrue(count == 3);
+         logger.info("=================" + count + "===========================");
+         
+         con = new TopicQuery();
+         con.setStartRow(0);
+         con.setQuerySize(10);
+         //con.setStatus(TopicStatus.SUBMITTED);
+         con.setUsername("123456");
+         con.setExcludeStatus(TopicStatus.CANCELLED);
+         con.setKeyword("上传");
+         count = topicDAO.getTotalCount(con);
+         logger.info(topicDAO.findByQuery(con).toString());
+         //assertTrue(count == 3);
          logger.info("=================" + count + "===========================");
     	 }
      

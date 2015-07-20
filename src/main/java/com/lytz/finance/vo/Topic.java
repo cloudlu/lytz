@@ -215,6 +215,7 @@ public class Topic extends TimestampHibernateEntity{
     @Override
     public String toString() {
         MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this.getClass())
+                .add("id", getId())
                 .add("title", title)
                 .add("contactPhoneNumber", contactPhoneNumber)
                 .add("contactName", contactName)
