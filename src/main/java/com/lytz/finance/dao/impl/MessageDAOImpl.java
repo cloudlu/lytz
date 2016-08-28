@@ -11,7 +11,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import com.lytz.finance.common.MessageQuery;
+import com.lytz.finance.common.query.MessageQuery;
 import com.lytz.finance.dao.MessageDAO;
 import com.lytz.finance.vo.Message;
 import com.lytz.finance.vo.MessageStatus;

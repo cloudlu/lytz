@@ -5,6 +5,8 @@ package com.lytz.finance.dao.impl;
 
 import java.util.List;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -14,11 +16,9 @@ import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import com.lytz.finance.common.EquityQuery;
+import com.lytz.finance.common.query.EquityQuery;
 import com.lytz.finance.dao.EquityDAO;
 import com.lytz.finance.vo.Equity;
 import com.lytz.finance.vo.Status;
@@ -27,11 +27,10 @@ import com.lytz.finance.vo.Status;
  * @author cloudlu
  *
  */
+@Log4j2
 @Repository("equityDAO")
 public class EquityDAOImpl extends BaseDAOImpl<Equity, Integer> implements EquityDAO {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EquityDAOImpl.class);
-    
     @SuppressWarnings("unchecked")
     public List<Equity> findByQuery(EquityQuery query) {
         if(null == query){
@@ -90,8 +89,8 @@ public class EquityDAOImpl extends BaseDAOImpl<Equity, Integer> implements Equit
         if(null == query){
             throw new IllegalArgumentException("query should not be null");
         }
-        if(LOG.isDebugEnabled()){
-            LOG.debug(query.toString());
+        if(log.isDebugEnabled()){
+            log.debug(query.toString());
         }
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria c = createCriteria(query);

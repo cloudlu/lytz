@@ -16,7 +16,7 @@ import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
-import com.lytz.finance.common.ShowQuery;
+import com.lytz.finance.common.query.ShowQuery;
 import com.lytz.finance.dao.ShowDAO;
 import com.lytz.finance.vo.Show;
 import com.lytz.finance.vo.Status;

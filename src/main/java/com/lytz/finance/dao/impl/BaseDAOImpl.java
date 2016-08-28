@@ -9,13 +9,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.hibernate.HibernateException;
 import org.hibernate.IdentifierLoadAccess;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -25,10 +25,9 @@ import com.lytz.finance.dao.BaseDAO;
  * @author cloudlu
  *
  */
+@Log4j2
 public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID> {
-	
-	private final static Logger LOG = LoggerFactory.getLogger(BaseDAOImpl.class);
-		  
+	  
 	private Class<T> persistentClass;
 		  
 	@Resource
@@ -38,8 +37,8 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 	public BaseDAOImpl() {
 		this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
 				.getGenericSuperclass()).getActualTypeArguments()[0];
-		if(LOG.isDebugEnabled()){
-		    LOG.debug("create dao with persistentClass: " + persistentClass.getName());
+		if(log.isDebugEnabled()){
+		    log.debug("create dao with persistentClass: " + persistentClass.getName());
 		}
 	}
 	
