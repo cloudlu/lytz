@@ -18,6 +18,8 @@
     
     <bean name="rateLimiterFilter" class="com.lytz.finance.service.RateLimiterFilter" />
     
+    <bean name="sensitiveWordFilter" class="com.lytz.finance.service.SensitiveWordFilterImpl" />
+    
     <aop:config>
         <aop:advisor id="monitoringInterceptor" advice-ref="perfInterceptor"
             pointcut="execution(* *..service.*.*(..)) " order="1" />

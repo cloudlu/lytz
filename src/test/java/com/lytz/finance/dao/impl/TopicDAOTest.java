@@ -1,6 +1,6 @@
 package com.lytz.finance.dao.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,15 +14,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lytz.finance.common.TopicQuery;
+import com.lytz.finance.common.query.TopicQuery;
 import com.lytz.finance.dao.DAOUtils;
 import com.lytz.finance.dao.TopicDAO;
-import com.lytz.finance.vo.Status;
 import com.lytz.finance.vo.TopicStatus;
 
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
-        locations = {"classpath:spring-*.xml"})
+        locations = {"classpath:spring-*-dev.xml"})
 @Transactional  
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true) 
 public class TopicDAOTest {

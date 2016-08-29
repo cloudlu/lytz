@@ -14,14 +14,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lytz.finance.common.ShowQuery;
+import com.lytz.finance.common.query.ShowQuery;
 import com.lytz.finance.dao.DAOUtils;
 import com.lytz.finance.dao.ShowDAO;
 import com.lytz.finance.vo.Status;
 
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
-        locations = {"classpath:spring-*.xml"})
+        locations = {"classpath:spring-*-dev.xml"})
 @Transactional  
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true) 
 public class ShowDAOTest {

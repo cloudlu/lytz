@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lytz.finance.common.UserQuery;
+import com.lytz.finance.common.query.UserQuery;
 import com.lytz.finance.dao.RoleDAO;
 import com.lytz.finance.dao.UserDAO;
 import com.lytz.finance.vo.Role;
@@ -31,7 +31,7 @@ import com.lytz.finance.vo.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
-        locations = {"classpath:spring-*.xml"})
+        locations = {"classpath:spring-*-dev.xml"})
 @Transactional  
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true) 
 public class UserDAOTest {

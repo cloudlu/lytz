@@ -24,7 +24,7 @@ import com.lytz.finance.vo.Show;
  */
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
-        locations = {"classpath:spring-*.xml"})
+        locations = {"classpath:spring-*-dev.xml"})
 @Transactional  
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true) 
 public class ShowServiceTest {
