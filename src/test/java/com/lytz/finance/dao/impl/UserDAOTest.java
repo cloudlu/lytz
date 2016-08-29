@@ -9,6 +9,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Calendar;
 import java.util.Date;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.apache.shiro.authc.credential.PasswordService;
 import org.junit.After;
 import org.junit.Before;
@@ -29,14 +31,13 @@ import com.lytz.finance.vo.Role;
 import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.User;
 
+@Log4j2
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
         locations = {"classpath:spring-*-dev.xml"})
 @Transactional  
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true) 
 public class UserDAOTest {
-	
-	private static Logger logger = LoggerFactory.getLogger(UserDAOTest.class);
 	
 	@Autowired
 	private UserDAO userDAO;
@@ -110,11 +111,11 @@ public class UserDAOTest {
     	 buildUser(userInfo, username, userId, registerTime, expiredTime, (username + "@gmail.com"));
     	 userInfo.addRole(roleDAO.findById(1));
     	 assertNull(userInfo.getId());
-    	 logger.info("add a new user to database--------------");
+    	 LOG.info("add a new user to database--------------");
     	 long startTime = System.nanoTime();
     	 userInfo = userDAO.save(userInfo);
     	 long endTime = System.nanoTime();
-    	 logger.info("save a new user spent time: " + (endTime - startTime));
+    	 LOG.info("save a new user spent time: " + (endTime - startTime));
     	 return userInfo;
      }
      
@@ -283,19 +284,19 @@ public class UserDAOTest {
      public void testDAOGetUserByName(){
          String specialUsername = "admin";
     	 // Test get all userInfos with username: admin
-    	 logger.info("test search user by name: " + specialUsername + "-------------");
+    	 LOG.info("test search user by name: " + specialUsername + "-------------");
     	 User userInfo = userDAO.getUserByName(specialUsername);
     	 assertNotNull(userInfo);
     	 assertEquals(specialUsername, userInfo.getUsername());
     	 
     	 // Test get all userInfos with usrname not exist, like: ""
-    	 logger.info("test search user by no exists name, like: ''-------------");
+    	 LOG.info("test search user by no exists name, like: ''-------------");
     	 userInfo = userDAO.getUserByName("");
     	 assertNull(userInfo);
     	 
     	 //Test get all userInfos with username null
     	 userInfo = userDAO.getUserByName(null);
-    	 logger.info("test search user by null name-------------");
+    	 LOG.info("test search user by null name-------------");
     	 assertNull(userInfo);
      }
      
@@ -315,7 +316,7 @@ public class UserDAOTest {
     	 
     	 assertNotNull(userCount);
     	 
-    	 logger.info("===========================" + userCount + "===========================");
+    	 LOG.info("===========================" + userCount + "===========================");
     	 
     	 con = new UserQuery();
     	 con.setStartRow(0);
@@ -324,7 +325,7 @@ public class UserDAOTest {
     	 
     	 userCount = userDAO.getTotalCount(con);
     	 
-    	 logger.info("=========query admin========" + userCount + "===========================");
+    	 LOG.info("=========query admin========" + userCount + "===========================");
     	 
     	 con = new UserQuery();
          con.setStartRow(0);
@@ -333,7 +334,7 @@ public class UserDAOTest {
          
          userCount = userDAO.getTotalCount(con);
          
-         logger.info("=========query ROLE_VIP========" + userCount + "===========================");
+         LOG.info("=========query ROLE_VIP========" + userCount + "===========================");
          
          con = new UserQuery();
          con.setStartRow(0);
@@ -342,7 +343,7 @@ public class UserDAOTest {
          
          userCount = userDAO.getTotalCount(con);
          
-         logger.info("=========query ROLE_USER========" + userCount + "===========================");
+         LOG.info("=========query ROLE_USER========" + userCount + "===========================");
      }
      
  

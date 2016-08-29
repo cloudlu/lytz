@@ -1,13 +1,12 @@
 package com.lytz.finance.dao.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import lombok.extern.log4j.Log4j2;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,10 +22,9 @@ import com.lytz.finance.vo.Status;
 @ContextConfiguration(
         locations = {"classpath:spring-*-dev.xml"})
 @Transactional  
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true) 
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@Log4j2
 public class ShowDAOTest {
-	
-	private static Logger logger = LoggerFactory.getLogger(ShowDAOTest.class);
 	
 	@Autowired
 	private ShowDAO showDAO;
@@ -67,7 +65,7 @@ public class ShowDAOTest {
     	 
     	 assertTrue(count == 6);
     	 
-    	 logger.info("===========================" + count + "===========================");
+    	 LOG.info("===========================" + count + "===========================");
     	 
     	 con = new ShowQuery();
     	 con.setStartRow(0);
@@ -75,13 +73,13 @@ public class ShowDAOTest {
     	 con.setKeyword("测试");
     	 count = showDAO.getTotalCount(con);
     	 assertTrue(count == 5);
-    	 logger.info("=================" + count + "===========================");
+    	 LOG.info("=================" + count + "===========================");
     	 
     	 con.setKeyword("测试");
     	 con.setStatus(Status.COMPLETED);
          count = showDAO.getTotalCount(con);
          assertTrue(count == 2);
-         logger.info("=================" + count + "===========================");
+         LOG.info("=================" + count + "===========================");
     	 
          con.setKeyword("测试");
          con.setStartRow(0);
@@ -92,13 +90,13 @@ public class ShowDAOTest {
          assertTrue(showDAO.findByQuery(con).size() == 2);
          con.setStartRow(2);
          assertTrue(showDAO.findByQuery(con).size() == 1);
-         logger.info("=================" + count + "===========================");
+         LOG.info("=================" + count + "===========================");
          
     	 con.setKeyword("电商");
     	 con.setStatus(null);
          count = showDAO.getTotalCount(con);
          assertTrue(count == 1);
-         logger.info("=================" + count + "===========================");
+         LOG.info("=================" + count + "===========================");
     	 }
      
  

@@ -1,8 +1,6 @@
 package com.lytz.finance.service.impl;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.lytz.finance.service.NewsService;
 
