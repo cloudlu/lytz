@@ -113,7 +113,7 @@ public class Equity extends TimestampHibernateEntity {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NotNull String title) {
         this.title = title;
     }
 

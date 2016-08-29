@@ -34,6 +34,16 @@
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-collections.version>3.2.1</commons-collections.version>
         
+        <jacoco.version>0.7.7.201606060606</jacoco.version>
+        <!-- define ut/it report path, the same in our system due to sonar version is too old and doesn't support seperated it report-->
+        <sonar.jacoco.reportPath>${project.build.directory}/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${project.build.directory}/jacoco_it.exec</sonar.jacoco.itReportPath>
+        <!-- jacoco agent path for dymanic/static instrument-->
+        <sonar.jacoco.jar>${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar</sonar.jacoco.jar>
+        <!-- parameter used to control the instrument process, instrument for offline should only be used for ci phase not for loadbuild and package release -->
+        <jacoco.skip.instrument>true</jacoco.skip.instrument>
+        <sonar.exclusions>**/*.js</sonar.exclusions>
+        
         <!-- db/orm -->
         <db.name>lytzfapp</db.name>
         <hsqldb.version>2.3.2</hsqldb.version>
@@ -560,6 +570,125 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                    <executions>
+                        <!-- Prepares the property pointing to the JaCoCo runtime agent 
+                            which is passed as VM argument when Maven the surefire plugin is executed. -->
+                        <execution>
+                            <id>pre-unit-test</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution 
+                                    data. -->
+                                <destFile>${sonar.jacoco.reportPath}</destFile>
+                                <!-- Sets the name of the property containing the settings 
+                                    for JaCoCo runtime agent. -->
+                                <propertyName>surefireArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <!-- Ensures that the code coverage report for unit tests after 
+                            unit tests have been run. -->
+                        <execution>
+                            <id>post-unit-test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution 
+                                    data. -->
+                                <dataFile>${sonar.jacoco.reportPath}</dataFile>
+                                <!-- Sets the output directory for the code coverage 
+                                    report. -->
+                                <outputDirectory>target/site/jacoco</outputDirectory>
+                            </configuration>
+                        </execution>
+                        <!-- Prepares the property pointing to the JaCoCo runtime agent 
+                            which is passed as VM argument when Maven the Failsafe plugin is executed. -->
+                        <execution>
+                            <id>pre-integration-test</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution 
+                                    data. -->
+                                <destFile>${sonar.jacoco.itReportPath}</destFile>
+                                <!-- Sets the name of the property containing the settings 
+                                    for JaCoCo runtime agent. -->
+                                <propertyName>failsafeArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <!-- Ensures that the code coverage report for integration tests 
+                            after integration tests have been run. -->
+                        <execution>
+                            <id>post-integration-test</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution 
+                                    data. -->
+                                <dataFile>${sonar.jacoco.itReportPath}</dataFile>
+                                <!-- Sets the output directory for the code coverage 
+                                    report. -->
+                                <outputDirectory>target/site/jacoco-it</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.19</version>
+                    <configuration>
+                        <!-- Sets the VM argument line used when unit tests are run. -->
+                        <argLine>-XX:-UseSplitVerifier ${surefireArgLine}</argLine>
+                        <!-- Skips unit tests if the value of skip.unit.tests property is true -->
+                        <skipTests>${skip.unit.tests}</skipTests>
+                        <!-- Excludes integration tests when unit tests are run. -->
+                        <excludes>
+                            <exclude>**/IT*.java</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.19</version>
+                    <executions>
+                        <!--
+                            Ensures that both integration-test and verify goals of the Failsafe Maven
+                            plugin are executed.
+                        -->
+                        <execution>
+                            <id>integration-tests</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the VM argument line used when integration tests are run. -->
+                                <argLine>${failsafeArgLine}</argLine>
+                                <!--
+                                    Skips integration tests if the value of skip.integration.tests property
+                                    is true
+                                -->
+                                <skipTests>${skip.integration.tests}</skipTests>
+                                <includes>
+                                   <include>**/IT*.java</include>
+                                </includes>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -581,6 +710,18 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>native2ascii-maven-plugin</artifactId>
             </plugin> -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

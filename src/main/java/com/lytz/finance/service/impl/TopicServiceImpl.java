@@ -123,7 +123,7 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
         Subject currentUser = SecurityUtils.getSubject();
         Topic oldTopic = findById(topic.getId());
         if(null == oldTopic){
-            new IllegalArgumentException("topic id invalid");
+            throw new IllegalArgumentException("topic id invalid");
         }
         if(currentUser.hasRole(RoleNameEnum.ROLE_ADMIN.name()) ||
                 ((String)currentUser.getPrincipal()).equals(oldTopic.getOwner().getUsername())){

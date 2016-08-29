@@ -36,7 +36,7 @@ public class ShowDAOTest {
 	 * execute before each test, for once execution, use BeforeClass static
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws InterruptedException {
 		DAOUtils.reBuildIndex();
 	}
 	
