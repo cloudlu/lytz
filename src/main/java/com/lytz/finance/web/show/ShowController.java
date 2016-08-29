@@ -7,8 +7,8 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -27,8 +27,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lytz.finance.common.Constants;
 import com.lytz.finance.common.LYTZUtils;
-import com.lytz.finance.common.Pager;
-import com.lytz.finance.common.ShowQuery;
+import com.lytz.finance.common.query.Pager;
+import com.lytz.finance.common.query.ShowQuery;
 import com.lytz.finance.service.ShowService;
 import com.lytz.finance.vo.Show;
 
@@ -36,11 +36,11 @@ import com.lytz.finance.vo.Show;
  * @author cloudlu
  *
  */
+@Log4j2
 @Controller
 @SessionAttributes({"showQuery","showPager"})
 public class ShowController {
-    private static final Logger LOG = LoggerFactory.getLogger(ShowController.class);
-
+    
     @Value("${pager.size}")
     private int pageSize;
     
@@ -92,7 +92,7 @@ public class ShowController {
         model.addAttribute("showPager", pager);
         ShowQuery searchQuery = new ShowQuery(query);
         model.addAttribute("showQuery", searchQuery);
-        model.addAttribute("showStatus", LYTZUtils.getStatusMap());
+        model.addAttribute("showStatus", LYTZUtils.STATUS_MAP);
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'search' method...with query: " + query + " pager: " + pager);
         }
@@ -110,7 +110,7 @@ public class ShowController {
         pager.setCurrentPage(pageNum);
         query.setStartRow(pager.getStartRow());
         model.addAttribute(Constants.SHOW_LIST, showService.findByQuery(query));
-        model.addAttribute("showStatus", LYTZUtils.getStatusMap());
+        model.addAttribute("showStatus", LYTZUtils.STATUS_MAP);
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'list' method...with query: " + query + " pager: " + pager);
         }

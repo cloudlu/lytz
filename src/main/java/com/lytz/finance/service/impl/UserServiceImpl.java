@@ -6,34 +6,36 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.lytz.finance.common.UserQuery;
+import com.lytz.finance.common.MatchType;
+import com.lytz.finance.common.query.UserQuery;
 import com.lytz.finance.dao.UserDAO;
 import com.lytz.finance.service.RoleService;
+import com.lytz.finance.service.SensitiveWordFilter;
 import com.lytz.finance.service.UserService;
+import com.lytz.finance.service.exception.IllegalWordException;
 import com.lytz.finance.service.exception.UserExistsException;
 import com.lytz.finance.service.exception.UserNotExistsException;
 import com.lytz.finance.vo.Role;
 import com.lytz.finance.vo.RoleNameEnum;
 import com.lytz.finance.vo.User;
 
+@Log4j2
 @Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 		UserService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-	
 	private RoleService roleService;
 	
-	@Autowired
+    @Autowired
     @Qualifier("roleService")
 	public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
@@ -46,6 +48,14 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
     public void setUserDAO(UserDAO userDAO) {
         this.dao = userDAO;
         this.userDAO = userDAO;
+    }
+    
+    private SensitiveWordFilter wordFilter;
+
+    @Autowired
+    @Qualifier("sensitiveWordFilter")    
+    public void setWordFilter(SensitiveWordFilter wordFilter) {
+        this.wordFilter = wordFilter;
     }
     
     private PasswordService passwordService;
@@ -123,6 +133,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 	public void registerUser(User user) throws UserExistsException {
 		if(null != getUserByName(user.getUsername())){
 			throw new UserExistsException(user.getUsername());
+		}
+		if(wordFilter.containsSensitiveWord(user.getUsername(), MatchType.MIN)){
+		    throw new IllegalWordException(user.getUsername() + "contains invalid words!");
 		}
 		if(null != user.getPassword() && user.getPassword().equals(user.getConfirmPassword())){
     		user.setPassword(passwordService.encryptPassword(user.getPassword()));

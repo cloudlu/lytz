@@ -10,10 +10,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -24,12 +24,11 @@ import com.lytz.finance.service.FileService;
  * @author cloudlu
  *
  */
+@Log4j2
 @Service("fileService")
 @RequiresRoles("ROLE_ADMIN")
 public class FileServiceImpl implements FileService{
 
-    private static final Logger LOG = LoggerFactory.getLogger(FileServiceImpl.class);
-    
     @Value("${image.uploadUrl}")
     private String uri = null;
     

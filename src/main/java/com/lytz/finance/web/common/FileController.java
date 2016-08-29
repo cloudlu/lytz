@@ -3,18 +3,11 @@
  */
 package com.lytz.finance.web.common;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -36,11 +29,9 @@ import com.lytz.finance.service.FileService;
  * @author cloudlu
  *
  */
+@Log4j2
 @Controller
 public class FileController {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(FileController.class);
-    
     //inject url/uploaddir later
     private FileService fileService;
     

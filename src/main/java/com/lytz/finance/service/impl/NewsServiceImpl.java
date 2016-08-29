@@ -4,15 +4,14 @@
 package com.lytz.finance.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import lombok.extern.log4j.Log4j2;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.lytz.finance.service.NewsService;
@@ -22,6 +21,7 @@ import com.lytz.finance.vo.News;
  * @author cloudlu
  *
  */
+@Log4j2
 @Service("newsService")
 public class NewsServiceImpl implements NewsService {
 
@@ -29,8 +29,6 @@ public class NewsServiceImpl implements NewsService {
 
     private static final int DEFAULT_SIZE = 50;
 
-    private static final Logger LOG = LoggerFactory.getLogger(NewsServiceImpl.class);
-    
     private List<News> newsList = new ArrayList<News>(DEFAULT_SIZE);
     
     public void updateNews(){

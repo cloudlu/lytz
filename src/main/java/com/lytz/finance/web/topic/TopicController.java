@@ -7,8 +7,8 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -27,8 +27,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lytz.finance.common.Constants;
 import com.lytz.finance.common.LYTZUtils;
-import com.lytz.finance.common.Pager;
-import com.lytz.finance.common.TopicQuery;
+import com.lytz.finance.common.query.Pager;
+import com.lytz.finance.common.query.TopicQuery;
 import com.lytz.finance.service.TopicService;
 import com.lytz.finance.vo.Comment;
 import com.lytz.finance.vo.Topic;
@@ -37,10 +37,10 @@ import com.lytz.finance.vo.Topic;
  * @author cloudlu
  *
  */
+@Log4j2
 @Controller
 @SessionAttributes({"topicQuery","topicPager"})
 public class TopicController {
-    private static final Logger LOG = LoggerFactory.getLogger(TopicController.class);
 
     @Value("${pager.size}")
     private int pageSize;
@@ -93,7 +93,7 @@ public class TopicController {
         model.addAttribute("topicPager", pager);
         TopicQuery searchQuery = new TopicQuery(query);
         model.addAttribute("topicQuery", searchQuery);
-        model.addAttribute("topicStatus", LYTZUtils.getTopicStatusMap());
+        model.addAttribute("topicStatus", LYTZUtils.TOPIC_STATUS_MAP);
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'search' method...with query: " + query + " pager: " + pager);
         }
@@ -111,7 +111,7 @@ public class TopicController {
         pager.setCurrentPage(pageNum);
         query.setStartRow(pager.getStartRow());
         model.addAttribute(Constants.TOPIC_LIST, topicService.findByQuery(query));
-        model.addAttribute("topicStatus", LYTZUtils.getTopicStatusMap());
+        model.addAttribute("topicStatus", LYTZUtils.TOPIC_STATUS_MAP);
         //model.addAttribute("topicPager", pager);
         if(LOG.isTraceEnabled()){
             LOG.trace("finish 'list' method...with query: " + query + " pager: " + pager);

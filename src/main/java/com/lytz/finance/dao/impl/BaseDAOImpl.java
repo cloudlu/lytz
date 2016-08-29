@@ -37,8 +37,8 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 	public BaseDAOImpl() {
 		this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
 				.getGenericSuperclass()).getActualTypeArguments()[0];
-		if(log.isDebugEnabled()){
-		    log.debug("create dao with persistentClass: " + persistentClass.getName());
+		if(LOG.isDebugEnabled()){
+		    LOG.debug("create dao with persistentClass: " + persistentClass.getName());
 		}
 	}
 	

@@ -5,7 +5,7 @@ package com.lytz.finance.dao;
 
 import java.util.List;
 
-import com.lytz.finance.common.TopicQuery;
+import com.lytz.finance.common.query.TopicQuery;
 import com.lytz.finance.vo.Topic;
 
 /**

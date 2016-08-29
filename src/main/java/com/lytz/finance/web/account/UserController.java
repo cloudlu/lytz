@@ -5,10 +5,12 @@ package com.lytz.finance.web.account;
 
 import javax.validation.Valid;
 
+import lombok.extern.log4j.Log4j2;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,8 +25,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lytz.finance.common.Constants;
-import com.lytz.finance.common.Pager;
-import com.lytz.finance.common.UserQuery;
+import com.lytz.finance.common.query.Pager;
+import com.lytz.finance.common.query.UserQuery;
 import com.lytz.finance.service.UserService;
 import com.lytz.finance.vo.User;
 
@@ -32,12 +34,12 @@ import com.lytz.finance.vo.User;
  * @author cloudlu
  *
  */
+@Log4j2
 @Controller
 @SessionAttributes({"userQuery","userPager"})
 public class UserController {
     
-    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
-    private static final Logger AUDIT = LoggerFactory.getLogger("AUDITLOG");
+    private static final Logger AUDIT = LogManager.getLogger("AUDITLOG");
 
     @Value("${pager.size}")
     private int pageSize;

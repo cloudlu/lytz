@@ -11,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.lytz.finance.common.TopicQuery;
+import com.lytz.finance.common.MatchType;
+import com.lytz.finance.common.query.TopicQuery;
 import com.lytz.finance.dao.CommentDAO;
-import com.lytz.finance.dao.MessageDAO;
+import com.lytz.finance.service.MessageService;
 import com.lytz.finance.dao.TopicDAO;
-import com.lytz.finance.dao.UserDAO;
+import com.lytz.finance.service.SensitiveWordFilter;
 import com.lytz.finance.service.TopicService;
+import com.lytz.finance.service.UserService;
+import com.lytz.finance.service.exception.IllegalWordException;
 import com.lytz.finance.vo.Comment;
 import com.lytz.finance.vo.Message;
 import com.lytz.finance.vo.RoleNameEnum;
@@ -47,21 +50,30 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
         this.commentDAO = commentDAO;
     }
     
-    private MessageDAO messageDAO;
+    private MessageService messageService;
 
     @Autowired
-    @Qualifier("messageDAO")
-    public void setMessageDAO(MessageDAO messageDAO) {
-        this.messageDAO = messageDAO;
+    @Qualifier("messageService")
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
     
-    private UserDAO userDAO;
+    private UserService userService;
 
     @Autowired
-    @Qualifier("userDAO")
-    public void setUserDAO(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    @Qualifier("userService")
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
+    
+    private SensitiveWordFilter wordFilter;
+
+    @Autowired
+    @Qualifier("sensitiveWordFilter")    
+    public void setWordFilter(SensitiveWordFilter wordFilter) {
+        this.wordFilter = wordFilter;
+    }
+    
     
     public List<Topic> findByQuery(TopicQuery query) {
         if(null == query){
@@ -86,14 +98,20 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
         }
         return topicDAO.getTotalCount(query);
     }
-
+    
     @Override
-    public Topic create(Topic topic){
+    public Topic create(Topic topic) {
         if(null == topic || null != topic.getId()){
             throw new IllegalArgumentException("topic should not be null or topic id should be null");
         }
+        if(wordFilter.containsSensitiveWord(topic.getTitle(), MatchType.MIN)){
+            throw new IllegalWordException("title contains invalid word");
+        }
+        if(wordFilter.containsSensitiveWord(topic.getContent(), MatchType.MIN)){
+            topic.setContent(wordFilter.replaceSensitiveWord(topic.getContent(), MatchType.MAX));
+        }
         Subject currentUser = SecurityUtils.getSubject();
-        topic.setOwner(userDAO.getUserByName((String)currentUser.getPrincipal()));
+        topic.setOwner(userService.getUserByName((String)currentUser.getPrincipal()));
         return super.save(topic);
     }
     
@@ -158,7 +176,7 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
     public Comment addComment(Integer topicId, Comment comment) {
         Topic topic = findById(topicId);
         Subject currentUser = SecurityUtils.getSubject();
-        comment.setOwner(userDAO.getUserByName((String)currentUser.getPrincipal()));
+        comment.setOwner(userService.getUserByName((String)currentUser.getPrincipal()));
         comment.setTopic(topic);
         commentDAO.save(comment);
         if(!comment.getOwner().equals(topic.getOwner())){
@@ -166,7 +184,7 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
             message.setSender(comment.getOwner());
             message.setReceiver(topic.getOwner());
             message.setContent(topic.getTitle() + "有更新");
-            messageDAO.save(message);
+            messageService.save(message);
         }
         topic.addComment(comment);
         save(topic);

@@ -9,6 +9,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.log4j.Log4j2;
+
+import org.apache.commons.codec.binary.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,8 +24,9 @@ import com.lytz.finance.vo.TopicStatus;
  * @author cloudlu
  *
  */
+@Log4j2
 public class LYTZUtils {
-    
+
     private static ThreadLocal<SimpleDateFormat> dateFormat = new ThreadLocal<SimpleDateFormat>(){
         @Override protected SimpleDateFormat initialValue(){
             return new SimpleDateFormat("yyyy-MM-SS hh:mm:ss.SSS");
@@ -43,28 +47,38 @@ public class LYTZUtils {
         return list;
     }
     
-    private static Map<String, String> statusMap = new LinkedHashMap<String,String>();
-    private static Map<String, String> topicStatusMap = new LinkedHashMap<String,String>();
-    //private static Map<String, String> messageStatusMap = new LinkedHashMap<String,String>();
+    public static final Map<String, String> STATUS_MAP = new LinkedHashMap<String,String>();
+    public static final Map<String, String> TOPIC_STATUS_MAP = new LinkedHashMap<String,String>();
+    //public static Map<String, String> messageStatusMap = new LinkedHashMap<String,String>();
     
     static {
-        statusMap.put("","全部");
-        statusMap.put(Status.DRAFT.name(),"草稿");
-        statusMap.put(Status.COMPLETED.name(),"已发布");
+        STATUS_MAP.put("","全部");
+        STATUS_MAP.put(Status.DRAFT.name(),"草稿");
+        STATUS_MAP.put(Status.COMPLETED.name(),"已发布");
         
-        topicStatusMap.put("","全部");
-        topicStatusMap.put(TopicStatus.DRAFT.name(),"草稿");
-        topicStatusMap.put(TopicStatus.SUBMITTED.name(),"已发布");
-        topicStatusMap.put(TopicStatus.PROCESSING.name(),"正在处理");
-        topicStatusMap.put(TopicStatus.ACCPECT.name(),"已接受");
-        topicStatusMap.put(TopicStatus.DENY.name(),"已拒绝");
+        TOPIC_STATUS_MAP.put("","全部");
+        TOPIC_STATUS_MAP.put(TopicStatus.DRAFT.name(),"草稿");
+        TOPIC_STATUS_MAP.put(TopicStatus.SUBMITTED.name(),"已发布");
+        TOPIC_STATUS_MAP.put(TopicStatus.PROCESSING.name(),"正在处理");
+        TOPIC_STATUS_MAP.put(TopicStatus.ACCPECT.name(),"已接受");
+        TOPIC_STATUS_MAP.put(TopicStatus.DENY.name(),"已拒绝");
     }
     
-    public static Map<String, String> getStatusMap(){
-        return statusMap;
+    public String encodeBase64 (String original) {
+        byte[]   bytesEncoded = Base64.encodeBase64(original .getBytes());
+        String encoded = new String(bytesEncoded);
+        if(LOG.isDebugEnabled()){
+            LOG.debug("encoded value is " + encoded);
+        }
+        return encoded;
     }
     
-    public static Map<String, String> getTopicStatusMap(){
-        return topicStatusMap;
+    public String decodeBase64 (String encoded) {
+        byte[]   valueDecoded = Base64.decodeBase64(encoded .getBytes());
+        String decoded = new String(valueDecoded);
+        if(LOG.isDebugEnabled()){
+            LOG.debug("decoded value is " + decoded);
+        }
+        return decoded;
     }
 }

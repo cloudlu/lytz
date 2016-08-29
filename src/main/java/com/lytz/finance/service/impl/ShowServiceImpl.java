@@ -6,6 +6,8 @@ package com.lytz.finance.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -16,7 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.lytz.finance.common.LYTZUtils;
-import com.lytz.finance.common.ShowQuery;
+import com.lytz.finance.common.query.ShowQuery;
 import com.lytz.finance.dao.ShowDAO;
 import com.lytz.finance.service.FileService;
 import com.lytz.finance.service.ShowService;
@@ -28,12 +30,11 @@ import com.lytz.finance.vo.Status;
  * @author cloudlu
  *
  */
+@Log4j2
 @Service("showService")
 public class ShowServiceImpl extends BaseServiceImpl<Show, Integer> implements
         ShowService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ShowServiceImpl.class);
-    
     private FileService fileService;
     
     @Autowired

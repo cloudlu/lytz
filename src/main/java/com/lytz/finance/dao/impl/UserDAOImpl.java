@@ -42,16 +42,16 @@ UserDAO {
 	    if(null == query){
             throw new IllegalArgumentException("query should not be null");
         }
-	    if(log.isDebugEnabled()){
-            log.debug("create criteria with query: " + query);
+	    if(LOG.isDebugEnabled()){
+            LOG.debug("create criteria with query: " + query);
         }
         Criteria c =  createCriteria(query);
         return ((Long)c.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 
     private Criteria createCriteria(UserQuery query) {
-        if(log.isDebugEnabled()){
-            log.debug("create criteria with query: " + query);
+        if(LOG.isDebugEnabled()){
+            LOG.debug("create criteria with query: " + query);
         }
         Criteria c = getSession().createCriteria(User.class);
 	    if(EnumUtils.isValidEnum(RoleNameEnum.class, query.getRolename())){

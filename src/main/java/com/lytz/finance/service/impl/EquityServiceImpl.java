@@ -5,6 +5,8 @@ package com.lytz.finance.service.impl;
 
 import java.util.List;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -14,8 +16,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.lytz.finance.common.LYTZUtils;
-import com.lytz.finance.common.EquityQuery;
+import com.lytz.finance.common.query.EquityQuery;
 import com.lytz.finance.dao.EquityDAO;
+import com.lytz.finance.security.CaptchaFormAuthenticationFilter;
 import com.lytz.finance.service.EquityService;
 import com.lytz.finance.service.FileService;
 import com.lytz.finance.vo.Equity;
@@ -26,11 +29,10 @@ import com.lytz.finance.vo.Status;
  * @author cloudlu
  *
  */
+@Log4j2
 @Service("equityService")
 public class EquityServiceImpl extends BaseServiceImpl<Equity, Integer> implements
         EquityService {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(EquityServiceImpl.class);
     
     private FileService fileService;
     

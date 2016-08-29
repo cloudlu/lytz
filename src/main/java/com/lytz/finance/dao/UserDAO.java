@@ -2,7 +2,7 @@ package com.lytz.finance.dao;
 
 import java.util.List;
 
-import com.lytz.finance.common.UserQuery;
+import com.lytz.finance.common.query.UserQuery;
 import com.lytz.finance.vo.User;
 
 public interface UserDAO extends BaseDAO<User, Integer> {

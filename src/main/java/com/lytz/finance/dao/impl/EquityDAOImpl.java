@@ -89,8 +89,8 @@ public class EquityDAOImpl extends BaseDAOImpl<Equity, Integer> implements Equit
         if(null == query){
             throw new IllegalArgumentException("query should not be null");
         }
-        if(log.isDebugEnabled()){
-            log.debug(query.toString());
+        if(LOG.isDebugEnabled()){
+            LOG.debug(query.toString());
         }
         if (StringUtils.isBlank(query.getKeyword())) {
             Criteria c = createCriteria(query);

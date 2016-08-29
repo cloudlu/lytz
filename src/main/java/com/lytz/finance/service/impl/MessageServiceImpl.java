@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import com.lytz.finance.common.MessageQuery;
+import com.lytz.finance.common.query.MessageQuery;
 import com.lytz.finance.dao.MessageDAO;
 import com.lytz.finance.service.MessageService;
 import com.lytz.finance.vo.Message;

@@ -7,6 +7,8 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +29,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lytz.finance.common.Constants;
 import com.lytz.finance.common.LYTZUtils;
-import com.lytz.finance.common.Pager;
-import com.lytz.finance.common.EquityQuery;
+import com.lytz.finance.common.query.EquityQuery;
+import com.lytz.finance.common.query.Pager;
 import com.lytz.finance.service.EquityService;
 import com.lytz.finance.vo.Equity;
+import com.lytz.finance.web.common.FileController;
 
 /**
  * @author cloudlu
  *
  */
+@Log4j2
 @Controller
 @SessionAttributes({"equityQuery","equityPager"})
 public class EquityController {
-    private static final Logger LOG = LoggerFactory.getLogger(EquityController.class);
-
+    
     @Value("${pager.size}")
     private int pageSize;
     

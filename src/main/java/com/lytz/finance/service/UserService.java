@@ -3,7 +3,7 @@ package com.lytz.finance.service;
 import java.util.List;
 import java.util.Set;
 
-import com.lytz.finance.common.UserQuery;
+import com.lytz.finance.common.query.UserQuery;
 import com.lytz.finance.service.exception.UserExistsException;
 import com.lytz.finance.service.exception.UserNotExistsException;
 import com.lytz.finance.vo.User;

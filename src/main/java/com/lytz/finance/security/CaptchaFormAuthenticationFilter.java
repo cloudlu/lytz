@@ -7,13 +7,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -23,9 +23,8 @@ import org.springframework.web.servlet.LocaleResolver;
  * @author cloudlu
  *
  */
+@Log4j2
 public class CaptchaFormAuthenticationFilter extends FormAuthenticationFilter {
-
-	private static final Logger LOG = LoggerFactory.getLogger(CaptchaFormAuthenticationFilter.class);  
 
     public CaptchaFormAuthenticationFilter() {  
     }  
