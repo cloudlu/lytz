@@ -5,6 +5,8 @@ package com.lytz.finance.common.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,7 +18,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor  
+@NoArgsConstructor 
 @AllArgsConstructor
 public class Query {
     private Integer startRow;
@@ -26,5 +28,12 @@ public class Query {
     private String sortType;
 
     private Integer querySize;
+    
+    public Query (@NonNull Query query) {
+        this.startRow = query.startRow;
+        this.sortBy = query.sortBy;
+        this.sortType = query.sortType;
+        this.querySize = query.querySize;
+    }
     
 }
