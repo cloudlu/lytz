@@ -11,6 +11,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.junit.Test;
 
 import com.lytz.finance.vo.News;
 
@@ -19,13 +20,13 @@ import com.lytz.finance.vo.News;
  * @author cloudlu
  *
  */
-public class HTMLParserIT {
+public class ITHTMLParser {
 
     /**
      * @param args
      * @throws IOException 
      */
-    public static void main(String[] args) throws IOException {
+    @Test public void readData() throws IOException {
         Document doc = Jsoup.connect("http://kuaixun.eastmoney.com/").get();
         Element data = doc.getElementById("livenews-list");
         System.out.println(data);
