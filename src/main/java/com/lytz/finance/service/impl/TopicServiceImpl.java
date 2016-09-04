@@ -11,15 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.lytz.finance.common.MatchType;
 import com.lytz.finance.common.query.TopicQuery;
 import com.lytz.finance.dao.CommentDAO;
 import com.lytz.finance.service.MessageService;
 import com.lytz.finance.dao.TopicDAO;
-import com.lytz.finance.service.SensitiveWordFilter;
 import com.lytz.finance.service.TopicService;
 import com.lytz.finance.service.UserService;
 import com.lytz.finance.service.exception.IllegalWordException;
+import com.lytz.finance.utils.wordFilter.MatchType;
+import com.lytz.finance.utils.wordFilter.SensitiveWordFilter;
 import com.lytz.finance.vo.Comment;
 import com.lytz.finance.vo.Message;
 import com.lytz.finance.vo.RoleNameEnum;

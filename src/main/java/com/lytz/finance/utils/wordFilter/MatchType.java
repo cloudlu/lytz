@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.lytz.finance.common;
+package com.lytz.finance.utils.wordFilter;
 
 /**
  * @author cloudlu

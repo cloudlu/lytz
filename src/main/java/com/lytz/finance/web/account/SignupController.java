@@ -13,9 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
-import com.lytz.finance.metrics.MetricsServletContextListener;
 import com.lytz.finance.service.UserService;
 import com.lytz.finance.service.exception.UserExistsException;
+import com.lytz.finance.utils.metrics.MetricsServletContextListener;
 import com.lytz.finance.vo.User;
 
 @Controller

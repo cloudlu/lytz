@@ -369,6 +369,11 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <!-- for spring end -->
     
         <dependency>
@@ -579,6 +584,7 @@
                             which is passed as VM argument when Maven the surefire plugin is executed. -->
                         <execution>
                             <id>pre-unit-test</id>
+                            <phase>test-compile</phase>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>

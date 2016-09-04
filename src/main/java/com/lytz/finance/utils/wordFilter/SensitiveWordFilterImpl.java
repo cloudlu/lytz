@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.lytz.finance.service.impl;
+package com.lytz.finance.utils.wordFilter;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +15,6 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.shiro.codec.Base64;
 import org.springframework.stereotype.Service;
-
-import com.lytz.finance.common.MatchType;
-import com.lytz.finance.service.SensitiveWordFilter;
 
 /**
  * @author cloudlu
@@ -88,10 +85,10 @@ public class SensitiveWordFilterImpl implements SensitiveWordFilter {
         }
     }
     
-    public boolean containsSensitiveWord(String txt, MatchType type){
+    public boolean containsSensitiveWord(String txt){
         boolean flag = false;
         for(int i = 0 ; i < txt.length() ; i++){
-            int matchFlag = this.checkSensitiveWord(txt, i, type);
+            int matchFlag = this.checkSensitiveWord(txt, i, MatchType.MIN);
             if(matchFlag > 0){
                 flag = true;
             }

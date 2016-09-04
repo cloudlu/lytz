@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.lytz.finance.metrics;
+package com.lytz.finance.utils.metrics;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlets.MetricsServlet;

@@ -8,7 +8,8 @@ import java.io.IOException;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
-import com.lytz.finance.service.SensitiveWordFilter;
+import com.lytz.finance.utils.wordFilter.SensitiveWordFilter;
+import com.lytz.finance.utils.wordFilter.SensitiveWordFilterImpl;
 
 /**
  * @author cloudlu

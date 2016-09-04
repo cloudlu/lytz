@@ -204,12 +204,12 @@
     </servlet-mapping>
 
     <listener>
-        <listener-class>com.lytz.finance.metrics.HealthCheckServletContextListener
+        <listener-class>com.lytz.finance.utils.metrics.HealthCheckServletContextListener
         </listener-class>
     </listener>
 
     <listener>
-        <listener-class>com.lytz.finance.metrics.MetricsServletContextListener
+        <listener-class>com.lytz.finance.utils.metrics.MetricsServletContextListener
         </listener-class>
     </listener>
 
