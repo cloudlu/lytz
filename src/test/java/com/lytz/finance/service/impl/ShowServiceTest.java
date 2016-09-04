@@ -47,18 +47,20 @@ public class ShowServiceTest {
     @InjectMocks
     private ShowServiceImpl service;
     
-    private Show save = new Show();
+    private Show save;
     
-    private Show update = new Show();
+    private Show update;
     
     @Before
     public void setup() throws Exception{
+        save = new Show();
+        update = new Show();
+        PowerMockito.mockStatic(LYTZUtils.class);
         MockitoAnnotations.initMocks(this);
         when(dao.getTotalCount()).thenReturn(SHOW_SIZE);
         update.setId(1);
         when(dao.findById(update.getId())).thenReturn(update);
-        PowerMockito.mockStatic(LYTZUtils.class);
-        when(LYTZUtils.class,"getFilePathFromContent", save.getContent()).thenReturn(Collections.emptyList());
+        when(dao.save(update)).thenReturn(update);
         when(LYTZUtils.class,"getFilePathFromContent", update.getContent()).thenReturn(Collections.emptyList());
     }
     
@@ -77,5 +79,8 @@ public class ShowServiceTest {
         service.save(update);
         Mockito.verify(dao).findById(update.getId());
         Mockito.verify(dao).save(update);
+        PowerMockito.verifyStatic(Mockito.times(2));
+        LYTZUtils.getFilePathFromContent(update.getContent());
+        
     }
 }

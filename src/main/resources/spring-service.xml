@@ -16,6 +16,10 @@
 
     <context:property-placeholder location="classpath:system.properties" />
     
+    <bean class="org.springframework.beans.factory.config.MethodInvokingBean">
+        <property name="staticMethod" value="com.lytz.finance.common.LYTZUtils.init" />
+    </bean>
+    
     <bean name="rateLimiterFilter" class="com.lytz.finance.service.RateLimiterFilter" />
     
     <bean name="sensitiveWordFilter" class="com.lytz.finance.service.SensitiveWordFilterImpl" />
