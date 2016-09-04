@@ -104,10 +104,10 @@ public class TopicServiceImpl extends BaseServiceImpl<Topic, Integer> implements
         if(null == topic || null != topic.getId()){
             throw new IllegalArgumentException("topic should not be null or topic id should be null");
         }
-        if(wordFilter.containsSensitiveWord(topic.getTitle(), MatchType.MIN)){
+        if(wordFilter.containsSensitiveWord(topic.getTitle())){
             throw new IllegalWordException("title contains invalid word");
         }
-        if(wordFilter.containsSensitiveWord(topic.getContent(), MatchType.MIN)){
+        if(wordFilter.containsSensitiveWord(topic.getContent())){
             topic.setContent(wordFilter.replaceSensitiveWord(topic.getContent(), MatchType.MAX));
         }
         Subject currentUser = SecurityUtils.getSubject();

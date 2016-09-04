@@ -134,7 +134,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements
 		if(null != getUserByName(user.getUsername())){
 			throw new UserExistsException(user.getUsername());
 		}
-		if(wordFilter.containsSensitiveWord(user.getUsername(), MatchType.MIN)){
+		if(wordFilter.containsSensitiveWord(user.getUsername())){
 		    throw new IllegalWordException(user.getUsername() + "contains invalid words!");
 		}
 		if(null != user.getPassword() && user.getPassword().equals(user.getConfirmPassword())){

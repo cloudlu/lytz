@@ -30,9 +30,11 @@
         <slf4j.version>1.7.12</slf4j.version>
         <jboss-logging.version>3.3.0.Final</jboss-logging.version>
         <junit.version>4.12</junit.version>
+        <powermock.version>1.6.5</powermock.version>
         <guava.version>18.0</guava.version>
         <commons-lang3.version>3.4</commons-lang3.version>
         <commons-collections.version>3.2.1</commons-collections.version>
+        <jms.version>1.1-rev-1</jms.version>
         
         <jacoco.version>0.7.7.201606060606</jacoco.version>
         <!-- define ut/it report path, the same in our system due to sonar version is too old and doesn't support seperated it report-->
@@ -43,6 +45,7 @@
         <!-- parameter used to control the instrument process, instrument for offline should only be used for ci phase not for loadbuild and package release -->
         <jacoco.skip.instrument>true</jacoco.skip.instrument>
         <sonar.exclusions>**/*.js</sonar.exclusions>
+        <powermock.jar>${settings.localRepository}/org/powermock/powermock-module-javaagent/${powermock.version}/powermock-module-javaagent-${powermock.version}.jar</powermock.jar>
         
         <!-- db/orm -->
         <db.name>lytzfapp</db.name>
@@ -64,7 +67,7 @@
         
         <!-- service -->
         <ehcache.version>2.6.11</ehcache.version>
-        <spring.version>4.1.4.RELEASE</spring.version>
+        <spring.version>4.3.2.RELEASE</spring.version>
         <javasimon.version>4.0.1</javasimon.version>
         <metrics.version>3.1.0</metrics.version>
         <jackson.version>2.5.3</jackson.version>
@@ -144,6 +147,12 @@
             <artifactId>commons-collections</artifactId>
             <version>${commons-collections.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms-api</artifactId>
+            <version>${jms.version}</version>
+            <scope>provided</scope>
+        </dependency>
                 
 
         <!-- test -->
@@ -151,6 +160,24 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4-rule-agent</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- Upgrade junit-dep used by jmock The artifact junit:junit-dep:jar:4.11 
@@ -656,7 +683,7 @@
                     <version>2.19</version>
                     <configuration>
                         <!-- Sets the VM argument line used when unit tests are run. -->
-                        <argLine>-XX:-UseSplitVerifier ${surefireArgLine}</argLine>
+                        <argLine>-javaagent:${powermock.jar} -XX:-UseSplitVerifier ${surefireArgLine}</argLine>
                         <!-- Skips unit tests if the value of skip.unit.tests property is true -->
                         <skipTests>${skip.unit.tests}</skipTests>
                         <!-- Excludes integration tests when unit tests are run. -->
