@@ -19,7 +19,7 @@ import com.lytz.finance.vo.News;
  * @author cloudlu
  *
  */
-public class HTMLParserTest {
+public class HTMLParserIT {
 
     /**
      * @param args

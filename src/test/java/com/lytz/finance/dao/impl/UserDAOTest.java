@@ -16,12 +16,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lytz.finance.common.query.UserQuery;
@@ -35,8 +33,8 @@ import com.lytz.finance.vo.User;
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
         locations = {"classpath:spring-*-dev.xml"})
-@Transactional  
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true) 
+@Transactional(transactionManager = "transactionManager")
+@Rollback 
 public class UserDAOTest {
 	
 	@Autowired

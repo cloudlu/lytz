@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lytz.finance.common.query.ShowQuery;
@@ -21,8 +21,8 @@ import com.lytz.finance.vo.Status;
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration(
         locations = {"classpath:spring-*-dev.xml"})
-@Transactional  
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+@Transactional(transactionManager = "transactionManager")
+@Commit
 @Log4j2
 public class ShowDAOTest {
 	
