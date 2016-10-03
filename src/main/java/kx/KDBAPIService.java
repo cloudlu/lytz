@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Log4j2
 @Service
-public class KDBService {
+public class KDBAPIService {
 
     @Autowired
     @Qualifier("ticketPlant")
