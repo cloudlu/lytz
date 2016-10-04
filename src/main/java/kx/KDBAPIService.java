@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class KDBAPIService {
 
     @Autowired
-    @Qualifier("ticketPlant")
+    @Qualifier("ticketPlantManager")
     private KDBConnectionManager manager;
 
     /**

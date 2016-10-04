@@ -5,34 +5,22 @@ package kx;
 
 import java.io.IOException;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import kx.C.KException;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * @author cloudlu
  *
  */
 @Log4j2
-@Getter
-@Setter
 public class KDBConnectionManager {
 
-    @NotNull
-    @Size(min = 2, max = 30)
-    private String host;
-    @NotNull
-    private int port;
-    @NotNull
-    @Size(min = 2, max = 30)
-    private String username;
-    @NotNull
-    @Size(min = 2, max = 30)
-    private String password;
+    @Autowired
+    @Qualifier("ticketPlant")
+    private KDBServer server;
 
     private C c;
 
@@ -57,10 +45,11 @@ public class KDBConnectionManager {
             if (isValid(c))
                 return c;
             try {
-                c = new C(host, port, username + ":" + password);
+                c = new C(server.getHost(), server.getPort(),
+                        server.getUsername() + ":" + server.getPassword());
             } catch (KException | IOException e) {
-                LOG.error("fail to create connection to host {} port {}", host,
-                        port, e);
+                LOG.error("fail to create connection to host {} port {}",
+                        server.getHost(), server.getPort(), e);
             }
         }
         return c;
